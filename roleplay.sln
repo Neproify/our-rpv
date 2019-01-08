@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "roleplay", "bridge\resources\roleplay\roleplay.csproj", "{B9C881E2-90DC-4935-BF07-C242F6F328F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "roleplay-client", "client_packages\cs_packages\roleplay-client\roleplay-client.csproj", "{C2CD0570-1C0C-4F5D-9B19-893DAF088B54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9C881E2-90DC-4935-BF07-C242F6F328F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C881E2-90DC-4935-BF07-C242F6F328F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9C881E2-90DC-4935-BF07-C242F6F328F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9C881E2-90DC-4935-BF07-C242F6F328F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2CD0570-1C0C-4F5D-9B19-893DAF088B54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2CD0570-1C0C-4F5D-9B19-893DAF088B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2CD0570-1C0C-4F5D-9B19-893DAF088B54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2CD0570-1C0C-4F5D-9B19-893DAF088B54}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DEA60C64-1156-4034-A040-432AB905A93B}
+	EndGlobalSection
+EndGlobal
