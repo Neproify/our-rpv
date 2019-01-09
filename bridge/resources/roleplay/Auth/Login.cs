@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GTANetworkAPI;
-using BCrypt;
+using Newtonsoft.Json;
 
 namespace roleplay.Auth
 {
@@ -69,64 +69,11 @@ namespace roleplay.Auth
 
             player.globalInfo = globalInfo;
 
-            NAPI.ClientEvent.TriggerClientEvent(client, "LoginSuccessful");
-
-            client.SendNotification("~g~Pomyślnie zalogowałeś się! ~w~ Użyj ~g~/postać [nazwa]~w~ aby wybrać postać.");
-        }
-
-        [Command("postac")]
-        public void CharacterCommand(Client client, string name)
-        {
-            var player = Managers.PlayerManager.Instance().GetByHandle(client);
-
-            if(!player.isLogged)
-            {
-                client.SendNotification("~r~Nie możesz wybrać postaci, nie jesteś zalogowany!");
-                return;
-            }
-
-            if(player.character != null)
-            {
-                client.SendNotification("~r~Masz już wybraną postać!");
-                return;
-            }
-
-            var command = Database.Instance().Connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_characters` WHERE `GID`=@GID;";
-            command.Prepare();
-            command.Parameters.AddWithValue("@GID", player.globalInfo.UID);
-            var reader = command.ExecuteReader();
-            var characters = new List<Entities.Character>();
-            while(reader.Read())
-            {
-                var character = new Entities.Character
-                {
-                    UID = reader.GetInt32("UID"),
-                    GID = reader.GetInt32("GID"),
-                    name = reader.GetString("name")
-                };
-                characters.Add(character);
-            }
-
             reader.Close();
 
-            foreach(var character in characters)
-            {
-                if(character.name == name)
-                {
-                    player.character = character;
-                    player.handle.Name = character.name;
-                    client.Freeze(false);
-                    client.Invincible = false;
-                    client.Transparency = 255;
-                    NAPI.Player.SpawnPlayer(client, new Vector3(1391.773, 3608.716, 38.942), 0);
-                    player.handle.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
-                    return;
-                }
-            }
+            NAPI.ClientEvent.TriggerClientEvent(client, "LoginSuccessful");
 
-            player.handle.SendNotification("~r~Podałeś nieprawidłową nazwę postaci!");
-            return;
+            client.SendNotification("~g~Pomyślnie zalogowałeś się!");
         }
     }
 }

@@ -12,6 +12,14 @@ namespace roleplay.Entities
         public Client handle;
         public GlobalInfo globalInfo;
         public Character character;
+
+        public List<Entities.Item> GetItems()
+        {
+            if (!isLogged)
+                return null;
+
+            return Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID);
+        }
     }
 
     public class GlobalInfo

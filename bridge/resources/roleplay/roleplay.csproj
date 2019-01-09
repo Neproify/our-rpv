@@ -11,5 +11,8 @@
   <Reference Include="Bootstrapper">
     <HintPath>..\..\runtime\Bootstrapper.dll</HintPath>
   </Reference>
+  <Reference Include="Newtonsoft.Json">
+    <HintPath>..\..\runtime\Newtonsoft.Json.dll</HintPath>
+  </Reference>
 </ItemGroup>
 </Project>

@@ -16,3 +16,4 @@ C:\RAGEMP\server-files\bridge\resources\roleplay\bin\Debug\netcoreapp2.2\Microso
 C:\RAGEMP\server-files\bridge\resources\roleplay\bin\Debug\netcoreapp2.2\Bootstrapper.pdb
 C:\RAGEMP\server-files\bridge\resources\roleplay\bin\Debug\netcoreapp2.2\Bootstrapper.xml
 C:\RAGEMP\server-files\bridge\resources\roleplay\obj\Debug\netcoreapp2.2\roleplay.csproj.CopyComplete
+C:\RAGEMP\server-files\bridge\resources\roleplay\bin\Debug\netcoreapp2.2\Newtonsoft.Json.dll

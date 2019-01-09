@@ -13,7 +13,7 @@ namespace roleplay_client.Auth
         {
             Events.Add("OnLoginRequest", OnLoginRequest);
             Events.Add("LoginSuccessful", OnLoginSuccesful);
-            window = new RAGE.Ui.HtmlWindow("package://static/login/login.html");
+            window = new RAGE.Ui.HtmlWindow("package://static/auth/login.html");
             window.Active = true;
             RAGE.Ui.Cursor.Visible = true;
         }
@@ -27,6 +27,7 @@ namespace roleplay_client.Auth
         {
             window.Destroy();
             RAGE.Ui.Cursor.Visible = false;
+            Events.CallRemote("LoadPlayerCharacters", null);
         }
     }
 }

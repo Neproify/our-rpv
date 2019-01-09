@@ -1,5 +1,8 @@
 using System;
 using GTANetworkAPI;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace roleplay
 {
@@ -27,6 +30,7 @@ namespace roleplay
             }
 
             Managers.VehicleManager.Instance().LoadFromDatabase();
+            Managers.ItemManager.Instance().LoadFromDatabase();
 
             NAPI.Server.SetAutoSpawnOnConnect(false);
             NAPI.Server.SetDefaultSpawnLocation(new Vector3(1391.773, 3608.716, 38.942), 0);
@@ -42,7 +46,7 @@ namespace roleplay
         }
 
         [ServerEvent(Event.PlayerDisconnected)]
-        public void OnClientDisconnect(Client client)
+        public void OnClientDisconnect(Client client, DisconnectionType type, string reason)
         {
             Managers.PlayerManager manager = Managers.PlayerManager.Instance();
             manager.DeleteFromHandle(client);
