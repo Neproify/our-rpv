@@ -20,6 +20,19 @@ namespace roleplay.Entities
 
             return Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID);
         }
+
+        public bool CanUseItem(int itemUID)
+        {
+            var item = Managers.ItemManager.Instance().GetItem(itemUID);
+
+            if (item == null)
+                return false;
+
+            if (item.ownerType == OwnerType.Character && item.ownerID == character.UID)
+                return true;
+
+            return false;
+        }
     }
 
     public class GlobalInfo

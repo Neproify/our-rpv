@@ -11,6 +11,7 @@ namespace roleplay_client
         {
             RAGE.Chat.SafeMode = false;
             RAGE.Ui.Cursor.Visible = false;
+            RAGE.Chat.Show(false);
         }
     }
 }

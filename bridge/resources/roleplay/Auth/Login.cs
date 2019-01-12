@@ -26,7 +26,7 @@ namespace roleplay.Auth
                 return;
             }
 
-            //TODO: Check if another player is logged on this account.
+#warning Check if another player is logged on this account
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
             if (player.isLogged)
@@ -68,8 +68,6 @@ namespace roleplay.Auth
             reader.Close();
 
             player.globalInfo = globalInfo;
-
-            reader.Close();
 
             NAPI.ClientEvent.TriggerClientEvent(client, "LoginSuccessful");
 

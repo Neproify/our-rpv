@@ -1,0 +1,106 @@
+﻿<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">-->
+
+    <style>
+        body {
+            background-color: rgba(0, 0, 0, 0);
+            font-family: 'Lato', sans-serif;
+            src: url('package://static/fonts/Lato-Regular.ttf');
+        }
+
+        #window {
+            width: 300px;
+            height: 300px;
+            position: fixed;
+            background-color: hsla(0, 100%, 0%, 0.85);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            width: 320px;
+            height: 50px;
+            background-color: orange;
+            color: white;
+            position: fixed;
+            left: -10px;
+            text-align: center;
+            line-height: 50px;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        select {
+            margin-left: 10px;
+            width: 280px;
+            height: 40px;
+            margin-top: 20px;
+            font-size: 30px;
+        }
+
+        option {
+            font-size: 20px;
+        }
+
+        button {
+            width: 240px;
+            height: 40px;
+            margin-left: 30px;
+            color: white;
+            background-color: orange;
+            box-shadow: none;
+            border-width: 0px;
+            margin-top: 5px;
+        }
+
+        #items::-webkit-scrollbar {
+            display: none;
+        }
+
+        #items {
+            margin-top: 80px;
+            height: 200px;
+            overflow: auto;
+        }
+
+        th {
+            color: white;
+        }
+
+        td {
+            color: white;
+        }
+
+        th, td {
+            text-align: center;
+        }
+    </style>
+
+    <script type="text/javascript" src="items.js"></script>
+</head>
+
+<body>
+    <div id="window">
+        <h1>
+            Przedmioty
+        </h1>
+        <div id="items">
+            <table id="itemsTable">
+                <col width="40%">
+                <col width="80%">
+                <tr>
+                    <th>UID</th>
+                    <th>Nazwa</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

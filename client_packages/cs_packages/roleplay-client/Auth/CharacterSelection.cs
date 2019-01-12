@@ -34,6 +34,7 @@ namespace roleplay_client.Auth
         {
             window.Destroy();
             RAGE.Ui.Cursor.Visible = false;
+            RAGE.Chat.Show(true);
         }
     }
 }

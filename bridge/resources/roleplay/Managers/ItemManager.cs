@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using GTANetworkAPI;
 
 namespace roleplay.Managers
 {
@@ -40,12 +41,39 @@ namespace roleplay.Managers
             itemsOfOwner[item.ownerType][item.ownerID].Add(item);
         }
 
+        public Entities.Item GetItem(int UID)
+        {
+            return items.Find(x => x.UID == UID);
+        }
+
         public List<Entities.Item> GetItemsOf(OwnerType ownerType, int ownerID)
         {
             if (!itemsOfOwner[ownerType].ContainsKey(ownerID))
                 return null;
 
             return itemsOfOwner[ownerType][ownerID];
+        }
+
+        public object GetItemConverted(int UID)
+        {
+            var item = GetItem(UID);
+
+            if (item == null)
+                return null;
+
+            object convertedItem = null;
+
+            switch (item.type)
+            {
+                case (int)ItemType.None:
+                    convertedItem = item;
+                    break;
+                case (int)ItemType.Weapon:
+                    convertedItem = item as Items.ItemType.Weapon;
+                    break;
+            }
+
+            return convertedItem;
         }
 
         public void LoadFromDatabase()
@@ -56,20 +84,47 @@ namespace roleplay.Managers
 
             while(reader.Read())
             {
-                var item = new Entities.Item
-                {
-                    UID = reader.GetInt32("UID"),
-                    name = reader.GetString("name"),
-                    type = reader.GetInt32("type"),
-                    properties = reader.GetString("properties"),
-                    ownerType = (OwnerType)reader.GetInt32("ownerType"),
-                    ownerID = reader.GetInt32("ownerID")
-                };
+                var item = CreateItem(reader);
 
                 Add(item);
             }
 
             reader.Close();
+        }
+
+        public dynamic CreateItem(MySql.Data.MySqlClient.MySqlDataReader reader)
+        {
+            dynamic item;
+
+            var UID = reader.GetInt32("UID");
+            var name = reader.GetString("name");
+            var type = reader.GetInt32("type");
+            var properties = reader.GetString("properties");
+            var ownerType = (OwnerType)reader.GetInt32("ownerType");
+            var ownerID = reader.GetInt32("ownerID");
+
+            switch(type)
+            {
+                case (int)ItemType.None:
+                    item = new Entities.Item();
+                    break;
+                case (int)ItemType.Weapon:
+                    item = new Items.ItemType.Weapon();
+                    break;
+                default:
+                    NAPI.Util.ConsoleOutput("[WARNING]Used default on creating item, type: " + type);
+                    item = new Entities.Item();
+                    break;
+            }
+
+            item.UID = UID;
+            item.name = name;
+            item.type = type;
+            item.propertiesString = properties;
+            item.ownerType = ownerType;
+            item.ownerID = ownerID;
+
+            return item;
         }
     }
 }
