@@ -14,7 +14,7 @@ namespace roleplay.Items
             public string name;
         }
 
-        [Command("przedmioty")]
+        [Command("p")]
         public void ItemsCommand(Client client)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);

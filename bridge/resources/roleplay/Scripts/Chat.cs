@@ -25,15 +25,12 @@ namespace roleplay.Scripts
         [Command("me", GreedyArg = true)]
         public void MeCommand(Client client, string action)
         {
-            if(!Managers.PlayerManager.Instance().GetByHandle(client).isLogged)
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.isLogged)
                 return;
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, client.Position);
-
-            foreach(var player in players)
-            {
-                player.SendChatMessage(string.Format("!{{#C2A2DA}}*{0} {1}", client.Name, action));
-            }
+            player.OutputMe(action);
         }
 
         [Command("do", GreedyArg = true)]

@@ -13,6 +13,27 @@ namespace roleplay.Entities
         public GlobalInfo globalInfo;
         public Character character;
 
+        public Entities.Vehicle vehicle
+        {
+            get
+            {
+                if (handle.Vehicle == null)
+                    return null;
+
+                return Managers.VehicleManager.Instance().GetByHandle(handle.Vehicle);
+            }
+        }
+
+        public void OutputMe(string action)
+        {
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, handle.Position);
+
+            foreach (var player in players)
+            {
+                player.SendChatMessage(string.Format("!{{#C2A2DA}}*{0} {1}", handle.Name, action));
+            }
+        }
+
         public List<Entities.Item> GetItems()
         {
             if (!isLogged)
@@ -32,6 +53,42 @@ namespace roleplay.Entities
                 return true;
 
             return false;
+        }
+
+        public Entities.Vehicle GetClosestVehicle()
+        {
+            var vehicles = NAPI.Pools.GetAllVehicles();
+
+            GTANetworkAPI.Vehicle returnedVehicle = null;
+            float distance = 99999;
+
+            foreach(var vehicle in vehicles)
+            {
+                var tempDistance = handle.Position.DistanceTo(vehicle.Position);
+                if(tempDistance < distance)
+                {
+                    distance = tempDistance;
+                    returnedVehicle = vehicle;
+                }
+            }
+
+            if (returnedVehicle == null)
+                return null;
+
+            return Managers.VehicleManager.Instance().GetByHandle(returnedVehicle);
+        }
+
+        public Entities.Vehicle GetClosestVehicle(float maxDistance)
+        {
+            var vehicle = GetClosestVehicle();
+
+            if (vehicle == null)
+                return null;
+
+            if (handle.Position.DistanceTo(vehicle.handle.Position) >= maxDistance)
+                return null;
+
+            return vehicle;
         }
     }
 
