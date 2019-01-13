@@ -9,3 +9,7 @@ bt.dat
 node.dll
 roleplay.zip
 server.exe
+bridge/resources/roleplay/bin
+bridge/resources/roleplay/obj
+client_packages/cs_packages/roleplay-client/bin
+client_packages/cs_packages/roleplay-client/obj
