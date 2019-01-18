@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using RAGE;
+using RAGE.Elements;
 
 namespace roleplay_client
 {
     public class Main : Events.Script
     {
+
         public Main()
         {
             RAGE.Chat.SafeMode = false;

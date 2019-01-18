@@ -8,10 +8,18 @@ namespace roleplay.Entities
     public class Player
     {
         public bool isLogged;
+        public string formattedName
+        {
+            get
+            {
+                return handle.Name.Replace("_", " ");
+            }
+        }
 
         public Client handle;
         public GlobalInfo globalInfo;
         public Character character;
+        public Groups.GroupDuty groupDuty;
 
         public Entities.Vehicle vehicle
         {
@@ -24,13 +32,18 @@ namespace roleplay.Entities
             }
         }
 
+        public void Save()
+        {
+            character.Save();
+        }
+
         public void OutputMe(string action)
         {
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, handle.Position);
 
             foreach (var player in players)
             {
-                player.SendChatMessage(string.Format("!{{#C2A2DA}}*{0} {1}", handle.Name, action));
+                player.SendChatMessage($"!{{#C2A2DA}}*{formattedName} {action}");
             }
         }
 
@@ -90,6 +103,11 @@ namespace roleplay.Entities
 
             return vehicle;
         }
+
+        public List<Entities.Group> GetGroups()
+        {
+            return Managers.GroupManager.Instance().GetPlayerGroups(this);
+        }
     }
 
     public class GlobalInfo
@@ -103,5 +121,18 @@ namespace roleplay.Entities
         public int UID;
         public int GID;
         public string name;
+        public uint model;
+
+        public void Save()
+        {
+#warning Save characters when there are more things to save
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "UPDATE `rp_characters` SET `model`=@model WHERE `UID`=@UID";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@model", model);
+            command.Parameters.AddWithValue("@UID", UID);
+            command.ExecuteNonQuery();
+        }
     }
 }

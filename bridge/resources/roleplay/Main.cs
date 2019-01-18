@@ -31,11 +31,21 @@ namespace roleplay
 
             Managers.VehicleManager.Instance().LoadFromDatabase();
             Managers.ItemManager.Instance().LoadFromDatabase();
+            Managers.GroupManager.Instance().LoadFromDatabase();
 
             NAPI.Server.SetAutoSpawnOnConnect(false);
             NAPI.Server.SetDefaultSpawnLocation(new Vector3(1391.773, 3608.716, 38.942), 0);
             NAPI.Server.SetGlobalServerChat(false);
             NAPI.Util.ConsoleOutput("Resource RolePlay started.");
+        }
+
+        [ServerEvent(Event.ResourceStop)]
+        public void ResourceStop()
+        {
+            Managers.ItemManager.Instance().SaveAll();
+            Managers.PlayerManager.Instance().SaveAll();
+            Managers.VehicleManager.Instance().SaveAll();
+            Managers.GroupManager.Instance().SaveAll();
         }
 
         [ServerEvent(Event.PlayerConnected)]

@@ -16,9 +16,12 @@ namespace roleplay.Scripts
 
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, client.Position);
 
+            message = message.Replace("<", "!{#C2A2DA}*");
+            message = message.Replace(">", "*!{#FFFFFF}");
+
             foreach (var player in players)
             {
-                player.SendChatMessage(string.Format("!{{#FFFFFF}}{0} mówi: {1}", client.Name, message));
+                player.SendChatMessage($"!{{#FFFFFF}}{Managers.PlayerManager.Instance().GetByHandle(client).formattedName} mówi: {message}");
             }
         }
 
@@ -43,7 +46,7 @@ namespace roleplay.Scripts
 
             foreach (var player in players)
             {
-                player.SendChatMessage(string.Format("!{{#9A9CCD}}* {0} (({1}))", action, client.Name));
+                player.SendChatMessage($"!{{#9A9CCD}}* {action} (({Managers.PlayerManager.Instance().GetByHandle(client).formattedName}))");
             }
         }
 
@@ -57,7 +60,7 @@ namespace roleplay.Scripts
 
             foreach (var player in players)
             {
-                player.SendChatMessage(string.Format("!{{#FFFFFF}}(({0}({1}): {2}))", client.Name, client.Handle, action));
+                player.SendChatMessage($"!{{#FFFFFF}}(({Managers.PlayerManager.Instance().GetByHandle(client).formattedName}({client.Handle}): {action}))");
             }
         }
 
@@ -75,11 +78,11 @@ namespace roleplay.Scripts
             {
                 if (result % 2 == 0)
                 {
-                    player.SendChatMessage(string.Format("!{{#C2A2DA}}* {0} poległ próbując {1}", client.Name, action));
+                    player.SendChatMessage($"!{{#C2A2DA}}* {Managers.PlayerManager.Instance().GetByHandle(client).formattedName} poległ próbując {action}");
                 }
                 else
                 {
-                    player.SendChatMessage(string.Format("!{{#C2A2DA}}* {0} odniósł sukces próbując {1}", client.Name, action));
+                    player.SendChatMessage($"!{{#C2A2DA}}* {Managers.PlayerManager.Instance().GetByHandle(client).formattedName} odniósł sukces próbując {action}");
                 }
             }
         }
@@ -94,7 +97,7 @@ namespace roleplay.Scripts
 
             foreach (var player in players)
             {
-                player.SendChatMessage(string.Format("!{{#FFFFFF}}{0} krzyczy: {1}", client.Name, action));
+                player.SendChatMessage($"!{{#FFFFFF}}{Managers.PlayerManager.Instance().GetByHandle(client).formattedName} krzyczy: {action}");
             }
         }
 
@@ -108,7 +111,7 @@ namespace roleplay.Scripts
 
             foreach (var player in players)
             {
-                player.SendChatMessage(string.Format("!{{#FFFFFF}}{0} szepcze: {1}", client.Name, action));
+                player.SendChatMessage($"!{{#FFFFFF}}{Managers.PlayerManager.Instance().GetByHandle(client).formattedName} szepcze: {action}");
             }
         }
     }

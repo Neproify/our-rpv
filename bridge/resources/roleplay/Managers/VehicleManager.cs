@@ -40,8 +40,7 @@ namespace roleplay.Managers
 
         public Entities.Vehicle CreateFromHandle(Vehicle vehicle)
         {
-            Entities.Vehicle vehicleNew = new Entities.Vehicle();
-            vehicleNew.handle = vehicle;
+            Entities.Vehicle vehicleNew = new Entities.Vehicle(vehicle);
             vehiclesDictionary.Add(vehicle.Handle, vehicleNew);
             return vehicleNew;
         }
@@ -54,6 +53,14 @@ namespace roleplay.Managers
         public Entities.Vehicle GetByHandle(Vehicle vehicle)
         {
             return vehiclesDictionary[vehicle];
+        }
+
+        public void SaveAll()
+        {
+            foreach(var vehicle in vehiclesDictionary.Values)
+            {
+                vehicle.Save();
+            }
         }
 
         public void LoadFromDatabase()
@@ -79,6 +86,7 @@ namespace roleplay.Managers
                     spawnRotY = reader.GetFloat("spawnRotY"),
                     spawnRotZ = reader.GetFloat("spawnRotZ")
                 };
+
                 var vehicle = new Entities.Vehicle();
                 vehicle.vehicleData = vehicleData;
                 Add(vehicle);

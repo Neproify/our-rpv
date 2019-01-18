@@ -20,13 +20,12 @@ namespace roleplay.Auth
         [RemoteEvent("OnLoginRequest")]
         public void OnLoginRequest(Client client, string login, string password)
         {
-            if(string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
             {
                 client.SendNotification("~r~Musisz podać login i hasło aby się zalogować!");
                 return;
             }
 
-#warning Check if another player is logged on this account
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
             if (player.isLogged)
@@ -57,8 +56,6 @@ namespace roleplay.Auth
                 return;
             }
 
-            player.isLogged = true;
-
             var globalInfo = new Entities.GlobalInfo
             {
                 UID = reader.GetInt32("member_id"),
@@ -67,6 +64,13 @@ namespace roleplay.Auth
 
             reader.Close();
 
+            if (Managers.PlayerManager.Instance().GetAll().Exists(x => x.globalInfo?.UID == globalInfo.UID))
+            {
+                //Tried to login when other player is logged.
+                return;
+            }
+
+            player.isLogged = true;
             player.globalInfo = globalInfo;
 
             NAPI.ClientEvent.TriggerClientEvent(client, "LoginSuccessful");

@@ -34,5 +34,24 @@ namespace roleplay.Managers
         {
             return playersDictionary[client];
         }
+
+        public void SaveAll()
+        {
+            foreach(var player in playersDictionary.Values)
+            {
+                player.Save();
+            }
+        }
+
+        public List<Entities.Player> GetAll()
+        {
+            List<Entities.Player> players = new List<Entities.Player>();
+            foreach(var pair in playersDictionary)
+            {
+                players.Add(pair.Value);
+            }
+
+            return players;
+        }
     }
 }

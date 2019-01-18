@@ -76,6 +76,13 @@ namespace roleplay.Managers
             return convertedItem;
         }
 
+        public void Remove(Entities.Item item)
+        {
+            items.Remove(item);
+
+            itemsOfOwner[item.ownerType][item.ownerID].Remove(item);
+        }
+
         public void LoadFromDatabase()
         {
             var command = Database.Instance().Connection.CreateCommand();
@@ -90,6 +97,11 @@ namespace roleplay.Managers
             }
 
             reader.Close();
+        }
+
+        public void SaveAll()
+        {
+            items.ForEach(x => x.Save());
         }
 
         public dynamic CreateItem(MySql.Data.MySqlClient.MySqlDataReader reader)

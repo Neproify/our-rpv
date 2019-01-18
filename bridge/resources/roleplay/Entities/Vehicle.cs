@@ -22,7 +22,24 @@ namespace roleplay.Entities
             {
                 _engineStatus = value;
                 handle.EngineStatus = value;
+                handle.SetSharedData("engineStatus", value);
             }
+        }
+
+        public Vehicle()
+        {
+
+        }
+
+        public void Save()
+        {
+            vehicleData.Save();
+        }
+
+        public Vehicle(GTANetworkAPI.Vehicle handle)
+        {
+            this.handle = handle;
+            handle.SetSharedData("engineStatus", engineStatus);
         }
 
         public void Spawn()
@@ -31,6 +48,7 @@ namespace roleplay.Entities
             var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, new Vector3(vehicleData.spawnPosX, vehicleData.spawnPosY, vehicleData.spawnPosZ), 0f, vehicleData.color1, vehicleData.color2, "SA " + vehicleData.UID, 255, true, false, 0);
             handle = vehicle;
             Managers.VehicleManager.Instance().LinkWithHandle(this);
+            engineStatus = false;
         }
 
         public bool CanBeAccessedBy(Entities.Player player)
@@ -56,5 +74,25 @@ namespace roleplay.Entities
         public float spawnRotX;
         public float spawnRotY;
         public float spawnRotZ;
+
+        public void Save()
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "UPDATE `rp_vehicles` SET `model`=@model, `ownerType`=@ownerType, `ownerID`=@ownerID, `color1`=@color1, `color2`=@color2, `spawnPosX`=@spawnPosX, `spawnPosY`=@spawnPosY, `spawnPosZ`=@spawnPosZ, `spawnRotX`=@spawnRotX, `spawnRotY`=@spawnRotY, `spawnRotZ`=@spawnRotZ WHERE `UID`=@UID";
+            command.Prepare();
+            command.Parameters.AddWithValue("@model", model);
+            command.Parameters.AddWithValue("@ownerType", ownerType);
+            command.Parameters.AddWithValue("@ownerID", ownerID);
+            command.Parameters.AddWithValue("@color1", color1);
+            command.Parameters.AddWithValue("@color2", color2);
+            command.Parameters.AddWithValue("@spawnPosX", spawnPosX);
+            command.Parameters.AddWithValue("@spawnPosY", spawnPosY);
+            command.Parameters.AddWithValue("@spawnPosZ", spawnPosZ);
+            command.Parameters.AddWithValue("@spawnRotX", spawnRotX);
+            command.Parameters.AddWithValue("@spawnRotY", spawnRotY);
+            command.Parameters.AddWithValue("@spawnRotZ", spawnRotZ);
+            command.Parameters.AddWithValue("@UID", UID);
+            command.ExecuteNonQuery();
+        }
     }
 }

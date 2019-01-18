@@ -14,8 +14,8 @@ namespace roleplay.Items
             public string name;
         }
 
-        [Command("p")]
-        public void ItemsCommand(Client client)
+        [RemoteEvent("ShowPlayerItems")]
+        public void ShowPlayerItems(Client client)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -30,7 +30,7 @@ namespace roleplay.Items
 
             List<ItemInfo> items = new List<ItemInfo>();
 
-            foreach(var item in player.GetItems())
+            foreach (var item in player.GetItems())
             {
                 items.Add(new ItemInfo
                 {
@@ -42,7 +42,7 @@ namespace roleplay.Items
 
             var output = JsonConvert.SerializeObject(items);
 
-            NAPI.ClientEvent.TriggerClientEvent(client, "TogglePlayerItems", output);
+            NAPI.ClientEvent.TriggerClientEvent(client, "ShowPlayerItems", output);
         }
 
         [RemoteEvent("UsePlayerItem")]

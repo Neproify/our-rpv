@@ -10,27 +10,34 @@ namespace roleplay.Items.ItemType
     {
         public override void Use(Player player)
         {
+            base.Use(player);
             if(!isUsed)
             {
-#warning Enable after update, GetWeapons is not implemented yet.
-                /*foreach(var weapon in player.handle.Weapons)
+#warning Check for slots, not exact weapon. Why? Because most of weapons have shared ammo. Needs a lot of code, but can't be synchronised right now(without using client-side).
+                if(player.GetItems().Find(x => x.properties[0] == properties[0] && x.isUsed == true) != null)
                 {
-                    if(weapon == (WeaponHash)properties[0])
-                    {
-                        player.handle.SendNotification("~r~Posiadasz już wyjętą broń tego typu.");
-                        return;
-                    }
-                }*/
-#warning TODO: save ammo on shot
+                    player.handle.SendNotification("~r~Posiadasz już wyjętą broń tego typu.");
+                    return;
+                }
+
+                if(properties[1] <= 0)
+                {
+                    player.handle.SendNotification("~r~Wybrana broń nie posiada amunicji.");
+                    return;
+                }
 
                 player.handle.GiveWeapon((WeaponHash)properties[0], properties[1]);
                 isUsed = true;
+                player.OutputMe($"wyciąga {name}.");
             }
             else
             {
                 player.handle.RemoveWeapon((WeaponHash)properties[0]);
                 isUsed = false;
+                player.OutputMe($"chowa {name}.");
             }
+
+            NAPI.ClientEvent.TriggerClientEvent(player.handle, "HidePlayerItems");
         }
     }
 }

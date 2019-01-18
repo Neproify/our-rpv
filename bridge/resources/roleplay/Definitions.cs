@@ -7,7 +7,8 @@ namespace roleplay
     public enum OwnerType
     {
         None,
-        Character
+        Character,
+        World
     }
 
     public enum ItemType

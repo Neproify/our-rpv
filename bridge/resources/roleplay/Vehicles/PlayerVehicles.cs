@@ -11,7 +11,6 @@ namespace roleplay.Vehicles
         public void VehicleCommand(Client client, string arg)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
-
             if(arg == "z" || arg == "zamek")
             {
                 var vehicle = player.vehicle;
@@ -35,13 +34,13 @@ namespace roleplay.Vehicles
                 {
                     player.handle.SendNotification("~g~Otworzyłeś pojazd.");
                     vehicle.handle.Locked = false;
-                    player.OutputMe(string.Format("otwiera pojazd {0}.", vehicle.handle.DisplayName));
+                    player.OutputMe($"otwiera pojazd {vehicle.handle.DisplayName}.");
                 }
                 else
                 {
                     player.handle.SendNotification("~g~Zamknąłeś pojazd.");
                     vehicle.handle.Locked = true;
-                    player.OutputMe(string.Format("zamyka pojazd {0}.", vehicle.handle.DisplayName));
+                    player.OutputMe($"zamyka pojazd {vehicle.handle.DisplayName}.");
                 }
 
                 return;
@@ -67,13 +66,13 @@ namespace roleplay.Vehicles
                 {
                     player.handle.SendNotification("~g~Uruchomiłeś silnik.");
                     vehicle.engineStatus = true;
-                    player.OutputMe(string.Format("odpalił silnik w pojeździe {0}.", vehicle.handle.DisplayName));
+                    player.OutputMe($"odpalił silnik w pojeździe {vehicle.handle.DisplayName}.");
                 }
                 else
                 {
                     player.handle.SendNotification("~g~Zgasiłeś silnik.");
                     vehicle.engineStatus = false;
-                    player.OutputMe(string.Format("zgasił silnik w pojeździe {0}.", vehicle.handle.DisplayName));
+                    player.OutputMe($"zgasił silnik w pojeździe {vehicle.handle.DisplayName}.");
                 }
 
                 return;

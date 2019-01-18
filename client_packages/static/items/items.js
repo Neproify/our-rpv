@@ -1,5 +1,6 @@
 ﻿function loadItems(input)
 {
+
     var items = JSON.parse(input);
     for (key in items) {
         var table = document.getElementById("itemsTable");

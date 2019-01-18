@@ -35,7 +35,21 @@ namespace roleplay.Entities
 
         public virtual void Use(Entities.Player player)
         {
-#warning Make some protection for unauthorized use
+            if (!player.CanUseItem(UID))
+                return;
+        }
+
+        public virtual void Save()
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "UPDATE `rp_items` SET `name`=@name, `type`=@type, `properties`=@properties WHERE `UID`=@UID";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@name", name);
+            command.Parameters.AddWithValue("@type", type);
+            command.Parameters.AddWithValue("@properties", propertiesString);
+            command.Parameters.AddWithValue("@UID", UID);
+            command.ExecuteNonQuery();
         }
     }
 }
