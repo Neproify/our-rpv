@@ -88,6 +88,11 @@ namespace roleplay.Entities
             return member;
         }
 
+        public List<Entities.Player> GetPlayersOnDuty()
+        {
+            return Managers.PlayerManager.Instance().GetAll().FindAll(x => x.groupDuty?.member.group == this);
+        }
+
         public void Save()
         {
 #warning Save group
