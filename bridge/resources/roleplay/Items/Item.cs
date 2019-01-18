@@ -69,12 +69,16 @@ namespace roleplay.Entities
             {
                 if(this.isUsed)
                 {
-                    var player = Managers.PlayerManager.Instance().GetByCharacterID(ownerID);
+                    var player = Managers.PlayerManager.Instance().GetByCharacterID(this.ownerID);
 
-                    if(player == null)
+                    if (player == null)
+                    {
                         this.isUsed = false; // must be bug :(
-
-                    Use(player);
+                    }
+                    else
+                    {
+                        Use(player);
+                    }
                 }
             }
 
