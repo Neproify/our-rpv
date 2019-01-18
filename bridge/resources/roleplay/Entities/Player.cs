@@ -55,10 +55,8 @@ namespace roleplay.Entities
             return Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID);
         }
 
-        public bool CanUseItem(int itemUID)
+        public bool CanUseItem(Entities.Item item)
         {
-            var item = Managers.ItemManager.Instance().GetItem(itemUID);
-
             if (item == null)
                 return false;
 
@@ -66,6 +64,13 @@ namespace roleplay.Entities
                 return true;
 
             return false;
+        }
+
+        public bool CanUseItem(int itemUID)
+        {
+            var item = Managers.ItemManager.Instance().GetItem(itemUID);
+
+            return CanUseItem(item);
         }
 
         public Entities.Vehicle GetClosestVehicle()
@@ -104,6 +109,11 @@ namespace roleplay.Entities
             return vehicle;
         }
 
+        public Entities.Item GetClosestItem(float maxDistance = 5f)
+        {
+            return Managers.ItemManager.Instance().GetClosestItem(handle.Position, maxDistance);
+        }
+
         public List<Entities.Group> GetGroups()
         {
             return Managers.GroupManager.Instance().GetPlayerGroups(this);
@@ -125,7 +135,6 @@ namespace roleplay.Entities
 
         public void Save()
         {
-#warning Save characters when there are more things to save
             var command = Database.Instance().Connection.CreateCommand();
             command.CommandText = "UPDATE `rp_characters` SET `model`=@model WHERE `UID`=@UID";
             command.Prepare();

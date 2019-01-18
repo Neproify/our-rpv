@@ -16,6 +16,7 @@ namespace roleplay_client.Items
             Events.Add("ShowPlayerItems", ShowPlayerItems);
             Events.Add("HidePlayerItems", HidePlayerItems);
             Events.Add("UseItem", UseItem);
+            Events.Add("DropItem", DropItem);
             Events.Tick += Tick;
         }
 
@@ -46,6 +47,11 @@ namespace roleplay_client.Items
         private void UseItem(object[] args)
         {
             Events.CallRemote("UsePlayerItem", args);
+        }
+
+        private void DropItem(object[] args)
+        {
+            Events.CallRemote("DropPlayerItem", args);
         }
 
         private void ShowPlayerItems(object[] args)

@@ -12,6 +12,10 @@
         tableDataName.innerText = items[key]["name"];
         tableDataName.setAttribute("onclick", "useItem(" + items[key]["UID"] + ");");
         tableRow.appendChild(tableDataName);
+        var tableDataOptions = document.createElement("td");
+        tableDataOptions.innerText = "Wyrzuć";
+        tableDataOptions.setAttribute("onclick", "dropItem(" + items[key]["UID"] + ");");
+        tableRow.appendChild(tableDataOptions);
         table.appendChild(tableRow);
     }
 }
@@ -19,4 +23,9 @@
 function useItem(UID)
 {
     mp.trigger("UseItem", parseInt(UID));
+}
+
+function dropItem(UID)
+{
+    mp.trigger("DropItem", parseInt(UID));
 }

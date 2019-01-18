@@ -14,6 +14,21 @@ namespace roleplay.Items
             public string name;
         }
 
+        [Command("podnies")]
+        public void ItemPickupCommand(Client client)
+        {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.isLogged && player.character == null)
+                return;
+
+            var item = player.GetClosestItem(5f);
+
+            item.ChangeOwner(OwnerType.Character, player.character.UID);
+
+            player.handle.SendNotification($"~g~ Podniosłeś przedmiot {item.name}.");
+        }
+
         [RemoteEvent("ShowPlayerItems")]
         public void ShowPlayerItems(Client client)
         {
@@ -53,15 +68,32 @@ namespace roleplay.Items
             if (!player.isLogged || player.character == null)
                 return;
 
-            if (!player.CanUseItem(itemUID))
-                return;
-
-            var item = (Entities.Item)Managers.ItemManager.Instance().GetItemConverted(itemUID);
+            var item = Managers.ItemManager.Instance().GetItem(itemUID);
 
             if (item == null)
                 return;
 
             item.Use(player);
+        }
+
+        [RemoteEvent("DropPlayerItem")]
+        public void DropPlayerItem(Client client, int itemUID)
+        {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.isLogged || player.character == null)
+                return;
+
+            var item = Managers.ItemManager.Instance().GetItem(itemUID);
+
+            if (!player.CanUseItem(item))
+                return;
+
+            item.position = player.handle.Position;
+            item.position.Z -= 0.5f;
+            item.ChangeOwner(OwnerType.World, 0);
+
+            player.handle.SendNotification($"~g~Wyrzuciłeś przedmiot {item.name}");
         }
     }
 }

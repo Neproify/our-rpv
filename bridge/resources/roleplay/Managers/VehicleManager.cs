@@ -71,6 +71,15 @@ namespace roleplay.Managers
 
             while(reader.Read())
             {
+                var position = new Vector3();
+                var rotation = new Vector3();
+                position.X = reader.GetFloat("spawnPosX");
+                position.Y = reader.GetFloat("spawnPosY");
+                position.Z = reader.GetFloat("spawnPosZ");
+                rotation.X = reader.GetFloat("spawnRotX");
+                rotation.Y = reader.GetFloat("spawnRotY");
+                rotation.Z = reader.GetFloat("spawnRotZ");
+
                 var vehicleData = new Entities.VehicleData
                 {
                     UID = reader.GetInt32("UID"),
@@ -79,12 +88,8 @@ namespace roleplay.Managers
                     ownerID = reader.GetInt32("ownerID"),
                     color1 = reader.GetInt32("color1"),
                     color2 = reader.GetInt32("color2"),
-                    spawnPosX = reader.GetFloat("spawnPosX"),
-                    spawnPosY = reader.GetFloat("spawnPosY"),
-                    spawnPosZ = reader.GetFloat("spawnPosZ"),
-                    spawnRotX = reader.GetFloat("spawnRotX"),
-                    spawnRotY = reader.GetFloat("spawnRotY"),
-                    spawnRotZ = reader.GetFloat("spawnRotZ")
+                    spawnPosition = position,
+                    spawnRotation = rotation
                 };
 
                 var vehicle = new Entities.Vehicle();

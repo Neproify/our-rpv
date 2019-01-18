@@ -53,5 +53,10 @@ namespace roleplay.Managers
 
             return players;
         }
+
+        public Entities.Player GetByCharacterID(int ID)
+        {
+            return GetAll().Find(x => x.character?.UID == ID);
+        }
     }
 }

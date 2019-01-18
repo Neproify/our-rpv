@@ -19,6 +19,7 @@ namespace roleplay.Managers
             {
                 itemsOfOwner[(OwnerType)i] = new Dictionary<int, List<Entities.Item>>();
             }
+            itemsOfOwner[OwnerType.World][0] = new List<Entities.Item>();
         }
 
         private static ItemManager _instance;
@@ -54,7 +55,7 @@ namespace roleplay.Managers
             return itemsOfOwner[ownerType][ownerID];
         }
 
-        public object GetItemConverted(int UID)
+        /*public object GetItemConverted(int UID)
         {
             var item = GetItem(UID);
 
@@ -74,6 +75,24 @@ namespace roleplay.Managers
             }
 
             return convertedItem;
+        }*/
+
+        public Entities.Item GetClosestItem(Vector3 position, float maxDistance = 5f)
+        {
+            var items = itemsOfOwner[OwnerType.World][0];
+            Entities.Item closestItem = null;
+            float distance = maxDistance;
+            foreach(var item in items)
+            {
+                var distanceFromPosition = item.position.DistanceTo(position);
+                if (distanceFromPosition <= distance)
+                {
+                    closestItem = item;
+                    distance = distanceFromPosition;
+                }
+            }
+
+            return closestItem;
         }
 
         public void Remove(Entities.Item item)
@@ -114,6 +133,10 @@ namespace roleplay.Managers
             var properties = reader.GetString("properties");
             var ownerType = (OwnerType)reader.GetInt32("ownerType");
             var ownerID = reader.GetInt32("ownerID");
+            var position = new Vector3();
+            position.X = reader.GetFloat("positionX");
+            position.Y = reader.GetFloat("positionY");
+            position.Z = reader.GetFloat("positionZ");
 
             switch(type)
             {
@@ -135,6 +158,7 @@ namespace roleplay.Managers
             item.propertiesString = properties;
             item.ownerType = ownerType;
             item.ownerID = ownerID;
+            item.position = position;
 
             return item;
         }

@@ -45,7 +45,7 @@ namespace roleplay.Entities
         public void Spawn()
         {
 #warning Use vector for rotation in future. Crashes in current(0.3.7.2) release
-            var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, new Vector3(vehicleData.spawnPosX, vehicleData.spawnPosY, vehicleData.spawnPosZ), 0f, vehicleData.color1, vehicleData.color2, "SA " + vehicleData.UID, 255, true, false, 0);
+            var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, vehicleData.spawnPosition, 0f, vehicleData.color1, vehicleData.color2, "SA " + vehicleData.UID, 255, true, false, 0);
             handle = vehicle;
             Managers.VehicleManager.Instance().LinkWithHandle(this);
             engineStatus = false;
@@ -68,12 +68,8 @@ namespace roleplay.Entities
         public int ownerID;
         public int color1;
         public int color2;
-        public float spawnPosX;
-        public float spawnPosY;
-        public float spawnPosZ;
-        public float spawnRotX;
-        public float spawnRotY;
-        public float spawnRotZ;
+        public Vector3 spawnPosition;
+        public Vector3 spawnRotation;
 
         public void Save()
         {
@@ -85,12 +81,12 @@ namespace roleplay.Entities
             command.Parameters.AddWithValue("@ownerID", ownerID);
             command.Parameters.AddWithValue("@color1", color1);
             command.Parameters.AddWithValue("@color2", color2);
-            command.Parameters.AddWithValue("@spawnPosX", spawnPosX);
-            command.Parameters.AddWithValue("@spawnPosY", spawnPosY);
-            command.Parameters.AddWithValue("@spawnPosZ", spawnPosZ);
-            command.Parameters.AddWithValue("@spawnRotX", spawnRotX);
-            command.Parameters.AddWithValue("@spawnRotY", spawnRotY);
-            command.Parameters.AddWithValue("@spawnRotZ", spawnRotZ);
+            command.Parameters.AddWithValue("@spawnPosX", spawnPosition.X);
+            command.Parameters.AddWithValue("@spawnPosY", spawnPosition.Y);
+            command.Parameters.AddWithValue("@spawnPosZ", spawnPosition.Z);
+            command.Parameters.AddWithValue("@spawnRotX", spawnRotation.X);
+            command.Parameters.AddWithValue("@spawnRotY", spawnRotation.Y);
+            command.Parameters.AddWithValue("@spawnRotZ", spawnRotation.Z);
             command.Parameters.AddWithValue("@UID", UID);
             command.ExecuteNonQuery();
         }
