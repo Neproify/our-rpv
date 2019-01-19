@@ -118,6 +118,19 @@ namespace roleplay.Entities
         {
             return Managers.GroupManager.Instance().GetPlayerGroups(this);
         }
+
+        public bool HasSpecialPermissionInGroup(Groups.GroupSpecialPermission permission)
+        {
+            var group = groupDuty?.member.group;
+
+            if (group == null)
+                return false;
+
+            if ((group.specialPermissions & (int)permission) == 1)
+                return true;
+
+            return false;
+        }
     }
 
     public class GlobalInfo

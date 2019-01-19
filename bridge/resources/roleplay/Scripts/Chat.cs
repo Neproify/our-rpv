@@ -156,5 +156,27 @@ namespace roleplay.Scripts
                 dutyPlayer.handle.SendChatMessage($"!{{#0039e6}}[RADIO]{player.formattedName}: {message}");
             }
         }
+        
+        [Command("m", GreedyArg = true)]
+        public void MegaphoneCommand(Client client, string message)
+        {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.isLogged || player.character == null)
+                return;
+
+            if (!player.HasSpecialPermissionInGroup(Groups.GroupSpecialPermission.Megaphone))
+            {
+                player.handle.SendNotification("~r~Nie masz uprawnień aby użyć megafonu!");
+                return;
+            }
+
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(50, player.handle.Position);
+
+            foreach(var nearPlayer in players)
+            {
+                nearPlayer.SendChatMessage($"!{{#ffff00}}{player.formattedName}(megafon):{message}");
+            }
+        }
     }
 }

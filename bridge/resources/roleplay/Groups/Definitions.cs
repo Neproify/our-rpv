@@ -14,7 +14,13 @@ namespace roleplay.Groups
         Workshop
     }
 
-    public enum MemberPermission
+    public enum GroupSpecialPermission
+    {
+        None,
+        Megaphone = 1
+    }
+
+    public enum GroupMemberPermission
     {
         None,
         MembersManagement = 1,
