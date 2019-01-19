@@ -95,5 +95,43 @@ namespace roleplay.Items
 
             player.handle.SendNotification($"~g~Wyrzuciłeś przedmiot {item.name}");
         }
+
+        [Command("przeszukaj")]
+        public void SearchItemsCommand(Client client, int ID)
+        {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.isLogged || player.character == null)
+                return;
+
+            if (!player.IsOnDutyOfGroupType(Groups.GroupType.Police))
+            {
+                player.handle.SendNotification("~r~Nie posiadasz uprawnień do przeszukiwania.");
+                return;
+            }
+
+            var searchedPlayer = Managers.PlayerManager.Instance().GetByID(ID);
+
+            if(searchedPlayer == null || !searchedPlayer.isLogged || searchedPlayer.character == null)
+            {
+                player.handle.SendNotification("~r~Podałeś zły identyfikator gracza!");
+                return;
+            }
+
+            if(player.handle.Position.DistanceTo(searchedPlayer.handle.Position) > 5)
+            {
+                player.handle.SendNotification("~r~Znajdujesz się za daleko od tego gracza.");
+                return;
+            }
+
+            player.handle.SendChatMessage($"====LISTA PRZEDMIOTÓW GRACZA {searchedPlayer.formattedName}");
+            foreach(var item in searchedPlayer.GetItems())
+            {
+                player.handle.SendChatMessage($"Nazwa: {item.name}, typ: {item.type}");
+            }
+            player.handle.SendChatMessage($"====KONIEC LISTY====");
+
+            player.OutputMe($"przeszukuje {searchedPlayer.formattedName}.");
+        }
     }
 }

@@ -175,7 +175,7 @@ namespace roleplay.Scripts
 
             foreach(var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#ffff00}}{player.formattedName}(megafon):{message}");
+                nearPlayer.SendChatMessage($"!{{#ffff00}}>> {player.formattedName}(megafon): {message}");
             }
         }
     }

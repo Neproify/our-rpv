@@ -58,5 +58,15 @@ namespace roleplay.Managers
         {
             return GetAll().Find(x => x.character?.UID == ID);
         }
+
+        public Entities.Player GetByID(int ID)
+        {
+            var client = NAPI.Pools.GetAllPlayers().Find(x => x.Handle.Value == ID);
+
+            if (client == null)
+                return null;
+
+            return GetByHandle(client);
+        }
     }
 }

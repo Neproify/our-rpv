@@ -98,7 +98,7 @@ namespace roleplay.Auth
             player.handle.Invincible = false;
             player.handle.Transparency = 255;
             NAPI.Entity.SetEntityModel(player.handle, player.character.model);
-            NAPI.Player.SpawnPlayer(client, new Vector3(1398.96, 3591.61, 35), 0);
+            NAPI.Player.SpawnPlayer(client, new Vector3(1398.96, 3591.61, 35), 180);
             player.handle.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
             return;
         }

@@ -131,6 +131,17 @@ namespace roleplay.Entities
 
             return false;
         }
+
+        public bool IsOnDutyOfGroupType(Groups.GroupType type)
+        {
+            if (groupDuty == null)
+                return false;
+
+            if (groupDuty.member.group.type == (int)type)
+                return true;
+
+            return false;
+        }
     }
 
     public class GlobalInfo
