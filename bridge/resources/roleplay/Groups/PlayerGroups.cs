@@ -59,7 +59,7 @@ namespace roleplay.Groups
 
             if(args[1] == "info")
             {
-#warning Implement this.
+                player.handle.SendChatMessage($"Nazwa grupy: {selectedGroup.name}, typ: {selectedGroup.type}, na służbie: {selectedGroup.GetPlayersOnDuty().Count}");
                 return;
             }
             if (args[1] == "duty")
@@ -117,7 +117,12 @@ namespace roleplay.Groups
             }
             if (args[1] == "online")
             {
-#warning Implement this.
+                player.handle.SendChatMessage($"====OSOBY ONLINE W GRUPIE {selectedGroup.name}====");
+                foreach(var groupPlayer in selectedGroup.GetPlayersOnDuty())
+                {
+                    player.handle.SendChatMessage($"{groupPlayer.formattedName}(ID: {groupPlayer.handle.Handle})");
+                }
+                player.handle.SendChatMessage($"====KONIEC LISTY====");
                 return;
             }
 

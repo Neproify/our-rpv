@@ -78,7 +78,29 @@ namespace roleplay.Vehicles
                 return;
             }
 
-            client.SendNotification("Użycie komendy: /v [z(amek), silnik]");
+            if(arg == "parkuj")
+            {
+                if (player.handle.Vehicle == null || player.handle.VehicleSeat != -1)
+                {
+                    player.handle.SendNotification("~r~Nie siedzisz w żadnym pojeździe lub nie jesteś kierowcą!");
+                    return;
+                }
+
+                var vehicle = Managers.VehicleManager.Instance().GetByHandle(player.handle.Vehicle);
+
+                if (!vehicle.CanBeAccessedBy(player))
+                {
+                    player.handle.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
+                    return;
+                }
+
+                vehicle.vehicleData.spawnPosition = vehicle.handle.Position;
+                vehicle.vehicleData.spawnRotation = vehicle.handle.Rotation;
+
+                return;
+            }
+
+            client.SendNotification("Użycie komendy: /v [z(amek), silnik, parkuj]");
             return;
         }
     }
