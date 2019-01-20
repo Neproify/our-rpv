@@ -21,6 +21,21 @@ namespace roleplay.Entities
         public Character character;
         public Groups.GroupDuty groupDuty;
 
+        public int money
+        {
+            get
+            {
+                if (character == null)
+                    return 0;
+
+                return character.money;
+            }
+            set
+            {
+                character.money = value;
+            }
+        }
+
         public Entities.Vehicle vehicle
         {
             get
@@ -142,12 +157,23 @@ namespace roleplay.Entities
 
             return false;
         }
+
+        public bool IsAdminOfLevel(Admin.AdminLevel level)
+        {
+            if (globalInfo == null)
+                return false;
+
+            return globalInfo.adminLevel >= (int)level;
+        }
     }
 
     public class GlobalInfo
     {
         public int UID;
         public string name;
+        public int score;
+        public int adminLevel;
+        public int adminPermissions;
     }
 
     public class Character
@@ -156,15 +182,17 @@ namespace roleplay.Entities
         public int GID;
         public string name;
         public uint model;
+        public int money;
 
         public void Save()
         {
             var command = Database.Instance().Connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_characters` SET `model`=@model WHERE `UID`=@UID";
+            command.CommandText = "UPDATE `rp_characters` SET `model`=@model, `money`=@money WHERE `UID`=@UID";
             command.Prepare();
 
             command.Parameters.AddWithValue("@model", model);
             command.Parameters.AddWithValue("@UID", UID);
+            command.Parameters.AddWithValue("@money", money);
             command.ExecuteNonQuery();
         }
     }

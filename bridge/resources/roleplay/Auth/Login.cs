@@ -59,7 +59,10 @@ namespace roleplay.Auth
             var globalInfo = new Entities.GlobalInfo
             {
                 UID = reader.GetInt32("member_id"),
-                name = reader.GetString("name")
+                name = reader.GetString("name"),
+                score = reader.GetInt32("game_score"),
+                adminLevel = reader.GetInt32("game_admin_level"),
+                adminPermissions = reader.GetInt32("game_admin_permissions")
             };
 
             reader.Close();

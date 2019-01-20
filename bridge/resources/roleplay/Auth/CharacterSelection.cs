@@ -85,7 +85,8 @@ namespace roleplay.Auth
                 UID = reader.GetInt32("UID"),
                 GID = reader.GetInt32("GID"),
                 name = reader.GetString("name"),
-                model = reader.GetUInt32("model")
+                model = reader.GetUInt32("model"),
+                money = reader.GetInt32("money")
             };
 
             reader.Close();
