@@ -20,6 +20,7 @@ namespace roleplay.Entities
         public GlobalInfo globalInfo;
         public Character character;
         public Groups.GroupDuty groupDuty;
+        public Offers.OfferInfo offerInfo;
 
         public int money
         {
@@ -33,6 +34,7 @@ namespace roleplay.Entities
             set
             {
                 character.money = value;
+                NAPI.ClientEvent.TriggerClientEvent(handle, "SetMoney", value);
             }
         }
 
@@ -60,6 +62,26 @@ namespace roleplay.Entities
             {
                 player.SendChatMessage($"!{{#C2A2DA}}*{formattedName} {action}");
             }
+        }
+
+        public bool SendMoneyTo(Entities.Player player, int amount)
+        {
+            if (!this.isLogged || this.character == null)
+                return false;
+
+            if (!player.isLogged || player.character == null)
+                return false;
+
+            if(this.money < amount)
+            {
+                this.handle.SendNotification("~r~Masz za mało pieniędzy!");
+                return false;
+            }
+
+            this.money -= amount;
+            player.money += amount;
+
+            return true;
         }
 
         public List<Entities.Item> GetItems()
