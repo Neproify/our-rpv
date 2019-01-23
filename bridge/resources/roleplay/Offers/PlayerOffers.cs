@@ -87,14 +87,43 @@ namespace roleplay.Offers
 
                 player.offerInfo = offerInfo;
                 secondPlayer.offerInfo = offerInfo;
-
-                player.handle.SendNotification("Wysłałeś ofertę.");
-                secondPlayer.handle.SendNotification($"Otrzymałeś ofertę od {player.formattedName}. Więcej informacji: /o info.");
             }
+
+            if(args[2] == "przedmiot")
+            {
+                int itemID;
+                if(!int.TryParse(args[3], out itemID))
+                {
+                    player.handle.SendNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
+                    return;
+                }
+
+                var item = Managers.ItemManager.Instance().GetItem(itemID);
+
+                if (!player.CanUseItem(item))
+                {
+                    player.handle.SendNotification("~r~Nie możesz przekazać przedmiotu którego nie posiadasz!");
+                    return;
+                }
+
+                OfferInfo offerInfo = new OfferInfo();
+
+                offerInfo.sender = player;
+                offerInfo.receiver = secondPlayer;
+                offerInfo.type = OfferType.Item;
+                offerInfo.price = price;
+                offerInfo.args[0] = itemID;
+
+                player.offerInfo = offerInfo;
+                secondPlayer.offerInfo = offerInfo;
+            }
+
+            player.handle.SendNotification("Wysłałeś ofertę.");
+            secondPlayer.handle.SendNotification($"Otrzymałeś ofertę od {player.formattedName}. Więcej informacji: /o info.");
 
             goto Usage;
         Usage:
-            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz]");
+            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot]");
             return;
 
         InfoAndManagement:

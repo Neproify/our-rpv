@@ -7,7 +7,8 @@ namespace roleplay.Offers
     public enum OfferType
     {
         None,
-        Healing
+        Healing,
+        Item
     }
 
     public class OfferInfo
@@ -17,6 +18,8 @@ namespace roleplay.Offers
 
         public OfferType type;
         public int price;
+
+        public int[] args;
 
         public void ShowInfo(Entities.Player player)
         {
@@ -45,6 +48,25 @@ namespace roleplay.Offers
                 receiver.handle.Health = 100;
                 sender.handle.SendNotification($"Uleczyłeś {receiver.formattedName}.");
                 receiver.handle.SendNotification($"Zostałeś uleczony przez {sender.formattedName}.");
+            }
+
+            if(type == OfferType.Item)
+            {
+                var item = Managers.ItemManager.Instance().GetItem(args[0]);
+
+                if(!sender.CanUseItem(item))
+                {
+                    return;
+                }
+
+                if(item.isUsed)
+                {
+                    item.Use(sender);
+                }
+
+                item.ChangeOwner(OwnerType.Character, receiver.character.UID);
+                sender.handle.SendNotification($"Sprzedałeś przedmiot {item.name} graczu {receiver.formattedName}.");
+                receiver.handle.SendNotification($"Kupiłeś przedmiot {item.name} od gracza {sender.formattedName}.");
             }
 
             sender.offerInfo = null;
