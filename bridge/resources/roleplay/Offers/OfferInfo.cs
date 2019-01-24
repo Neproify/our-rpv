@@ -8,7 +8,8 @@ namespace roleplay.Offers
     {
         None,
         Healing,
-        Item
+        Item,
+        Ticket
     }
 
     public class OfferInfo
@@ -19,7 +20,7 @@ namespace roleplay.Offers
         public OfferType type;
         public int price;
 
-        public int[] args;
+        public object[] args;
 
         public void ShowInfo(Entities.Player player)
         {
@@ -52,7 +53,7 @@ namespace roleplay.Offers
 
             if(type == OfferType.Item)
             {
-                var item = Managers.ItemManager.Instance().GetItem(args[0]);
+                var item = Managers.ItemManager.Instance().GetItem((int)args[0]);
 
                 if(!sender.CanUseItem(item))
                 {
@@ -67,6 +68,15 @@ namespace roleplay.Offers
                 item.ChangeOwner(OwnerType.Character, receiver.character.UID);
                 sender.handle.SendNotification($"Sprzedałeś przedmiot {item.name} graczu {receiver.formattedName}.");
                 receiver.handle.SendNotification($"Kupiłeś przedmiot {item.name} od gracza {sender.formattedName}.");
+            }
+
+            if(type == OfferType.Ticket)
+            {
+                if (!receiver.SendMoneyTo((Entities.Group)args[0], price))
+                    return;
+
+                sender.handle.SendNotification($"Gracz {receiver.formattedName} zapłacił mandat w wysokości {price}.");
+                receiver.handle.SendNotification($"Zapłaciłeś mandat w wysokości {price} wystawiony przez gracza {sender.formattedName}");
             }
 
             sender.offerInfo = null;

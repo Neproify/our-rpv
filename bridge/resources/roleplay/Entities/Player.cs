@@ -84,6 +84,23 @@ namespace roleplay.Entities
             return true;
         }
 
+        public bool SendMoneyTo(Entities.Group group, int amount)
+        {
+            if (this.isLogged || this.character == null)
+                return false;
+
+            if(this.money < amount)
+            {
+                this.handle.SendNotification("~r~Masz za mało pieniędzy!");
+                return false;
+            }
+
+            this.money -= amount;
+            group.bank += amount;
+
+            return true;
+        }
+
         public List<Entities.Item> GetItems()
         {
             if (!isLogged)

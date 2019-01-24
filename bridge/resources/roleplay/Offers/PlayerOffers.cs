@@ -118,12 +118,32 @@ namespace roleplay.Offers
                 secondPlayer.offerInfo = offerInfo;
             }
 
+            if(args[2] == "mandat")
+            {
+                if(!player.IsOnDutyOfGroupType(Groups.GroupType.Police))
+                {
+                    player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania mandatów!");
+                    return;
+                }
+
+                OfferInfo offerInfo = new OfferInfo();
+
+                offerInfo.sender = player;
+                offerInfo.receiver = secondPlayer;
+                offerInfo.type = OfferType.Ticket;
+                offerInfo.price = price;
+                offerInfo.args[0] = player.groupDuty.member.group;
+
+                player.offerInfo = offerInfo;
+                secondPlayer.offerInfo = offerInfo;
+            }
+
             player.handle.SendNotification("Wysłałeś ofertę.");
             secondPlayer.handle.SendNotification($"Otrzymałeś ofertę od {player.formattedName}. Więcej informacji: /o info.");
 
             goto Usage;
         Usage:
-            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot]");
+            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat]");
             return;
 
         InfoAndManagement:
