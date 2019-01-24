@@ -95,7 +95,15 @@ namespace roleplay.Entities
 
         public void Save()
         {
-#warning Save group
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "UPDATE `rp_groups` SET `bank`=@bank WHERE `UID`=@UID;";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@bank", bank);
+            command.Parameters.AddWithValue("@UID", UID);
+
+            command.ExecuteNonQuery();
+
             ranks.ForEach(x => x.Save());
             members.ForEach(x => x.Save());
         }

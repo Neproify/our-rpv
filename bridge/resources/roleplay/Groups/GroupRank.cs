@@ -17,7 +17,7 @@ namespace roleplay.Groups
 
         public void Save()
         {
-#warning Implement this.
+            // Nothing to save, left it here.
         }
     }
 }

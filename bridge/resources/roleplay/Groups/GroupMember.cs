@@ -17,7 +17,14 @@ namespace roleplay.Groups
 
         public void Save()
         {
-#warning Implement this.
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "UPDATE `rp_groups_members` SET `dutyTime`=@dutyTime WHERE `UID`=@UID;";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@dutyTime", dutyTime);
+            command.Parameters.AddWithValue("@UID", UID);
+
+            command.ExecuteNonQuery();
         }
     }
 }
