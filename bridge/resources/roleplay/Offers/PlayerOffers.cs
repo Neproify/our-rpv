@@ -92,6 +92,13 @@ namespace roleplay.Offers
             if(args[2] == "przedmiot")
             {
                 int itemID;
+
+                if(args[3] == null)
+                {
+                    player.handle.SendNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
+                    return;
+                }
+
                 if(!int.TryParse(args[3], out itemID))
                 {
                     player.handle.SendNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");

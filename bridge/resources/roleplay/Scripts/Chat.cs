@@ -55,7 +55,7 @@ namespace roleplay.Scripts
         }
 
         [Command("b", GreedyArg = true)]
-        public void OOCCommand(Client client, string action)
+        public void OOCCommand(Client client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -66,7 +66,7 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}(({player.formattedName}({player.handle.Handle}): {action}))");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}(({player.formattedName}({player.handle.Handle}): {message}))");
             }
         }
 
@@ -96,7 +96,7 @@ namespace roleplay.Scripts
         }
 
         [Command("k", GreedyArg = true)]
-        public void ShoutCommand(Client client, string action)
+        public void ShoutCommand(Client client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -107,12 +107,12 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} krzyczy: {action}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} krzyczy: {message}");
             }
         }
 
         [Command("s", GreedyArg = true)]
-        public void SilentCommand(Client client, string action)
+        public void SilentCommand(Client client, string message)
         {
 
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
@@ -124,7 +124,7 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} szepcze: {action}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} szepcze: {message}");
             }
         }
 
@@ -177,6 +177,32 @@ namespace roleplay.Scripts
             {
                 nearPlayer.SendChatMessage($"!{{#ffff00}}>> {player.formattedName}(megafon): {message}");
             }
+        }
+
+        [Command("w", GreedyArg = true)]
+        public void PrivateMessageCommand(Client client, int playerID, string message)
+        {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.isLogged || player.character == null)
+                return;
+
+            var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
+
+            if(targetPlayer == null)
+            {
+                player.handle.SendNotification("~r~Podany gracz nie jest zalogowany!");
+                return;
+            }
+
+            if(!targetPlayer.isLogged || targetPlayer.character == null)
+            {
+                player.handle.SendNotification("~r~Podany gracz nie jest zalogowany!");
+                return;
+            }
+
+            player.handle.SendChatMessage($"!{{#99FFAA}}(( << {targetPlayer.formattedName}({targetPlayer.handle.Handle}): {message}))");
+            targetPlayer.handle.SendChatMessage($"#78DEAA(( >> {player.formattedName}({player.handle.Handle}): {message}))");
         }
     }
 }
