@@ -30,7 +30,6 @@ namespace roleplay.Entities
 
         public Building()
         {
-            Spawn();
         }
 
         public void Spawn()
@@ -43,7 +42,11 @@ namespace roleplay.Entities
 
         public void Unspawn()
         {
+            if (enterMarker != null)
+                enterMarker.Delete();
 
+            if (exitMarker != null)
+                exitMarker.Delete();
         }
 
         public void Save()

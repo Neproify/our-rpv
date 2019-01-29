@@ -165,7 +165,7 @@ namespace roleplay.Entities
             return vehicle;
         }
 
-        public Entities.Building GetClosestBuilding(float maxDistance = 1f)
+        public Entities.Building GetClosestBuilding(float maxDistance = 3f)
         {
             return Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);
         }

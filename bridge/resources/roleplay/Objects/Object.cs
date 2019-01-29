@@ -18,7 +18,6 @@ namespace roleplay.Entities
 
         public Object()
         {
-            Spawn();
         }
 
         public void Spawn()
@@ -42,19 +41,19 @@ namespace roleplay.Entities
         public uint GetDimension()
         {
             if (ownerType == (int)OwnerType.World)
-                return NAPI.GlobalDimension;
+                return 0;
 
             if(ownerType == (int)OwnerType.Building)
             {
                 var building = Managers.BuildingManager.Instance().GetByID(ownerID);
 
                 if (building == null)
-                    return NAPI.GlobalDimension;
+                    return 0;
 
                 return building.exitDimension;
             }
 
-            return NAPI.GlobalDimension;
+            return 0;
         }
     }
 }

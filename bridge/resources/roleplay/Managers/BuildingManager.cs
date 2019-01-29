@@ -44,7 +44,7 @@ namespace roleplay.Managers
 
             foreach(var buildingTemp in buildings)
             {
-                if(buildingTemp.enterPosition.DistanceTo(position) < distance)
+                if(buildingTemp.enterPosition.DistanceTo(position) <= distance)
                 {
                     building = buildingTemp;
                 }
@@ -83,7 +83,13 @@ namespace roleplay.Managers
                     ownerType = reader.GetInt32("ownerType"),
                     ownerID = reader.GetInt32("ownerID")
                 };
+
+                Add(building);
+
+                building.Spawn();
             }
+
+            reader.Close();
         }
 
         public void SaveAll()

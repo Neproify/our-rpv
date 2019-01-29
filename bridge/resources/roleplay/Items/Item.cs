@@ -54,7 +54,7 @@ namespace roleplay.Entities
         {
             Unspawn();
 
-            objectHandle = NAPI.Object.CreateObject(1688540826, position, new Vector3());
+            objectHandle = NAPI.Object.CreateObject(1688540826, position, new Vector3(), 255, 0);
         }
 
         public virtual void Unspawn()

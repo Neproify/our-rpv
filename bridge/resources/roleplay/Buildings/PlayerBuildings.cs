@@ -17,7 +17,7 @@ namespace roleplay.Buildings
 
             if(player.building != null)
             {
-                if(player.handle.Position.DistanceTo(player.building.exitPosition) <= 1f)
+                if(player.handle.Position.DistanceTo(player.building.exitPosition) <= 3f)
                 {
                     player.handle.Position = player.building.enterPosition;
                     player.handle.Dimension = player.building.enterDimension;
@@ -27,7 +27,7 @@ namespace roleplay.Buildings
                 }
             }
 
-            var building = player.GetClosestBuilding(1f);
+            var building = player.GetClosestBuilding(3f);
 
             if (building == null)
                 return;

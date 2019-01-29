@@ -65,6 +65,10 @@ namespace roleplay.Managers
                     ownerType = reader.GetInt32("ownerType"),
                     ownerID = reader.GetInt32("ownerID")
                 };
+
+                Add(@object);
+
+                @object.Spawn();
             }
 
             reader.Close();
