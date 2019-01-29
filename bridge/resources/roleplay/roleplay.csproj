@@ -18,7 +18,4 @@
     <HintPath>..\..\runtime\Newtonsoft.Json.dll</HintPath>
   </Reference>
 </ItemGroup>
-<ItemGroup>
-  <Folder Include="Objects\" />
-</ItemGroup>
 </Project>

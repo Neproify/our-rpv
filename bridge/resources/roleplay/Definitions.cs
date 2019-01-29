@@ -8,7 +8,8 @@ namespace roleplay
     {
         None,
         Character,
-        World
+        World,
+        Building
     }
 
     public enum ItemType

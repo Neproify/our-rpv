@@ -32,6 +32,11 @@ namespace roleplay.Managers
             return buildings;
         }
 
+        public Entities.Building GetByID(int ID)
+        {
+            return buildings.Find(x => x.UID == ID);
+        }
+
         public Entities.Building GetClosestBuilding(Vector3 position, float maxDistance = 999999f)
         {
             Entities.Building building = null;
