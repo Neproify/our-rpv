@@ -49,6 +49,8 @@ namespace roleplay.Entities
             }
         }
 
+        public Entities.Building building;
+
         public void Save()
         {
             character.Save();
@@ -161,6 +163,11 @@ namespace roleplay.Entities
                 return null;
 
             return vehicle;
+        }
+
+        public Entities.Building GetClosestBuilding(float maxDistance = 1f)
+        {
+            return Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);
         }
 
         public Entities.Item GetClosestItem(float maxDistance = 5f)

@@ -19,7 +19,6 @@
   </Reference>
 </ItemGroup>
 <ItemGroup>
-  <Folder Include="Buildings\" />
   <Folder Include="Objects\" />
 </ItemGroup>
 </Project>

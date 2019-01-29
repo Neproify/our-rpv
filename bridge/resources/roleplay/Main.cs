@@ -32,13 +32,14 @@ namespace roleplay
             Managers.VehicleManager.Instance().LoadFromDatabase();
             Managers.ItemManager.Instance().LoadFromDatabase();
             Managers.GroupManager.Instance().LoadFromDatabase();
+            Managers.BuildingManager.Instance().LoadFromDatabase();
 
             NAPI.Server.SetAutoSpawnOnConnect(false);
-            NAPI.Server.SetDefaultSpawnLocation(new Vector3(1391.773, 3608.716, 38.942), 0);
+            NAPI.Server.SetDefaultSpawnLocation(new Vector3(1398.96, 3591.61, 35), 180);
             NAPI.Server.SetGlobalServerChat(false);
             NAPI.Util.ConsoleOutput("Resource RolePlay started.");
         }
-
+        
         [ServerEvent(Event.ResourceStop)]
         public void ResourceStop()
         {
@@ -46,6 +47,7 @@ namespace roleplay
             Managers.PlayerManager.Instance().SaveAll();
             Managers.VehicleManager.Instance().SaveAll();
             Managers.GroupManager.Instance().SaveAll();
+            Managers.BuildingManager.Instance().SaveAll();
         }
 
         [ServerEvent(Event.PlayerConnected)]
