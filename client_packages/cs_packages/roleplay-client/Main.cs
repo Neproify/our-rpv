@@ -15,6 +15,7 @@ namespace roleplay_client
             RAGE.Ui.Cursor.Visible = false;
             RAGE.Chat.Show(false);
             Events.Tick += Tick;
+            RAGE.Discord.Update("Gra na Our Role Play Developer", "Logowanie");
         }
 
         private void Tick(List<Events.TickNametagData> nametags)

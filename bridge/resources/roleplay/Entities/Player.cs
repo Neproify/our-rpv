@@ -16,6 +16,9 @@ namespace roleplay.Entities
             }
         }
 
+        public bool isBrutallyWounded = false;
+        public int secondsToEndOfBrutallyWounded = 0;
+
         public Client handle;
         public GlobalInfo globalInfo;
         public Character character;
@@ -101,6 +104,28 @@ namespace roleplay.Entities
             group.bank += amount;
 
             return true;
+        }
+
+        public void SetIsBrutallyWounded(bool isWounded)
+        {
+            if(isWounded)
+            {
+                isBrutallyWounded = true;
+                secondsToEndOfBrutallyWounded = 10;
+
+                NAPI.Player.SpawnPlayer(handle, handle.Position, handle.Heading);
+                handle.Freeze(true);
+                handle.PlayAnimation("veh@bike@chopper@front@ps", "dead_fall_out", 1);
+                handle.SendNotification("~r~Straciłeś przytomność. Poczekaj aby ją odzyskać.");
+            }
+            else
+            {
+                isBrutallyWounded = false;
+                secondsToEndOfBrutallyWounded = 0;
+                handle.Freeze(false);
+                handle.StopAnimation();
+                handle.SendNotification("~g~Odzyskałeś przytomność. Pamiętaj o odegraniu obrażeń.");
+            }
         }
 
         public List<Entities.Item> GetItems()
@@ -229,16 +254,18 @@ namespace roleplay.Entities
         public string name;
         public uint model;
         public int money;
+        public int health;
 
         public void Save()
         {
             var command = Database.Instance().Connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_characters` SET `model`=@model, `money`=@money WHERE `UID`=@UID";
+            command.CommandText = "UPDATE `rp_characters` SET `model`=@model, `money`=@money, `health`=@health WHERE `UID`=@UID";
             command.Prepare();
 
             command.Parameters.AddWithValue("@model", model);
             command.Parameters.AddWithValue("@UID", UID);
             command.Parameters.AddWithValue("@money", money);
+            command.Parameters.AddWithValue("@health", health);
             command.ExecuteNonQuery();
         }
     }

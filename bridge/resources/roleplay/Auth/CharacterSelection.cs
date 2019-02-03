@@ -86,7 +86,8 @@ namespace roleplay.Auth
                 GID = reader.GetInt32("GID"),
                 name = reader.GetString("name"),
                 model = reader.GetUInt32("model"),
-                money = reader.GetInt32("money")
+                money = reader.GetInt32("money"),
+                health = reader.GetInt32("health")
             };
 
             reader.Close();
@@ -98,6 +99,7 @@ namespace roleplay.Auth
             player.handle.Freeze(false);
             player.handle.Invincible = false;
             player.handle.Transparency = 255;
+            player.handle.Health = character.health;
             NAPI.Entity.SetEntityModel(player.handle, player.character.model);
             NAPI.Player.SpawnPlayer(client, new Vector3(1398.96, 3591.61, 35), 180);
             player.handle.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");

@@ -14,7 +14,7 @@ namespace roleplay
             NAPI.Util.ConsoleOutput("Trwa nawi¹zywanie po³¹czenia z baz¹ danych...");
 
             Database database = Database.Instance();
-            database.Address = "51.15.119.59";
+            database.Address = "127.0.0.1";
             database.Login = "vrp";
             database.Password = "STdyt125";
             database.DatabaseName = "vrp";
@@ -38,6 +38,7 @@ namespace roleplay
             NAPI.Server.SetAutoSpawnOnConnect(false);
             NAPI.Server.SetDefaultSpawnLocation(new Vector3(1398.96, 3591.61, 35), 180);
             NAPI.Server.SetGlobalServerChat(false);
+            NAPI.Server.SetAutoRespawnAfterDeath(false);
             NAPI.Util.ConsoleOutput("Resource RolePlay started.");
         }
         
