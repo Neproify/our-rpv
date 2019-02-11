@@ -22,7 +22,7 @@ namespace roleplay.Entities
             }
         }
 
-        public int ownerType;
+        public OwnerType ownerType;
         public int ownerID;
 
         public Marker enterMarker;

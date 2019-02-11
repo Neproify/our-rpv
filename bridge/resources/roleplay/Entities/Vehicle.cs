@@ -53,10 +53,10 @@ namespace roleplay.Entities
 
         public bool CanBeAccessedBy(Entities.Player player)
         {
-            if (vehicleData.ownerType == (int)OwnerType.Character && vehicleData.ownerID == player.character.UID)
+            if (vehicleData.ownerType == OwnerType.Character && vehicleData.ownerID == player.character.UID)
                 return true;
 
-            if (vehicleData.ownerType == (int)OwnerType.Group && player.GetGroups().Find(x => x.UID == vehicleData.ownerID) != null)
+            if (vehicleData.ownerType == OwnerType.Group && player.GetGroups().Find(x => x.UID == vehicleData.ownerID) != null)
                 return true;
 
             return false;
@@ -67,7 +67,7 @@ namespace roleplay.Entities
     {
         public int UID;
         public uint model;
-        public int ownerType;
+        public OwnerType ownerType;
         public int ownerID;
         public int color1;
         public int color2;

@@ -62,7 +62,7 @@ namespace roleplay.Managers
                     model = reader.GetUInt32("model"),
                     position = position,
                     rotation = rotation,
-                    ownerType = reader.GetInt32("ownerType"),
+                    ownerType = (OwnerType)reader.GetInt32("ownerType"),
                     ownerID = reader.GetInt32("ownerID")
                 };
 

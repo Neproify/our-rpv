@@ -80,7 +80,7 @@ namespace roleplay.Managers
                     enterPosition = enterPosition,
                     enterDimension = reader.GetUInt32("enterDimension"),
                     exitPosition = exitPosition,
-                    ownerType = reader.GetInt32("ownerType"),
+                    ownerType = (OwnerType)reader.GetInt32("ownerType"),
                     ownerID = reader.GetInt32("ownerID")
                 };
 

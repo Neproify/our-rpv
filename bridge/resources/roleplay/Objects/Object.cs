@@ -11,7 +11,7 @@ namespace roleplay.Entities
         public uint model;
         public Vector3 position;
         public Vector3 rotation;
-        public int ownerType;
+        public OwnerType ownerType;
         public int ownerID;
 
         public GTANetworkAPI.Object handle;
@@ -40,10 +40,10 @@ namespace roleplay.Entities
 
         public uint GetDimension()
         {
-            if (ownerType == (int)OwnerType.World)
+            if (ownerType == OwnerType.World)
                 return 0;
 
-            if(ownerType == (int)OwnerType.Building)
+            if(ownerType == OwnerType.Building)
             {
                 var building = Managers.BuildingManager.Instance().GetByID(ownerID);
 

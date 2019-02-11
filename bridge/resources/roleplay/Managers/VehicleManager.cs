@@ -84,7 +84,7 @@ namespace roleplay.Managers
                 {
                     UID = reader.GetInt32("UID"),
                     model = reader.GetUInt32("model"),
-                    ownerType = reader.GetInt32("ownerType"),
+                    ownerType = (OwnerType)reader.GetInt32("ownerType"),
                     ownerID = reader.GetInt32("ownerID"),
                     color1 = reader.GetInt32("color1"),
                     color2 = reader.GetInt32("color2"),
