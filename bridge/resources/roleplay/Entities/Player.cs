@@ -24,6 +24,7 @@ namespace roleplay.Entities
         public Character character;
         public Groups.GroupDuty groupDuty;
         public Offers.OfferInfo offerInfo;
+        public List<Penalties.Penalty> penalties = new List<Penalties.Penalty>();
 
         public int money
         {
@@ -126,6 +127,76 @@ namespace roleplay.Entities
                 handle.StopAnimation();
                 handle.SendNotification("~g~Odzyskałeś przytomność. Pamiętaj o odegraniu obrażeń.");
             }
+        }
+
+        public void KillCharacter(string reason)
+        {
+            CreatePenalty((int)Penalties.PenaltyType.CharacterKill, reason, -1, DateTime.Now.AddYears(50));
+        }
+
+        public Penalties.Penalty CreatePenalty(int type, string reason, int penaltiedBy, DateTime expireDate)
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "INSERT INTO `rp_penalties` SET `globalID`=@globalID, `characterID`=@characterID, `type`=@type, `reason`=@reason, `penaltiedBy`=@penaltiedBy, `expireDate`=@expireDate";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@globalID", globalInfo.UID);
+            command.Parameters.AddWithValue("@characterID", character.UID);
+            command.Parameters.AddWithValue("@type", type);
+            command.Parameters.AddWithValue("@reason", reason);
+            command.Parameters.AddWithValue("@penaltiedBy", penaltiedBy);
+            command.Parameters.AddWithValue("@expireDate", expireDate);
+
+            command.ExecuteNonQuery();
+
+            int UID = (int)command.LastInsertedId;
+            Penalties.Penalty penalty = new Penalties.Penalty();
+            penalty.Load(UID);
+            penalties.Add(penalty);
+
+            return penalty;
+        }
+
+        public void LoadPenalties()
+        {
+            penalties.Clear();
+
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "SELECT * FROM `rp_penalties` WHERE `globalID`=@globalID AND `expireDate` > @currentDate;";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@globalID", globalInfo.UID);
+            command.Parameters.AddWithValue("@currentDate", DateTime.Now);
+
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var penalty = new Penalties.Penalty();
+                penalty.Load(reader);
+                penalties.Add(penalty);
+            }
+
+            reader.Close();
+        }
+
+        public bool HaveActivePenaltyOfType(int type)
+        {
+            foreach(var penalty in penalties)
+            {
+                if(penalty.type == type)
+                {
+                    if(penalty.type == (int)Penalties.PenaltyType.CharacterKill)
+                    {
+                        if (penalty.characterID != character.UID)
+                            continue;
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public List<Entities.Item> GetItems()

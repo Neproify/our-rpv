@@ -92,15 +92,22 @@ namespace roleplay.Auth
 
             reader.Close();
 
-            NAPI.ClientEvent.TriggerClientEvent(client, "OnCharacterSelectionSuccessful");
-
             player.character = character;
+
+            if(player.HaveActivePenaltyOfType((int)Penalties.PenaltyType.CharacterKill))
+            {
+                player.handle.SendNotification("~r~Podana postać jest zablokowana. Nie możesz jej wybrać.");
+                player.character = null;
+                return;
+            }
+
             player.handle.Name = character.name;
             player.handle.Freeze(false);
             player.handle.Invincible = false;
             player.handle.Transparency = 255;
             player.handle.Health = character.health;
             NAPI.Entity.SetEntityModel(player.handle, player.character.model);
+            NAPI.ClientEvent.TriggerClientEvent(client, "OnCharacterSelectionSuccessful");
             NAPI.Player.SpawnPlayer(client, new Vector3(1398.96, 3591.61, 35), 180);
             player.handle.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
             return;

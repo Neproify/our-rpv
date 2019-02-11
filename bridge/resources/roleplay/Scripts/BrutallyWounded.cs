@@ -38,5 +38,22 @@ namespace roleplay.Scripts
 
             player.SetIsBrutallyWounded(true);
         }
+
+        [Command("akceptujsmierc", GreedyArg = true)]
+        public void CharacterKillCommand(Client client, string reason)
+        {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.isLogged || player.character == null)
+                return;
+
+            if (player.isBrutallyWounded == true)
+                player.KillCharacter(reason);
+
+            foreach(var loopPlayer in Managers.PlayerManager.Instance().GetAll())
+            {
+                loopPlayer.handle.SendNotification($"~r~ {player.formattedName} zmarł, powód: {reason}");
+            }
+        }
     }
 }

@@ -75,6 +75,7 @@ namespace roleplay.Auth
 
             player.isLogged = true;
             player.globalInfo = globalInfo;
+            player.LoadPenalties();
 
             NAPI.ClientEvent.TriggerClientEvent(client, "LoginSuccessful");
 
