@@ -56,6 +56,9 @@ namespace roleplay.Entities
             if (vehicleData.ownerType == (int)OwnerType.Character && vehicleData.ownerID == player.character.UID)
                 return true;
 
+            if (vehicleData.ownerType == (int)OwnerType.Group && player.GetGroups().Find(x => x.UID == vehicleData.ownerID) != null)
+                return true;
+
             return false;
         }
     }
