@@ -16,6 +16,12 @@ namespace roleplay.Scripts
             if (!player.isLogged || player.character == null)
                 return;
 
+            if(player.isBrutallyWounded)
+            {
+                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                return;
+            }
+
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
 
             message = message.Replace("<", "!{#C2A2DA}*");
@@ -78,6 +84,12 @@ namespace roleplay.Scripts
             if (!player.isLogged || player.character == null)
                 return;
 
+            if (player.isBrutallyWounded)
+            {
+                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                return;
+            }
+
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
 
             var result = new Random().Next(9999);
@@ -103,6 +115,12 @@ namespace roleplay.Scripts
             if (!player.isLogged || player.character == null)
                 return;
 
+            if (player.isBrutallyWounded)
+            {
+                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                return;
+            }
+
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(30, player.handle.Position);
 
             foreach (var nearPlayer in players)
@@ -120,6 +138,12 @@ namespace roleplay.Scripts
             if (!player.isLogged || player.character == null)
                 return;
 
+            if (player.isBrutallyWounded)
+            {
+                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                return;
+            }
+
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(5, player.handle.Position);
 
             foreach (var nearPlayer in players)
@@ -135,6 +159,12 @@ namespace roleplay.Scripts
 
             if (!player.isLogged || player.character == null)
                 return;
+
+            if (player.isBrutallyWounded)
+            {
+                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                return;
+            }
 
             var group = player.groupDuty?.member.rank.group;
             if (group == null)
@@ -164,6 +194,12 @@ namespace roleplay.Scripts
 
             if (!player.isLogged || player.character == null)
                 return;
+
+            if (player.isBrutallyWounded)
+            {
+                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                return;
+            }
 
             if (!player.HasSpecialPermissionInGroup(Groups.GroupSpecialPermission.Megaphone))
             {

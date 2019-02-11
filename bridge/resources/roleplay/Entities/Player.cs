@@ -132,6 +132,7 @@ namespace roleplay.Entities
         public void KillCharacter(string reason)
         {
             CreatePenalty((int)Penalties.PenaltyType.CharacterKill, reason, -1, DateTime.Now.AddYears(50));
+            handle.Kick("Character Kill");
         }
 
         public Penalties.Penalty CreatePenalty(int type, string reason, int penaltiedBy, DateTime expireDate)
