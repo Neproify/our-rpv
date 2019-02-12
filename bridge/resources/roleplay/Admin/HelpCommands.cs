@@ -22,7 +22,8 @@ namespace roleplay.Admin
             }
 
             player.handle.SendChatMessage("====LISTA KOMEND ADMINISTRACYJNYCH====");
-            player.handle.SendChatMessage("/agracz, /apojazd, /aprzedmiot, /agrupa");
+            player.handle.SendChatMessage("/agracz, /apojazd, /aprzedmiot, /agrupa, /aobiekt, /abudynek");
+            player.handle.SendChatMessage("/ado, /gooc, /kick, /ban, /aj");
             player.handle.SendChatMessage("====KONIEC LISTY====");
         }
     }
