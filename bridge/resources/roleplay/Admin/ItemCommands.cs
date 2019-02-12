@@ -126,6 +126,27 @@ namespace roleplay.Admin
                 return;
             }
 
+            if(args[1] == "wlasciwosc" || args[1] == "właściwość")
+            {
+                if(args.Length != 4)
+                {
+                    goto PropertyUsage;
+                }
+
+                int propertyNumber, propertyValue;
+
+                if(!Int32.TryParse(args[2], out propertyNumber) || !Int32.TryParse(args[3], out propertyValue))
+                {
+                    goto PropertyUsage;
+                }
+
+                item.properties[propertyNumber] = propertyValue;
+
+                item.Save();
+
+                return;
+            }
+
             if(args[1] == "tpto")
             {
                 if(item.objectHandle != null)
@@ -141,12 +162,13 @@ namespace roleplay.Admin
                 {
                     item.position = player.handle.Position;
                     item.objectHandle.Position = item.position;
+                    item.Save();
                 }
                 return;
             }
 
         Usage:
-            player.handle.SendNotification("Użycie komendy: /aprzedmiot [id przedmiotu/stwórz] [nazwa, typ, właściciel, właściwości, tpto, tphere]");
+            player.handle.SendNotification("Użycie komendy: /aprzedmiot [id przedmiotu/stwórz] [nazwa, typ, właściciel, właściwości, właściwość, tpto, tphere]");
             return;
         NameUsage:
             player.handle.SendNotification($"Użycie komendy: /aprzedmiot {item.UID} nazwa [wartość].");
@@ -159,6 +181,9 @@ namespace roleplay.Admin
             return;
         PropertiesUsage:
             player.handle.SendNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwości [lista oddzielona znakiem |].");
+            return;
+        PropertyUsage:
+            player.handle.SendNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwość [numer] [wartość].");
             return;
         }
     }
