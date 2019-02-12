@@ -94,7 +94,7 @@ namespace roleplay.Auth
 
             player.character = character;
 
-            if(player.HaveActivePenaltyOfType((int)Penalties.PenaltyType.CharacterKill))
+            if(player.HaveActivePenaltyOfType(Penalties.PenaltyType.CharacterKill))
             {
                 player.handle.SendNotification("~r~Podana postać jest zablokowana. Nie możesz jej wybrać.");
                 player.character = null;
