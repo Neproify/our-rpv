@@ -145,12 +145,30 @@ namespace roleplay.Offers
                 secondPlayer.offerInfo = offerInfo;
             }
 
+            if(args[2] == "napraw")
+            {
+                if(!player.IsOnDutyOfGroupType(Groups.GroupType.Workshop))
+                {
+                    player.handle.SendNotification("~r~Nie masz uprawnień do naprawiania pojazdów!");
+                    return;
+                }
+
+                OfferInfo offerInfo = new OfferInfo();
+
+                offerInfo.sender = player;
+                offerInfo.receiver = secondPlayer;
+                offerInfo.type = OfferType.VehicleRepair;
+                offerInfo.price = price;
+                offerInfo.args[0] = secondPlayer.vehicle;
+                offerInfo.args[1] = player.groupDuty.member.group;
+            }
+
             player.handle.SendNotification("Wysłałeś ofertę.");
             secondPlayer.handle.SendNotification($"Otrzymałeś ofertę od {player.formattedName}. Więcej informacji: /o info.");
 
             goto Usage;
         Usage:
-            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat]");
+            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat, napraw]");
             return;
 
         InfoAndManagement:

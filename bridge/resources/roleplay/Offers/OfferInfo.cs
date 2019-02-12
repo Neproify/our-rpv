@@ -9,7 +9,8 @@ namespace roleplay.Offers
         None,
         Healing,
         Item,
-        Ticket
+        Ticket,
+        VehicleRepair
     }
 
     public class OfferInfo
@@ -77,6 +78,25 @@ namespace roleplay.Offers
 
                 sender.handle.SendNotification($"Gracz {receiver.formattedName} zapłacił mandat w wysokości {price}.");
                 receiver.handle.SendNotification($"Zapłaciłeś mandat w wysokości {price} wystawiony przez gracza {sender.formattedName}");
+            }
+
+            if(type == OfferType.VehicleRepair)
+            {
+                Entities.Vehicle vehicle = (Entities.Vehicle)args[0];
+
+                if (sender.handle.Position.DistanceTo(vehicle.handle.Position) > 5)
+                {
+                    sender.handle.SendNotification($"Jesteś za daleko od pojazdu który próbujesz naprawić.");
+                    return;
+                }
+
+                if (!receiver.SendMoneyTo((Entities.Group)args[1], price))
+                    return;
+
+                vehicle.handle.Repair();
+
+                sender.handle.SendNotification($"Naprawiłeś pojazd gracza {receiver.formattedName}.");
+                receiver.handle.SendNotification($"Gracz {sender.formattedName} naprawił twój pojazd.");
             }
 
             sender.offerInfo = null;
