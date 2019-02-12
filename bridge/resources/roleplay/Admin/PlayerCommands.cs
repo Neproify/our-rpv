@@ -7,7 +7,7 @@ namespace roleplay.Admin
 {
     public class PlayerCommands : Script
     {
-        [Command("agracz")]
+        [Command("agracz", GreedyArg = true)]
         public void AdminPlayerCommand(Client client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
@@ -127,13 +127,13 @@ namespace roleplay.Admin
             player.handle.SendNotification("Użycie komendy: /agracz [id gracza] [hp, unbw, model, przedmioty, money, tpto, tphere]");
             return;
         HPUsage:
-            player.handle.SendNotification($"Użycie komendy: /agracz {targetPlayer} hp [ilość].");
+            player.handle.SendNotification($"Użycie komendy: /agracz {playerID} hp [ilość].");
             return;
         ModelUsage:
-            player.handle.SendNotification($"Użycie komendy: /agracz {targetPlayer} model [hash modelu].");
+            player.handle.SendNotification($"Użycie komendy: /agracz {playerID} model [hash modelu].");
             return;
         MoneyUsage:
-            player.handle.SendNotification($"Użycie komendy: /agracz {targetPlayer} money [ilość].");
+            player.handle.SendNotification($"Użycie komendy: /agracz {playerID} money [ilość].");
             return;
         }
 
