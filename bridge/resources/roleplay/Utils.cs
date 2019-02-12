@@ -5,13 +5,6 @@ using GTANetworkAPI;
 
 namespace roleplay
 {
-    /*
-     *  None,
-        Character,
-        World,
-        Building,
-        Group
-        */
     public static class Utils
     {
         public static OwnerType GetOwnerTypeByName(string name)
@@ -31,7 +24,7 @@ namespace roleplay
             if (name == "grupa")
                 return OwnerType.Group;
 
-            return OwnerType.None;
+            return OwnerType.Invalid;
         }
 
         public static string GetNameFromOwnerType(OwnerType type)
@@ -50,8 +43,55 @@ namespace roleplay
                     return "Grupa";
                 default:
                     NAPI.Util.ConsoleOutput($"GETNAMEFROMOWNERTYPE ERROR, TYPE: {type}");
+                    return "Niezdefiniowany";
+            }
+        }
+
+        public static string GetOwnerTypes()
+        {
+            string[] types = new string[sizeof(OwnerType)];
+            for (int i = 0; i < sizeof(OwnerType); i++)
+            {
+                types[i] = GetNameFromOwnerType((OwnerType)i);
+            }
+
+            return string.Join(",", types);
+        }
+
+        public static ItemType GetItemTypeByName(string name)
+        {
+            if (name == "brak")
+                return ItemType.None;
+
+            if (name == "bron" || name == "broń")
+                return ItemType.Weapon;
+
+            return ItemType.Invalid;
+        }
+
+        public static string GetNameFromItemType(ItemType type)
+        {
+            switch (type)
+            {
+                case ItemType.None:
+                    return "Brak";
+                case ItemType.Weapon:
+                    return "Broń";
+                default:
+                    NAPI.Util.ConsoleOutput($"GETNAMEFROMITEMTYPE ERROR, TYPE: {type}");
                     return "Brak";
             }
+        }
+
+        public static string GetItemTypes()
+        {
+            string[] types = new string[sizeof(ItemType)];
+            for(int i = 0; i < sizeof(ItemType); i++)
+            {
+                types[i] = GetNameFromItemType((ItemType)i);
+            }
+
+            return string.Join(",", types);
         }
     }
 }

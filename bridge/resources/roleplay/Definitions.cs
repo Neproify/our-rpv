@@ -6,6 +6,7 @@ namespace roleplay
 {
     public enum OwnerType
     {
+        Invalid = -1,
         None,
         Character,
         World,
@@ -15,6 +16,7 @@ namespace roleplay
 
     public enum ItemType
     {
+        Invalid = -1,
         None,
         Weapon
     }

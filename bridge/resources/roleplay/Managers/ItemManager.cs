@@ -138,7 +138,7 @@ namespace roleplay.Managers
             position.Y = reader.GetFloat("positionY");
             position.Z = reader.GetFloat("positionZ");
 
-            switch(type)
+            switch (type)
             {
                 case (int)ItemType.None:
                     item = new Entities.Item();
@@ -161,6 +161,38 @@ namespace roleplay.Managers
             item.position = position;
 
             return item;
+        }
+
+        public Entities.Item Load(int UID)
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "SELECT * FROM `rp_items` WHERE `UID`=@UID";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@UID", UID);
+            var reader = command.ExecuteReader();
+            reader.Read();
+
+            var item = CreateItem(reader);
+
+            reader.Close();
+            return item;
+        }
+
+        public Entities.Item CreateItemAndLoad()
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "INSERT INTO `rp_items`;";
+            command.ExecuteNonQuery();
+
+            return Load((int)command.LastInsertedId);
+        }
+
+        public Entities.Item ReloadItem(Entities.Item item)
+        {
+            Remove(item);
+
+            return Load(item.UID);
         }
     }
 }

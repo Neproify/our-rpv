@@ -9,7 +9,7 @@ namespace roleplay.Entities
     {
         public int UID;
         public string name;
-        public int type;
+        public ItemType type;
         public int[] properties = new int[8]; // Have no idea why 8, we should think about list maybe?
         private string _propertiesString;
         public string propertiesString
