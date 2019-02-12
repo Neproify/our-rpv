@@ -26,7 +26,7 @@ namespace roleplay.Admin
 
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
-                Entities.Item createdItem = Managers.ItemManager.Instance().CreateItemAndLoad();
+                Entities.Item createdItem = Managers.ItemManager.Instance().CreateItem();
                 player.handle.SendNotification($"ID stworzonego przedmiotu: {createdItem.UID}.");
                 return;
             }

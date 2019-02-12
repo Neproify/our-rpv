@@ -110,7 +110,7 @@ namespace roleplay.Managers
 
             while(reader.Read())
             {
-                var item = CreateItem(reader);
+                var item = Load(reader);
 
                 Add(item);
             }
@@ -123,7 +123,7 @@ namespace roleplay.Managers
             items.ForEach(x => x.Save());
         }
 
-        public dynamic CreateItem(MySql.Data.MySqlClient.MySqlDataReader reader)
+        public dynamic Load(MySql.Data.MySqlClient.MySqlDataReader reader)
         {
             dynamic item;
 
@@ -173,16 +173,16 @@ namespace roleplay.Managers
             var reader = command.ExecuteReader();
             reader.Read();
 
-            var item = CreateItem(reader);
+            var item = Load(reader);
 
             reader.Close();
             return item;
         }
 
-        public Entities.Item CreateItemAndLoad()
+        public Entities.Item CreateItem()
         {
             var command = Database.Instance().Connection.CreateCommand();
-            command.CommandText = "INSERT INTO `rp_items`;";
+            command.CommandText = "INSERT INTO `rp_items` SET `name`='', `type`=0, `properties`='', `ownerType`=0, `ownerID`=-1, `positionX`=0, `positionY`=0, `positionZ`=0;";
             command.ExecuteNonQuery();
 
             return Load((int)command.LastInsertedId);

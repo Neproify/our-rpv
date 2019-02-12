@@ -44,11 +44,32 @@ namespace roleplay.Entities
 
         public void Spawn()
         {
+            if (handle != null)
+                return;
+
 #warning Use vector for rotation in future. Crashes in current(0.3.7.2) release
             var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, vehicleData.spawnPosition, 0f, vehicleData.color1, vehicleData.color2, "SA " + vehicleData.UID, 255, true, false, 0);
             handle = vehicle;
             Managers.VehicleManager.Instance().LinkWithHandle(this);
             engineStatus = false;
+        }
+
+        public void Unspawn()
+        {
+            if (handle == null)
+                return;
+
+            handle.Delete();
+            handle = null;
+            Managers.VehicleManager.Instance().UnlinkWithHandle(this);
+        }
+
+        public bool IsSpawned()
+        {
+            if (handle != null)
+                return true;
+
+            return false;
         }
 
         public bool CanBeAccessedBy(Entities.Player player)

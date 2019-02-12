@@ -97,6 +97,8 @@ namespace roleplay.Vehicles
                 vehicle.vehicleData.spawnPosition = vehicle.handle.Position;
                 vehicle.vehicleData.spawnRotation = vehicle.handle.Rotation;
 
+                vehicle.Save();
+
                 return;
             }
 

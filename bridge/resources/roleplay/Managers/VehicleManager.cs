@@ -55,6 +55,11 @@ namespace roleplay.Managers
             return vehiclesDictionary[vehicle];
         }
 
+        public Entities.Vehicle GetVehicle(int UID)
+        {
+            return vehicles.Find(x => x.vehicleData.UID == UID);
+        }
+
         public void SaveAll()
         {
             foreach(var vehicle in vehiclesDictionary.Values)
@@ -99,6 +104,27 @@ namespace roleplay.Managers
             }
 
             reader.Close();
+        }
+
+        public Entities.Vehicle Load(MySql.Data.MySqlClient.MySqlDataReader reader)
+        {
+#warning Implement this.
+            return null;
+        }
+        
+        public Entities.Vehicle Load(int UID)
+        {
+#warning Implement this.
+            return null;
+        }
+
+        public Entities.Vehicle CreateVehicle()
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "INSERT INTO `rp_vehicles` SET `model`=1119641113, `ownerType`=0, `ownerID`=-1, `color1`=1, `color2`=1, `spawnPosX`=0, `spawnPosY`=0, `spawnPosZ`=0, `spawnRotX`=0, `spawnRotY`=0, `spawnRotZ`=0";
+            command.ExecuteNonQuery();
+
+            return Load((int)command.LastInsertedId);
         }
     }
 }
