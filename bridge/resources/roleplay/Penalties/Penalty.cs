@@ -8,7 +8,9 @@ namespace roleplay.Penalties
     {
         Warning,
         Reward,
-        CharacterKill
+        CharacterKill,
+        Kick,
+        Ban
     }
 
     public class Penalty
@@ -18,7 +20,7 @@ namespace roleplay.Penalties
         public int UID;
         public int globalID;
         public int characterID;
-        public int type;
+        public PenaltyType type;
         public string reason;
         public int penaltiedBy;
         public DateTime expireDate;
@@ -47,7 +49,7 @@ namespace roleplay.Penalties
             UID = reader.GetInt32("UID");
             globalID = reader.GetInt32("globalID");
             characterID = reader.GetInt32("characterID");
-            type = reader.GetInt32("type");
+            type = (PenaltyType)reader.GetInt32("type");
             reason = reader.GetString("reason");
             penaltiedBy = reader.GetInt32("penaltiedBy");
             expireDate = reader.GetDateTime("expireDate");

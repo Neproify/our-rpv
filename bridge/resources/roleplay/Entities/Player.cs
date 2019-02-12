@@ -131,11 +131,11 @@ namespace roleplay.Entities
 
         public void KillCharacter(string reason)
         {
-            CreatePenalty((int)Penalties.PenaltyType.CharacterKill, reason, -1, DateTime.Now.AddYears(50));
+            CreatePenalty(Penalties.PenaltyType.CharacterKill, reason, -1, DateTime.Now.AddYears(50));
             handle.Kick("Character Kill");
         }
 
-        public Penalties.Penalty CreatePenalty(int type, string reason, int penaltiedBy, DateTime expireDate)
+        public Penalties.Penalty CreatePenalty(Penalties.PenaltyType type, string reason, int penaltiedBy, DateTime expireDate)
         {
             var command = Database.Instance().Connection.CreateCommand();
             command.CommandText = "INSERT INTO `rp_penalties` SET `globalID`=@globalID, `characterID`=@characterID, `type`=@type, `reason`=@reason, `penaltiedBy`=@penaltiedBy, `expireDate`=@expireDate";
@@ -181,13 +181,13 @@ namespace roleplay.Entities
             reader.Close();
         }
 
-        public bool HaveActivePenaltyOfType(int type)
+        public bool HaveActivePenaltyOfType(Penalties.PenaltyType type)
         {
             foreach(var penalty in penalties)
             {
                 if(penalty.type == type)
                 {
-                    if(penalty.type == (int)Penalties.PenaltyType.CharacterKill)
+                    if(penalty.type == Penalties.PenaltyType.CharacterKill)
                     {
                         if (penalty.characterID != character.UID)
                             continue;
