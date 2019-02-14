@@ -39,7 +39,7 @@ namespace roleplay.Admin
             if (!Int32.TryParse(args[0], out itemID))
                 goto Usage;
 
-            Entities.Item item = Managers.ItemManager.Instance().GetItem(itemID);
+            Entities.Item item = Managers.ItemManager.Instance().GetByID(itemID);
 
             if (item == null)
             {
@@ -54,7 +54,7 @@ namespace roleplay.Admin
                     goto NameUsage;
                 }
 
-                string name = string.Join(" ", args, 2);
+                string name = string.Join(" ", args, 2, args.Length);
 
                 item.name = name;
                 item.Save();

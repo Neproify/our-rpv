@@ -54,7 +54,7 @@ namespace roleplay.Offers
 
             if(type == OfferType.Item)
             {
-                var item = Managers.ItemManager.Instance().GetItem((int)args[0]);
+                var item = Managers.ItemManager.Instance().GetByID((int)args[0]);
 
                 if(!sender.CanUseItem(item))
                 {

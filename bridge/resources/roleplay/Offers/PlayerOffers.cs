@@ -105,7 +105,7 @@ namespace roleplay.Offers
                     return;
                 }
 
-                var item = Managers.ItemManager.Instance().GetItem(itemID);
+                var item = Managers.ItemManager.Instance().GetByID(itemID);
 
                 if (!player.CanUseItem(item))
                 {

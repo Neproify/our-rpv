@@ -221,7 +221,7 @@ namespace roleplay.Entities
 
         public bool CanUseItem(int itemUID)
         {
-            var item = Managers.ItemManager.Instance().GetItem(itemUID);
+            var item = Managers.ItemManager.Instance().GetByID(itemUID);
 
             return CanUseItem(item);
         }

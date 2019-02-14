@@ -38,7 +38,7 @@ namespace roleplay.Admin
             if (!Int32.TryParse(args[0], out vehicleID))
                 goto Usage;
 
-            Entities.Vehicle vehicle = Managers.VehicleManager.Instance().GetVehicle(vehicleID);
+            Entities.Vehicle vehicle = Managers.VehicleManager.Instance().GetByID(vehicleID);
             if (vehicle == null)
             {
                 player.handle.SendNotification("~r~Nie znaleziono pojazdu o podanym identyfikatorze.");

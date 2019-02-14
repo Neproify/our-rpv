@@ -68,7 +68,7 @@ namespace roleplay.Items
             if (!player.isLogged || player.character == null)
                 return;
 
-            var item = Managers.ItemManager.Instance().GetItem(itemUID);
+            var item = Managers.ItemManager.Instance().GetByID(itemUID);
 
             if (item == null)
                 return;
@@ -84,7 +84,7 @@ namespace roleplay.Items
             if (!player.isLogged || player.character == null)
                 return;
 
-            var item = Managers.ItemManager.Instance().GetItem(itemUID);
+            var item = Managers.ItemManager.Instance().GetByID(itemUID);
 
             if (!player.CanUseItem(item))
                 return;

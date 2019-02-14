@@ -22,7 +22,7 @@ namespace roleplay.Entities
 
         public void Spawn()
         {
-            if (handle != null)
+            if (IsSpawned())
                 Unspawn();
 
             handle = NAPI.Object.CreateObject(model, position, rotation, 255, GetDimension());
@@ -30,7 +30,16 @@ namespace roleplay.Entities
 
         public void Unspawn()
         {
+            if (!IsSpawned())
+                return;
+
             handle.Delete();
+            handle = null;
+        }
+
+        public bool IsSpawned()
+        {
+            return handle != null;
         }
 
         public void Save()

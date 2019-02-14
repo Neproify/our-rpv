@@ -73,5 +73,26 @@ namespace roleplay.Managers
 
             reader.Close();
         }
+
+        public Entities.Object Load(MySql.Data.MySqlClient.MySqlDataReader reader)
+        {
+#warning Implement this.
+            return null;
+        }
+
+        public Entities.Object Load(int UID)
+        {
+#warning Implement this.
+            return null;
+        }
+
+        public Entities.Object CreateObject()
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "INSERT INTO `rp_objects` SET `model`=579156093, `ownerType`=0, `ownerID`=-1, `postionX`=0, `positionY`=0, `positionZ`=0, `rotationX`=0, `rotationY`=0, `rotationZ`=0";
+            command.ExecuteNonQuery();
+
+            return Load((int)command.LastInsertedId);
+        }
     }
 }

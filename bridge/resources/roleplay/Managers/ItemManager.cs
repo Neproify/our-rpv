@@ -42,7 +42,7 @@ namespace roleplay.Managers
             itemsOfOwner[item.ownerType][item.ownerID].Add(item);
         }
 
-        public Entities.Item GetItem(int UID)
+        public Entities.Item GetByID(int UID)
         {
             return items.Find(x => x.UID == UID);
         }
@@ -154,7 +154,7 @@ namespace roleplay.Managers
 
             item.UID = UID;
             item.name = name;
-            item.type = type;
+            item.type = (ItemType)type;
             item.propertiesString = properties;
             item.ownerType = ownerType;
             item.ownerID = ownerID;

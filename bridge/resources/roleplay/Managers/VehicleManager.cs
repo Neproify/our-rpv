@@ -55,7 +55,7 @@ namespace roleplay.Managers
             return vehiclesDictionary[vehicle];
         }
 
-        public Entities.Vehicle GetVehicle(int UID)
+        public Entities.Vehicle GetByID(int UID)
         {
             return vehicles.Find(x => x.vehicleData.UID == UID);
         }
