@@ -76,31 +76,7 @@ namespace roleplay.Managers
 
             while(reader.Read())
             {
-                var position = new Vector3();
-                var rotation = new Vector3();
-                position.X = reader.GetFloat("spawnPosX");
-                position.Y = reader.GetFloat("spawnPosY");
-                position.Z = reader.GetFloat("spawnPosZ");
-                rotation.X = reader.GetFloat("spawnRotX");
-                rotation.Y = reader.GetFloat("spawnRotY");
-                rotation.Z = reader.GetFloat("spawnRotZ");
-
-                var vehicleData = new Entities.VehicleData
-                {
-                    UID = reader.GetInt32("UID"),
-                    model = reader.GetUInt32("model"),
-                    ownerType = (OwnerType)reader.GetInt32("ownerType"),
-                    ownerID = reader.GetInt32("ownerID"),
-                    color1 = reader.GetInt32("color1"),
-                    color2 = reader.GetInt32("color2"),
-                    spawnPosition = position,
-                    spawnRotation = rotation
-                };
-
-                var vehicle = new Entities.Vehicle();
-                vehicle.vehicleData = vehicleData;
-                Add(vehicle);
-                vehicle.Spawn();
+                Load(reader);
             }
 
             reader.Close();
@@ -108,14 +84,51 @@ namespace roleplay.Managers
 
         public Entities.Vehicle Load(MySql.Data.MySqlClient.MySqlDataReader reader)
         {
-#warning Implement this.
-            return null;
+            var position = new Vector3();
+            var rotation = new Vector3();
+            position.X = reader.GetFloat("spawnPosX");
+            position.Y = reader.GetFloat("spawnPosY");
+            position.Z = reader.GetFloat("spawnPosZ");
+            rotation.X = reader.GetFloat("spawnRotX");
+            rotation.Y = reader.GetFloat("spawnRotY");
+            rotation.Z = reader.GetFloat("spawnRotZ");
+
+            var vehicleData = new Entities.VehicleData
+            {
+                UID = reader.GetInt32("UID"),
+                model = reader.GetUInt32("model"),
+                ownerType = (OwnerType)reader.GetInt32("ownerType"),
+                ownerID = reader.GetInt32("ownerID"),
+                color1 = reader.GetInt32("color1"),
+                color2 = reader.GetInt32("color2"),
+                spawnPosition = position,
+                spawnRotation = rotation
+            };
+
+            var vehicle = new Entities.Vehicle();
+            vehicle.vehicleData = vehicleData;
+            Add(vehicle);
+            vehicle.Spawn();
+
+            return vehicle;
         }
         
         public Entities.Vehicle Load(int UID)
         {
-#warning Implement this.
-            return null;
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "SELECT * FROM `rp_vehicles` WHERE `UID`=@UID;";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@UID", UID);
+
+            var reader = command.ExecuteReader();
+            reader.Read();
+
+            var vehicle = Load(reader);
+
+            reader.Close();
+
+            return vehicle;
         }
 
         public Entities.Vehicle CreateVehicle()

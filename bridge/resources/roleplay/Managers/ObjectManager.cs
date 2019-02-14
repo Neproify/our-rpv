@@ -47,28 +47,7 @@ namespace roleplay.Managers
 
             while (reader.Read())
             {
-                var position = new Vector3();
-                var rotation = new Vector3();
-                position.X = reader.GetFloat("positionX");
-                position.Y = reader.GetFloat("positionY");
-                position.Z = reader.GetFloat("positionZ");
-                rotation.X = reader.GetFloat("rotationX");
-                rotation.Y = reader.GetFloat("rotationY");
-                rotation.Z = reader.GetFloat("rotationZ");
-
-                var @object = new Entities.Object
-                {
-                    UID = reader.GetInt32("UID"),
-                    model = reader.GetUInt32("model"),
-                    position = position,
-                    rotation = rotation,
-                    ownerType = (OwnerType)reader.GetInt32("ownerType"),
-                    ownerID = reader.GetInt32("ownerID")
-                };
-
-                Add(@object);
-
-                @object.Spawn();
+                Load(reader);
             }
 
             reader.Close();
@@ -76,14 +55,48 @@ namespace roleplay.Managers
 
         public Entities.Object Load(MySql.Data.MySqlClient.MySqlDataReader reader)
         {
-#warning Implement this.
-            return null;
+            var position = new Vector3();
+            var rotation = new Vector3();
+            position.X = reader.GetFloat("positionX");
+            position.Y = reader.GetFloat("positionY");
+            position.Z = reader.GetFloat("positionZ");
+            rotation.X = reader.GetFloat("rotationX");
+            rotation.Y = reader.GetFloat("rotationY");
+            rotation.Z = reader.GetFloat("rotationZ");
+
+            var @object = new Entities.Object
+            {
+                UID = reader.GetInt32("UID"),
+                model = reader.GetUInt32("model"),
+                position = position,
+                rotation = rotation,
+                ownerType = (OwnerType)reader.GetInt32("ownerType"),
+                ownerID = reader.GetInt32("ownerID")
+            };
+
+            Add(@object);
+
+            @object.Spawn();
+
+            return @object;
         }
 
         public Entities.Object Load(int UID)
         {
-#warning Implement this.
-            return null;
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "SELECT * FROM `rp_objects` WHERE `UID`=@UID;";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@UID", UID);
+
+            var reader = command.ExecuteReader();
+            reader.Read();
+
+            var @object = Load(reader);
+
+            reader.Close();
+
+            return @object;
         }
 
         public Entities.Object CreateObject()
