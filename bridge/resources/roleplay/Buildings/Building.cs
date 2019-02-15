@@ -52,7 +52,7 @@ namespace roleplay.Entities
         public void Save()
         {
             var command = Database.Instance().Connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_vehicles` SET `name`=@name, `description`=@description, `enterPosX`=@enterPosX, " +
+            command.CommandText = "UPDATE `rp_buildings` SET `name`=@name, `description`=@description, `enterPosX`=@enterPosX, " +
                 "`enterPosY`=@enterPosY, `enterPosZ`=@enterPosZ, `enterDimension`=@enterDimension, " +
                 "`exitPosX`=@exitPosX, `exitPosY`=@exitPosY, `exitPosZ`=@exitPosZ, `ownerType`=@ownerType, `ownerID`=@ownerID " +
                 "WHERE `UID`=@UID;";
