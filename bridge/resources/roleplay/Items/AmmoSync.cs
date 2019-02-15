@@ -5,8 +5,9 @@ using GTANetworkAPI;
 
 namespace roleplay.Items
 {
-    public class AmmoSync
+    public class AmmoSync : Script
     {
+        [RemoteEvent("OnPlayerWeaponShot")]
         public void OnPlayerWeaponShot(Client client, int weaponHash)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);

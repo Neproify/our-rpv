@@ -34,6 +34,7 @@ namespace roleplay.Items.ItemType
                 player.handle.RemoveWeapon((WeaponHash)properties[0]);
                 isUsed = false;
                 player.OutputMe($"chowa {name}.");
+                Save();
             }
 
             NAPI.ClientEvent.TriggerClientEvent(player.handle, "HidePlayerItems");
