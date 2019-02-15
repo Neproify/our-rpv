@@ -44,7 +44,24 @@ namespace roleplay.Entities
 
         public void Save()
         {
-#warning Implement this.
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "UPDATE `rp_objects` SET `model`=@model, `positionX`=@positionX, `positionY`=@positionY, `positionZ`=@positionZ, " +
+                "`rotationX`=@rotationX, `rotationY`=@rotationY, `rotationZ`=@rotationZ, " +
+                "`ownerType`=@ownerType, `ownerID`=@ownerID WHERE `UID`=@UID;";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@model", model);
+            command.Parameters.AddWithValue("positionX", position.X);
+            command.Parameters.AddWithValue("positionY", position.Y);
+            command.Parameters.AddWithValue("positionZ", position.Z);
+            command.Parameters.AddWithValue("rotationX", rotation.X);
+            command.Parameters.AddWithValue("rotationY", rotation.Y);
+            command.Parameters.AddWithValue("rotationZ", rotation.Z);
+            command.Parameters.AddWithValue("ownerType", ownerType);
+            command.Parameters.AddWithValue("ownerID", ownerID);
+            command.Parameters.AddWithValue("UID", UID);
+
+            command.ExecuteNonQuery();
         }
 
         public uint GetDimension()

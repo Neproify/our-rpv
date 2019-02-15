@@ -51,7 +51,27 @@ namespace roleplay.Entities
 
         public void Save()
         {
-#warning Implement this.
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "UPDATE `rp_vehicles` SET `name`=@name, `description`=@description, `enterPosX`=@enterPosX, " +
+                "`enterPosY`=@enterPosY, `enterPosZ`=@enterPosZ, `enterDimension`=@enterDimension, " +
+                "`exitPosX`=@exitPosX, `exitPosY`=@exitPosY, `exitPosZ`=@exitPosZ, `ownerType`=@ownerType, `ownerID`=@ownerID " +
+                "WHERE `UID`=@UID;";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@name", name);
+            command.Parameters.AddWithValue("@description", description);
+            command.Parameters.AddWithValue("@enterPosX", enterPosition.X);
+            command.Parameters.AddWithValue("@enterPosY", enterPosition.Y);
+            command.Parameters.AddWithValue("@enterPosZ", enterPosition.Z);
+            command.Parameters.AddWithValue("@enterDimension", enterDimension);
+            command.Parameters.AddWithValue("@exitPosX", exitPosition.X);
+            command.Parameters.AddWithValue("@exitPosY", exitPosition.Y);
+            command.Parameters.AddWithValue("@exitPosZ", exitPosition.Z);
+            command.Parameters.AddWithValue("@ownerType", ownerType);
+            command.Parameters.AddWithValue("@ownerID", ownerID);
+            command.Parameters.AddWithValue("@UID", UID);
+
+            command.ExecuteNonQuery();
         }
     }
 }
