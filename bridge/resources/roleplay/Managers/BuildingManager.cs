@@ -63,38 +63,74 @@ namespace roleplay.Managers
 
             while(reader.Read())
             {
-                Vector3 enterPosition = new Vector3();
-                enterPosition.X = reader.GetFloat("enterPosX");
-                enterPosition.Y = reader.GetFloat("enterPosY");
-                enterPosition.Z = reader.GetFloat("enterPosZ");
-                Vector3 exitPosition = new Vector3();
-                exitPosition.X = reader.GetFloat("exitPosX");
-                exitPosition.Y = reader.GetFloat("exitPosY");
-                exitPosition.Z = reader.GetFloat("exitPosZ");
-
-                var building = new Entities.Building
-                {
-                    UID = reader.GetInt32("UID"),
-                    name = reader.GetString("name"),
-                    description = reader.GetString("description"),
-                    enterPosition = enterPosition,
-                    enterDimension = reader.GetUInt32("enterDimension"),
-                    exitPosition = exitPosition,
-                    ownerType = (OwnerType)reader.GetInt32("ownerType"),
-                    ownerID = reader.GetInt32("ownerID")
-                };
-
-                Add(building);
-
-                building.Spawn();
+                Load(reader);
             }
 
             reader.Close();
         }
 
+        public Entities.Building Load(MySql.Data.MySqlClient.MySqlDataReader reader)
+        {
+            Vector3 enterPosition = new Vector3();
+            enterPosition.X = reader.GetFloat("enterPosX");
+            enterPosition.Y = reader.GetFloat("enterPosY");
+            enterPosition.Z = reader.GetFloat("enterPosZ");
+            Vector3 exitPosition = new Vector3();
+            exitPosition.X = reader.GetFloat("exitPosX");
+            exitPosition.Y = reader.GetFloat("exitPosY");
+            exitPosition.Z = reader.GetFloat("exitPosZ");
+
+            var building = new Entities.Building
+            {
+                UID = reader.GetInt32("UID"),
+                name = reader.GetString("name"),
+                description = reader.GetString("description"),
+                enterPosition = enterPosition,
+                enterDimension = reader.GetUInt32("enterDimension"),
+                exitPosition = exitPosition,
+                ownerType = (OwnerType)reader.GetInt32("ownerType"),
+                ownerID = reader.GetInt32("ownerID")
+            };
+
+            Add(building);
+
+            building.Spawn();
+
+            return building;
+        }
+
+        public Entities.Building Load(int UID)
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "SELECT * FROM `rp_buildings` WHERE `UID`=@UID";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@UID", UID);
+
+            var reader = command.ExecuteReader();
+            reader.Read();
+
+            var building = Load(reader);
+
+            reader.Close();
+
+            return building;
+        }
+
         public void SaveAll()
         {
             buildings.ForEach(x => x.Save());
+        }
+
+        public Entities.Building CreateBuilding()
+        {
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "INSERT INTO `rp_buildings` SET `name`='', `description`='', `enterPosX`=0, `enterPosY`=0, `enterPosZ`=0, " +
+                "`enterDimension`=0, `exitPosX`=0, `exitPosY`=0, `exitPosZ`=0, `ownerType`=0, `ownerID`=-1";
+
+            command.ExecuteNonQuery();
+
+            return Load((int)command.LastInsertedId);
         }
     }
 }

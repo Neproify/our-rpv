@@ -41,7 +41,7 @@ namespace roleplay
             NAPI.Server.SetAutoRespawnAfterDeath(false);
             NAPI.Util.ConsoleOutput("Resource RolePlay started.");
         }
-        
+
         [ServerEvent(Event.ResourceStop)]
         public void ResourceStop()
         {

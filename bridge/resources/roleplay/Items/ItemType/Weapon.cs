@@ -13,7 +13,6 @@ namespace roleplay.Items.ItemType
             base.Use(player);
             if(!isUsed)
             {
-#warning Check for slots, not exact weapon. Why? Because most of weapons have shared ammo. Needs a lot of code, but can't be synchronised right now(without using client-side).
                 if(player.GetItems().Find(x => x.properties[0] == properties[0] && x.isUsed == true) != null)
                 {
                     player.handle.SendNotification("~r~Posiadasz już wyjętą broń tego typu.");

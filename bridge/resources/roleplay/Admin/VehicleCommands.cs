@@ -199,7 +199,7 @@ namespace roleplay.Admin
 
             if(args[1] == "paliwo")
             {
-#warning Implement this.
+#warning Implement later.
                 return;
             }
 
