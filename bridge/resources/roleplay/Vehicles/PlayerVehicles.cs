@@ -7,6 +7,20 @@ namespace roleplay.Vehicles
 {
     public class PlayerVehicles : Script
     {
+        [Command("tuning")]
+        public void TuningCommand(Client client, int modIndex, int modLevel)
+        {
+#warning delete this.
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            var vehicle = player.vehicle;
+
+            if (vehicle == null)
+                return;
+
+            vehicle.handle.SetMod(modIndex, modLevel);
+        }
+
         [Command("v", GreedyArg = true)]
         public void VehicleCommand(Client client, string arg)
         {
