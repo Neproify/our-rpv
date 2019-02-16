@@ -4,14 +4,20 @@
 <head>
     <meta charset="utf-8" />
     <style>
+        @font-face {
+            font-family: 'Lato-Bold', sans-serif;
+            src: url('package://static/fonts/Lato-Bold.ttf');
+        }
+
         body {
             background-color: rgba(0, 0, 0, 0);
-            font-family: 'Lato', sans-serif;
-            src: url('package://static/fonts/Lato-Bold.ttf');
             color: white;
+            font-family: 'Lato-Bold', sans-serif;
+            font-size: 24px;
         }
 
         #window {
+            margin-top: 50px;
             margin-left: 20px;
             height: 300px;
             width: 400px;
@@ -22,6 +28,9 @@
             word-wrap: break-word;
             background-color: hsla(0, 100%, 0%, 0.0);
             overflow: hidden;
+            font-family: 'Lato-Bold', sans-serif;
+            font-weight: bold;
+            font-size: 16px;
         }
 
         #chatInput {
@@ -29,9 +38,13 @@
             margin-top: 10px;
             height: 30px;
             width: 100%;
-            padding: 0px;
+            padding-left: 5px;
+            padding-right: 5px;
             border-width: 0px;
             color: white;
+            font-family: 'Lato', sans-serif;
+            font-size: 16px;
+
         }
     </style>
 
@@ -42,7 +55,7 @@
     <div id="window">
         <div id="chatHistory">
         </div>
-        <input id="chatInput">
+        <input id="chatInput" spellcheck="false">
     </div>
 </body>
 

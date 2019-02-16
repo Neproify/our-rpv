@@ -1,79 +1,82 @@
 ﻿<html>
 
-  <head>
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">-->
 
     <style>
-      body {
-          background-color: rgba(0, 0, 0, 0);
-        font-family: 'Lato', sans-serif;
-        src: url('package://static/fonts/Lato-Regular.ttf');
-      }
+        @font-face {
+            font-family: 'Lato', sans-serif;
+            src: url('package://static/fonts/Lato-Regular.ttf');
+        }
 
-      #window {
-        width: 300px;
-        height: 300px;
-        position: fixed;
-        background-color: hsla(0, 100%, 0%, 0.85);
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
+        body {
+            background-color: rgba(0, 0, 0, 0);
+            font-family: 'Lato', sans-serif;
+        }
 
-      h1 {
-        width: 320px;
-        height: 50px;
-        background-color: orange;
-        color: white;
-        position: fixed;
-        left: -10px;
-        text-align: center;
-        line-height: 50px;
-      }
+        #window {
+            width: 300px;
+            height: 300px;
+            position: fixed;
+            background-color: hsla(0, 100%, 0%, 0.85);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-      input {
-        margin-left: 10px;
-        width: 280px;
-        height: 40px;
-        margin-top: 20px;
-      }
+        h1 {
+            width: 320px;
+            height: 50px;
+            background-color: orange;
+            color: white;
+            position: fixed;
+            left: -10px;
+            text-align: center;
+            line-height: 50px;
+        }
 
-      #button {
-        width: 240px;
-        height: 40px;
-        margin-left: 30px;
-        color: white;
-        background-color: orange;
-        box-shadow: none;
-        border-width: 0px;
-        margin-top: 20px;
-      }
+        input {
+            margin-left: 10px;
+            width: 280px;
+            height: 40px;
+            margin-top: 20px;
+        }
 
-      #inputs {
-        margin-top: 80px;
-      }
+        #button {
+            width: 240px;
+            height: 40px;
+            margin-left: 30px;
+            color: white;
+            background-color: orange;
+            box-shadow: none;
+            border-width: 0px;
+            margin-top: 20px;
+        }
 
+        #inputs {
+            margin-top: 80px;
+        }
     </style>
 
     <script type="text/javascript" src="login.js"></script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div id="window">
-      <h1>
-        Logowanie
-      </h1>
-      <div id="inputs">
-        <input placeholder="Login" id="loginInput" />
-        <input type="password" placeholder="Hasło" id="passwordInput" />
-      </div>
-      <button id="button" onclick="SendLoginRequest();">
-    Zaloguj się
-    </button>
+        <h1>
+            Logowanie
+        </h1>
+        <div id="inputs">
+            <input placeholder="Login" id="loginInput" />
+            <input type="password" placeholder="Hasło" id="passwordInput" />
+        </div>
+        <button id="button" onclick="SendLoginRequest();">
+            Zaloguj się
+        </button>
     </div>
-  </body>
+</body>
 
 </html>
