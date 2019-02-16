@@ -11,9 +11,7 @@ namespace roleplay_client
 
         public Main()
         {
-            RAGE.Chat.SafeMode = false;
             RAGE.Ui.Cursor.Visible = false;
-            RAGE.Chat.Show(false);
             Events.Tick += Tick;
             RAGE.Discord.Update("Gra na Our Role Play Developer", "Logowanie");
         }

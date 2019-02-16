@@ -22,7 +22,7 @@ namespace roleplay_client.Items
 
         private void Tick(List<Events.TickNametagData> nametags)
         {
-            if(RAGE.Input.IsDown(0x50) && framesWhenIsUp > 60)
+            if(RAGE.Input.IsDown(0x50) && framesWhenIsUp > 60 && !Chat.Active)
             {
                 if(isVisible)
                 {
@@ -33,7 +33,7 @@ namespace roleplay_client.Items
                 }
                 else
                 {
-                    Events.CallRemote("ShowPlayerItems");
+                        Events.CallRemote("ShowPlayerItems");
                 }
                 framesWhenIsUp = 0;
             }

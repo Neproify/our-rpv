@@ -34,7 +34,8 @@ namespace roleplay_client.Auth
         {
             window.Destroy();
             RAGE.Ui.Cursor.Visible = false;
-            RAGE.Chat.Show(true);
+            Chat.PreventShowing = false;
+            Chat.Show(true);
             RAGE.Discord.Update("Gra na Our Role Play Developer", "W grze.");
         }
     }

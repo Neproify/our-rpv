@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            background-color: rgba(0, 0, 0, 0);
+            font-family: 'Lato', sans-serif;
+            src: url('package://static/fonts/Lato-Bold.ttf');
+            color: white;
+        }
+
+        #window {
+            margin-left: 20px;
+            height: 300px;
+            width: 400px;
+        }
+
+        #chatHistory {
+            height: 260px;
+            word-wrap: break-word;
+            background-color: hsla(0, 100%, 0%, 0.0);
+            overflow: hidden;
+        }
+
+        #chatInput {
+            background-color: hsla(0, 100%, 0%, 0.85);
+            margin-top: 10px;
+            height: 30px;
+            width: 100%;
+            padding: 0px;
+            border-width: 0px;
+            color: white;
+        }
+    </style>
+
+    <script type="text/javascript" src="chat.js"></script>
+</head>
+
+<body>
+    <div id="window">
+        <div id="chatHistory">
+        </div>
+        <input id="chatInput">
+    </div>
+</body>
+
+</html>

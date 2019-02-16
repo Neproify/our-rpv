@@ -15,6 +15,8 @@ namespace roleplay_client.Auth
             Events.Add("LoginSuccessful", OnLoginSuccesful);
             window = new RAGE.Ui.HtmlWindow("package://static/auth/login.html");
             window.Active = true;
+            Chat.PreventShowing = true;
+            Chat.Show(false);
             RAGE.Ui.Cursor.Visible = true;
         }
 
