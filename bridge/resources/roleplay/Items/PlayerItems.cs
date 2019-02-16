@@ -25,6 +25,7 @@ namespace roleplay.Items
             var item = player.GetClosestItem(5f);
 
             item.ChangeOwner(OwnerType.Character, player.character.UID);
+            item.Save();
 
             player.handle.SendNotification($"~g~ Podniosłeś przedmiot {item.name}.");
         }
@@ -92,6 +93,7 @@ namespace roleplay.Items
             item.position = player.handle.Position;
             item.position.Z -= 0.5f;
             item.ChangeOwner(OwnerType.World, 0);
+            item.Save();
 
             player.handle.SendNotification($"~g~Wyrzuciłeś przedmiot {item.name}");
         }

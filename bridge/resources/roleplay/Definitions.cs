@@ -18,6 +18,14 @@ namespace roleplay
     {
         Invalid = -1,
         None,
-        Weapon
+        Weapon,
+        Document
+    }
+
+    public enum DocumentType
+    {
+        None,
+        Personal,
+        VehicleLicense
     }
 }

@@ -161,14 +161,60 @@ namespace roleplay.Offers
                 offerInfo.price = price;
                 offerInfo.args[0] = secondPlayer.vehicle;
                 offerInfo.args[1] = player.groupDuty.member.group;
+
+                player.offerInfo = offerInfo;
+                secondPlayer.offerInfo = offerInfo;
             }
 
-            player.handle.SendNotification("Wysłałeś ofertę.");
-            secondPlayer.handle.SendNotification($"Otrzymałeś ofertę od {player.formattedName}. Więcej informacji: /o info.");
+            if (args[2] == "dowod" || args[2] == "dowód")
+            {
+                if(!player.IsOnDutyOfGroupType(Groups.GroupType.Government))
+                {
+                    player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania dowodów osobistych!");
+                    return;
+                }
+
+                OfferInfo offerInfo = new OfferInfo();
+
+                offerInfo.sender = player;
+                offerInfo.receiver = secondPlayer;
+                offerInfo.type = OfferType.PersonalDocument;
+                offerInfo.price = price;
+
+                player.offerInfo = offerInfo;
+                secondPlayer.offerInfo = offerInfo;
+            }
+
+            if (args[2] == "prawko")
+            {
+                if (!player.IsOnDutyOfGroupType(Groups.GroupType.Government))
+                {
+                    player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania dowodów osobistych!");
+                    return;
+                }
+
+                OfferInfo offerInfo = new OfferInfo();
+
+                offerInfo.sender = player;
+                offerInfo.receiver = secondPlayer;
+                offerInfo.type = OfferType.VehicleLicenseDocument;
+                offerInfo.price = price;
+
+                player.offerInfo = offerInfo;
+                secondPlayer.offerInfo = offerInfo;
+            }
+
+
+            if (player.offerInfo != null)
+            {
+                player.handle.SendNotification("Wysłałeś ofertę.");
+                secondPlayer.handle.SendNotification($"Otrzymałeś ofertę od {player.formattedName}. Więcej informacji: /o info.");
+                return;
+            }
 
             goto Usage;
         Usage:
-            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat, napraw]");
+            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat, napraw, dowód, prawko]");
             return;
 
         InfoAndManagement:

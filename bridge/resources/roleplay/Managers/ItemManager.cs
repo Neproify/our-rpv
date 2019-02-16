@@ -146,6 +146,9 @@ namespace roleplay.Managers
                 case (int)ItemType.Weapon:
                     item = new Items.ItemType.Weapon();
                     break;
+                case (int)ItemType.Document:
+                    item = new Items.ItemType.Document();
+                    break;
                 default:
                     NAPI.Util.ConsoleOutput("[WARNING]Used default on creating item, type: " + type);
                     item = new Entities.Item();

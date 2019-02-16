@@ -106,8 +106,6 @@ namespace roleplay.Admin
                 }
 
                 item.ChangeOwner(type, ownerID);
-
-                item.Save();
                 return;
             }
 

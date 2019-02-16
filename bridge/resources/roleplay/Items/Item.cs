@@ -87,7 +87,6 @@ namespace roleplay.Entities
             Managers.ItemManager.Instance().Remove(this);
             this.ownerType = ownerType;
             this.ownerID = ownerID;
-            this.Save();
             Managers.ItemManager.Instance().Add(this);
 
             if(this.ownerType == OwnerType.World)

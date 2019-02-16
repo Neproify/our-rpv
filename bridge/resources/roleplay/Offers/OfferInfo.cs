@@ -10,7 +10,9 @@ namespace roleplay.Offers
         Healing,
         Item,
         Ticket,
-        VehicleRepair
+        VehicleRepair,
+        PersonalDocument,
+        VehicleLicenseDocument
     }
 
     public class OfferInfo
@@ -97,6 +99,32 @@ namespace roleplay.Offers
 
                 sender.handle.SendNotification($"Naprawiłeś pojazd gracza {receiver.formattedName}.");
                 receiver.handle.SendNotification($"Gracz {sender.formattedName} naprawił twój pojazd.");
+            }
+
+            if(type == OfferType.PersonalDocument)
+            {
+                var item = Managers.ItemManager.Instance().CreateItem();
+                item.name = "Dowód osobisty";
+                item.type = ItemType.Document;
+                item.propertiesString = $"{DocumentType.Personal}|{receiver.character.UID}";
+                item.ChangeOwner(OwnerType.Character, receiver.character.UID);
+                item.Save();
+
+                sender.handle.SendNotification($"Wystawiłeś dowód osobisty dla {receiver.formattedName}.");
+                receiver.handle.SendNotification($"Gracz {sender.formattedName} wyrobił ci dowód osobisty.");
+            }
+
+            if (type == OfferType.VehicleLicenseDocument)
+            {
+                var item = Managers.ItemManager.Instance().CreateItem();
+                item.name = "Prawo jazdy";
+                item.type = ItemType.Document;
+                item.propertiesString = $"{DocumentType.VehicleLicense}|{receiver.character.UID}";
+                item.ChangeOwner(OwnerType.Character, receiver.character.UID);
+                item.Save();
+
+                sender.handle.SendNotification($"Wystawiłeś prawo jazdy dla {receiver.formattedName}.");
+                receiver.handle.SendNotification($"Gracz {sender.formattedName} wyrobił ci prawo jazdy.");
             }
 
             sender.offerInfo = null;
