@@ -117,7 +117,7 @@ namespace roleplay.Entities
 
                 NAPI.Player.SpawnPlayer(handle, handle.Position, handle.Heading);
                 handle.Freeze(true);
-                handle.PlayAnimation("veh@bike@chopper@front@ps", "dead_fall_out", 1);
+                handle.PlayAnimation("combat@death@from_writhe", "death_a", 9);
                 handle.SendNotification("~r~Straciłeś przytomność. Poczekaj aby ją odzyskać.");
             }
             else
