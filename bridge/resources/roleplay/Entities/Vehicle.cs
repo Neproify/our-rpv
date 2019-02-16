@@ -59,9 +59,9 @@ namespace roleplay.Entities
             if (handle == null)
                 return;
 
+            Managers.VehicleManager.Instance().UnlinkWithHandle(this);
             handle.Delete();
             handle = null;
-            Managers.VehicleManager.Instance().UnlinkWithHandle(this);
         }
 
         public bool IsSpawned()

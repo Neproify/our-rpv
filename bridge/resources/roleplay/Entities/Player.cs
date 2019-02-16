@@ -113,7 +113,7 @@ namespace roleplay.Entities
             if(isWounded)
             {
                 isBrutallyWounded = true;
-                secondsToEndOfBrutallyWounded = 10;
+                secondsToEndOfBrutallyWounded = 60*5;
 
                 NAPI.Player.SpawnPlayer(handle, handle.Position, handle.Heading);
                 handle.Freeze(true);
