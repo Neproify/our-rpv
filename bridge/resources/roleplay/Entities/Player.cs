@@ -18,6 +18,7 @@ namespace roleplay.Entities
 
         public bool isBrutallyWounded = false;
         public int secondsToEndOfBrutallyWounded = 0;
+        public bool isGagged = false;
 
         public Client handle;
         public GlobalInfo globalInfo;

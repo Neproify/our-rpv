@@ -22,6 +22,12 @@ namespace roleplay.Scripts
                 return;
             }
 
+            if(player.isGagged)
+            {
+                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz mówić.");
+                return;
+            }
+
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
 
             message = message.Replace("<", "!{#C2A2DA}*");
@@ -121,6 +127,12 @@ namespace roleplay.Scripts
                 return;
             }
 
+            if (player.isGagged)
+            {
+                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz krzyczeć.");
+                return;
+            }
+
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(30, player.handle.Position);
 
             foreach (var nearPlayer in players)
@@ -144,6 +156,12 @@ namespace roleplay.Scripts
                 return;
             }
 
+            if (player.isGagged)
+            {
+                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz szepczeć.");
+                return;
+            }
+
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(5, player.handle.Position);
 
             foreach (var nearPlayer in players)
@@ -163,6 +181,12 @@ namespace roleplay.Scripts
             if (player.isBrutallyWounded)
             {
                 player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                return;
+            }
+
+            if (player.isGagged)
+            {
+                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz mówić.");
                 return;
             }
 
@@ -198,6 +222,12 @@ namespace roleplay.Scripts
             if (player.isBrutallyWounded)
             {
                 player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                return;
+            }
+
+            if (player.isGagged)
+            {
+                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz mówić.");
                 return;
             }
 

@@ -11,7 +11,9 @@ namespace roleplay.Groups
         Police,
         Medical,
         Radio,
-        Workshop
+        Workshop,
+        Gang,
+        Mafia
     }
 
     public enum GroupSpecialPermission
