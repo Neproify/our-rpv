@@ -19,6 +19,12 @@ namespace roleplay.Buildings
             {
                 if(player.handle.Position.DistanceTo(player.building.exitPosition) <= 3f)
                 {
+                    if(player.character.jailBuildingID != -1)
+                    {
+                        player.handle.SendNotification("~r~Jesteś uwięziony. Nie możesz wyjść.");
+                        return;
+                    }
+
                     player.handle.Position = player.building.enterPosition;
                     player.handle.Dimension = player.building.enterDimension;
                     player.building = null;

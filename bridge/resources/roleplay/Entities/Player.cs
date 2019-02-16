@@ -302,6 +302,20 @@ namespace roleplay.Entities
             return false;
         }
 
+        public bool IsInBuildingOfHisGroup()
+        {
+            if (groupDuty == null)
+                return false;
+
+            if (building == null)
+                return false;
+
+            if (building.ownerType == OwnerType.Group && building.ownerID == groupDuty.member.groupID)
+                return true;
+
+            return false;
+        }
+
         public bool IsAdminOfLevel(Admin.AdminLevel level)
         {
             if (globalInfo == null)
@@ -329,16 +343,24 @@ namespace roleplay.Entities
         public int money;
         public int health;
 
+        public int jailBuildingID;
+        public Vector3 jailPosition;
+
         public void Save()
         {
             var command = Database.Instance().Connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_characters` SET `model`=@model, `money`=@money, `health`=@health WHERE `UID`=@UID";
+            command.CommandText = "UPDATE `rp_characters` SET `model`=@model, `money`=@money, `health`=@health, `jailBuilding`=@jailBuildingID, " +
+                "`jailPositionX`=@jailPositionX, `jailPositionY`=@jailPositionY, `jailPositionZ`=@jailPositionZ WHERE `UID`=@UID";
             command.Prepare();
 
             command.Parameters.AddWithValue("@model", model);
             command.Parameters.AddWithValue("@UID", UID);
             command.Parameters.AddWithValue("@money", money);
             command.Parameters.AddWithValue("@health", health);
+            command.Parameters.AddWithValue("jailBuildingID", jailBuildingID);
+            command.Parameters.AddWithValue("jailPositionX", jailPosition.X);
+            command.Parameters.AddWithValue("jailPositionY", jailPosition.Y);
+            command.Parameters.AddWithValue("jailPositionZ", jailPosition.Z);
             command.ExecuteNonQuery();
         }
     }

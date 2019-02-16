@@ -80,6 +80,11 @@ namespace roleplay.Auth
                 return;
             }
 
+            Vector3 jailPosition = new Vector3();
+            jailPosition.X = reader.GetFloat("jailPositionX");
+            jailPosition.Y = reader.GetFloat("jailPositionY");
+            jailPosition.Z = reader.GetFloat("jailPositionZ");
+
             var character = new Entities.Character
             {
                 UID = reader.GetInt32("UID"),
@@ -87,14 +92,16 @@ namespace roleplay.Auth
                 name = reader.GetString("name"),
                 model = reader.GetUInt32("model"),
                 money = reader.GetInt32("money"),
-                health = reader.GetInt32("health")
+                health = reader.GetInt32("health"),
+                jailBuildingID = reader.GetInt32("jailBuilding"),
+                jailPosition = jailPosition
             };
 
             reader.Close();
 
             player.character = character;
 
-            if(player.HaveActivePenaltyOfType(Penalties.PenaltyType.CharacterKill))
+            if (player.HaveActivePenaltyOfType(Penalties.PenaltyType.CharacterKill))
             {
                 player.handle.SendNotification("~r~Podana postać jest zablokowana. Nie możesz jej wybrać.");
                 player.character = null;
@@ -108,7 +115,23 @@ namespace roleplay.Auth
             player.handle.Health = character.health;
             NAPI.Entity.SetEntityModel(player.handle, player.character.model);
             NAPI.ClientEvent.TriggerClientEvent(client, "OnCharacterSelectionSuccessful");
-            NAPI.Player.SpawnPlayer(client, new Vector3(1398.96, 3591.61, 35), 180);
+
+            Vector3 spawnPosition = new Vector3(1398.96, 3591.61, 35);
+            uint spawnDimension = 0;
+
+            if (character.jailBuildingID != -1)
+            {
+                var building = Managers.BuildingManager.Instance().GetByID(character.jailBuildingID);
+                if (building != null)
+                {
+                    spawnPosition = character.jailPosition;
+                    spawnDimension = building.exitDimension;
+                }
+            }
+
+
+            NAPI.Player.SpawnPlayer(client, spawnPosition, 180);
+            player.handle.Dimension = spawnDimension;
             player.handle.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
             return;
         }
