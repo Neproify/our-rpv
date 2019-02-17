@@ -32,6 +32,7 @@ namespace roleplay
             Managers.VehicleManager.Instance().LoadFromDatabase();
             Managers.ItemManager.Instance().LoadFromDatabase();
             Managers.GroupManager.Instance().LoadFromDatabase();
+            Managers.GroupProductManager.Instance().LoadFromDatabase();
             Managers.BuildingManager.Instance().LoadFromDatabase();
             Managers.ObjectManager.Instance().LoadFromDatabase();
 
@@ -49,6 +50,7 @@ namespace roleplay
             Managers.PlayerManager.Instance().SaveAll();
             Managers.VehicleManager.Instance().SaveAll();
             Managers.GroupManager.Instance().SaveAll();
+            Managers.GroupProductManager.Instance().SaveAll();
             Managers.BuildingManager.Instance().SaveAll();
             Managers.ObjectManager.Instance().SaveAll();
         }

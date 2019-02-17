@@ -14,7 +14,7 @@ namespace roleplay.Entities
         public int bank;
         public int leaderRank;
         public int leaderID;
-        public int type;
+        public Groups.GroupType type;
         public int specialPermissions;
 
         public Group()

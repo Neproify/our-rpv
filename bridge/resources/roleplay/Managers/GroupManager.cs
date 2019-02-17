@@ -46,7 +46,7 @@ namespace roleplay.Managers
                     bank = reader.GetInt32("bank"),
                     leaderRank = reader.GetInt32("leaderRank"),
                     leaderID = reader.GetInt32("leaderID"),
-                    type = reader.GetInt32("type"),
+                    type = (Groups.GroupType)reader.GetInt32("type"),
                     specialPermissions = reader.GetInt32("specialPermissions")
                 };
 

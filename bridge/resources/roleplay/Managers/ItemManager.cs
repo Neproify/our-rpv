@@ -19,6 +19,7 @@ namespace roleplay.Managers
             {
                 itemsOfOwner[(OwnerType)i] = new Dictionary<int, List<Entities.Item>>();
             }
+            itemsOfOwner[OwnerType.None][0] = new List<Entities.Item>();
             itemsOfOwner[OwnerType.World][0] = new List<Entities.Item>();
         }
 
@@ -185,7 +186,7 @@ namespace roleplay.Managers
         public Entities.Item CreateItem()
         {
             var command = Database.Instance().Connection.CreateCommand();
-            command.CommandText = "INSERT INTO `rp_items` SET `name`='', `type`=0, `properties`='', `ownerType`=0, `ownerID`=-1, `positionX`=0, `positionY`=0, `positionZ`=0;";
+            command.CommandText = "INSERT INTO `rp_items` SET `name`='', `type`=0, `properties`='', `ownerType`=0, `ownerID`=0, `positionX`=0, `positionY`=0, `positionZ`=0;";
             command.ExecuteNonQuery();
 
             return Load((int)command.LastInsertedId);

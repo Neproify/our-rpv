@@ -285,7 +285,7 @@ namespace roleplay.Entities
             if (group == null)
                 return false;
 
-            if ((group.specialPermissions & (int)permission) == 1)
+            if ((group.specialPermissions & (int)permission) == (int)permission)
                 return true;
 
             return false;
@@ -296,7 +296,7 @@ namespace roleplay.Entities
             if (groupDuty == null)
                 return false;
 
-            if (groupDuty.member.group.type == (int)type)
+            if (groupDuty.member.group.type == type)
                 return true;
 
             return false;

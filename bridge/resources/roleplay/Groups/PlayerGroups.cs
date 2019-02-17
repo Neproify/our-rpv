@@ -17,7 +17,7 @@ namespace roleplay.Groups
 
             List<Entities.Group> groups = player.GetGroups();
 
-            if(groups.Count == 0)
+            if (groups.Count == 0)
             {
                 player.handle.SendNotification("~r~Nie należysz do żadnej grupy.");
                 return;
@@ -25,7 +25,7 @@ namespace roleplay.Groups
 
             var args = arg.Split(" ");
 
-            if(args[0] == "lista")
+            if (args[0] == "lista")
             {
                 player.handle.SendChatMessage("====LISTA TWOICH GRUP====");
                 foreach (var group in groups)
@@ -40,15 +40,15 @@ namespace roleplay.Groups
             int groupID;
             bool result = Int32.TryParse(args[0], out groupID);
 
-            if(!result)
+            if (!result)
             {
                 player.handle.SendNotification("Użyj: /g [lista, identyfikator grupy]");
                 return;
             }
 
             selectedGroup = groups.Find(x => x.UID == groupID);
-            
-            if(selectedGroup == null)
+
+            if (selectedGroup == null)
             {
                 player.handle.SendNotification("~r~Podałeś identyfikator grupy do której nie należysz!");
                 return;
@@ -57,14 +57,15 @@ namespace roleplay.Groups
             if (args.GetLength(0) < 2)
                 goto Usage;
 
-            if(args[1] == "info")
+            if (args[1] == "info")
             {
                 player.handle.SendChatMessage($"Nazwa grupy: {selectedGroup.name}, typ: {selectedGroup.type}, na służbie: {selectedGroup.GetPlayersOnDuty().Count}");
                 return;
             }
+
             if (args[1] == "duty")
             {
-                if(player.groupDuty == null)
+                if (player.groupDuty == null)
                 {
                     var member = selectedGroup.GetMember(player);
 
@@ -89,14 +90,15 @@ namespace roleplay.Groups
                 }
                 return;
             }
+
             if (args[1] == "przebierz")
             {
                 var member = selectedGroup.GetMember(player);
 
                 if (member == null)
                     return;
-            
-                if(player.handle.Model == member.rank.skin)
+
+                if (player.handle.Model == member.rank.skin)
                 {
                     NAPI.Entity.SetEntityModel(player.handle, player.character.model);
                     player.handle.SendNotification("~g~Przebrałeś się w codzienne ubranie.");
@@ -115,10 +117,11 @@ namespace roleplay.Groups
 
                 return;
             }
+
             if (args[1] == "online")
             {
                 player.handle.SendChatMessage($"====OSOBY ONLINE W GRUPIE {selectedGroup.name}====");
-                foreach(var groupPlayer in selectedGroup.GetPlayersOnDuty())
+                foreach (var groupPlayer in selectedGroup.GetPlayersOnDuty())
                 {
                     player.handle.SendChatMessage($"{groupPlayer.formattedName}(ID: {groupPlayer.handle.Handle})");
                 }
@@ -126,9 +129,93 @@ namespace roleplay.Groups
                 return;
             }
 
-            Usage:
+            if (args[1] == "zamow" || args[1] == "zamów")
+            {
+                var member = selectedGroup.GetMember(player);
 
-            player.handle.SendNotification($"Użyj: /g {groupID} [info, duty, przebierz, online]");
+                if (member == null)
+                    return;
+
+                if((member.rank.permissions & (int)Groups.GroupMemberPermission.OrdersManagement) == 0)
+                {
+                    player.handle.SendNotification("~r~Nie masz uprawnień do zamawiania przedmiotów w tej grupie!");
+                    return;
+                }
+
+                if (args.Length < 3)
+                    goto OrderUsage;
+
+                if (args[2] == "lista")
+                {
+                    var products = Managers.GroupProductManager.Instance().GetProductsForGroup(selectedGroup);
+
+                    player.handle.SendChatMessage($"====LISTA PRZEDMIOTÓW DO ZAMÓWIENIA W GRUPIE {selectedGroup.name}");
+                    foreach (var productToList in products)
+                    {
+                        player.handle.SendChatMessage($"[{productToList.UID}] {productToList.name}, typ: {Utils.GetNameFromItemType(productToList.type)}, właściwości: {productToList.propertiesString}, cena: ${productToList.price}");
+                    }
+                    player.handle.SendChatMessage($"====KONIEC LISTY====");
+                    return;
+                }
+
+                if (args.Length < 4)
+                    goto OrderUsage;
+
+                int productID, quantity;
+
+                if (!Int32.TryParse(args[2], out productID))
+                    goto OrderUsage;
+
+                if (!Int32.TryParse(args[3], out quantity))
+                    quantity = 1;
+
+                var product = Managers.GroupProductManager.Instance().GetByID(productID);
+
+                if(product == null)
+                {
+                    player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator produktu");
+                    return;
+                }
+
+                if (!product.CanBeBoughtByGroup(selectedGroup))
+                {
+                    player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator produktu");
+                    return;
+                }
+
+                int finalPrice = product.price * quantity;
+
+                if(selectedGroup.bank < finalPrice)
+                {
+                    player.handle.SendNotification("~r~Grupa nie ma wystarczającej ilości środków na koncie.");
+                    return;
+                }
+
+                selectedGroup.bank -= finalPrice;
+                selectedGroup.Save();
+
+                for(int i = 1; i <= quantity; i++)
+                {
+                    var createdItem = Managers.ItemManager.Instance().CreateItem();
+                    createdItem.name = product.name;
+                    createdItem.type = product.type;
+                    createdItem.propertiesString = product.propertiesString.Replace("*group*", selectedGroup.UID.ToString());
+                    createdItem.ChangeOwner(OwnerType.Group, selectedGroup.UID);
+                    createdItem.Save();
+                }
+
+                player.handle.SendNotification($"~g~Zakupiłeś {quantity} sztuk {product.name} za ${finalPrice}.");
+
+                return;
+            }
+
+        Usage:
+
+            player.handle.SendNotification($"Użyj: /g {groupID} [info, duty, przebierz, online, zamów]");
+            return;
+
+        OrderUsage:
+            player.handle.SendNotification($"Użyj: /g {groupID} zamów [lista/identyfikator produktu] [ilość]");
             return;
         }
     }

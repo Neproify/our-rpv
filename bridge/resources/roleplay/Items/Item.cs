@@ -16,10 +16,13 @@ namespace roleplay.Entities
         {
             set
             {
-                var temp = value.Split("|");
-                for (int i = 0; i < temp.Length; i++)
+                if (value.Length > 0)
                 {
-                    properties[i] = Convert.ToInt32(temp[i]);
+                    var temp = value.Split("|");
+                    for (int i = 0; i < temp.Length; i++)
+                    {
+                        properties[i] = Convert.ToInt32(temp[i]);
+                    }
                 }
                 this._propertiesString = value;
             }
@@ -98,12 +101,14 @@ namespace roleplay.Entities
         public virtual void Save()
         {
             var command = Database.Instance().Connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_items` SET `name`=@name, `type`=@type, `properties`=@properties, `positionX`=@positionX, `positionY`=@positionY, `positionZ`=@positionZ WHERE `UID`=@UID";
+            command.CommandText = "UPDATE `rp_items` SET `name`=@name, `type`=@type, `properties`=@properties, `ownerType`=@ownerType, `ownerID`=@ownerID, `positionX`=@positionX, `positionY`=@positionY, `positionZ`=@positionZ WHERE `UID`=@UID";
             command.Prepare();
 
             command.Parameters.AddWithValue("@name", name);
             command.Parameters.AddWithValue("@type", type);
             command.Parameters.AddWithValue("@properties", propertiesString);
+            command.Parameters.AddWithValue("@ownerType", ownerType);
+            command.Parameters.AddWithValue("@ownerID", ownerID);
             command.Parameters.AddWithValue("@positionX", position.X);
             command.Parameters.AddWithValue("@positionY", position.Y);
             command.Parameters.AddWithValue("@positionZ", position.Z);
