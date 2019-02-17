@@ -136,7 +136,7 @@ namespace roleplay.Groups
                 if (member == null)
                     return;
 
-                if((member.rank.permissions & (int)Groups.GroupMemberPermission.OrdersManagement) == 0)
+                if ((member.rank.permissions & (int)Groups.GroupMemberPermission.OrdersManagement) == 0)
                 {
                     player.handle.SendNotification("~r~Nie masz uprawnień do zamawiania przedmiotów w tej grupie!");
                     return;
@@ -171,7 +171,7 @@ namespace roleplay.Groups
 
                 var product = Managers.GroupProductManager.Instance().GetByID(productID);
 
-                if(product == null)
+                if (product == null)
                 {
                     player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator produktu");
                     return;
@@ -185,7 +185,7 @@ namespace roleplay.Groups
 
                 int finalPrice = product.price * quantity;
 
-                if(selectedGroup.bank < finalPrice)
+                if (selectedGroup.bank < finalPrice)
                 {
                     player.handle.SendNotification("~r~Grupa nie ma wystarczającej ilości środków na koncie.");
                     return;
@@ -194,7 +194,7 @@ namespace roleplay.Groups
                 selectedGroup.bank -= finalPrice;
                 selectedGroup.Save();
 
-                for(int i = 1; i <= quantity; i++)
+                for (int i = 1; i <= quantity; i++)
                 {
                     var createdItem = Managers.ItemManager.Instance().CreateItem();
                     createdItem.name = product.name;
@@ -202,6 +202,7 @@ namespace roleplay.Groups
                     createdItem.propertiesString = product.propertiesString.Replace("*group*", selectedGroup.UID.ToString());
                     createdItem.ChangeOwner(OwnerType.Group, selectedGroup.UID);
                     createdItem.Save();
+                    Managers.ItemManager.Instance().ReloadItem(createdItem);
                 }
 
                 player.handle.SendNotification($"~g~Zakupiłeś {quantity} sztuk {product.name} za ${finalPrice}.");
@@ -209,14 +210,114 @@ namespace roleplay.Groups
                 return;
             }
 
+            if (args[1] == "magazyn")
+            {
+                var member = selectedGroup.GetMember(player);
+
+                if ((member.rank.permissions & (int)GroupMemberPermission.ItemsManagement) == 0)
+                {
+                    player.handle.SendNotification("~r~Nie masz dostępu do magazynu grupy.");
+                    return;
+                }
+
+                if (args.Length < 3)
+                    goto StorageUsage;
+
+                if (args[2] == "lista")
+                {
+                    var items = selectedGroup.GetItems();
+
+                    if (items == null)
+                    {
+                        player.handle.SendNotification("~r~Magazyn grupy jest pusty.");
+                        return;
+                    }
+
+                    player.handle.SendChatMessage($"====MAGAZYN GRUPY {selectedGroup.name}====");
+
+                    foreach (var item in items)
+                    {
+                        player.handle.SendChatMessage($"[{item.UID}] {item.name}, typ: {item.type}");
+                    }
+
+                    player.handle.SendChatMessage("====KONIEC LISTY====");
+
+                    return;
+                }
+
+                if (args[2] == "wloz" || args[2] == "włóż")
+                {
+                    if (args.Length < 4)
+                        goto StorageUsage;
+
+                    int itemID;
+
+                    if (!Int32.TryParse(args[3], out itemID))
+                        goto StorageUsage;
+
+                    var item = Managers.ItemManager.Instance().GetByID(itemID);
+                    if (item == null)
+                    {
+                        player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
+                        return;
+                    }
+
+                    if (!player.CanUseItem(item))
+                    {
+                        player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
+                        return;
+                    }
+
+                    item.ChangeOwner(OwnerType.Group, selectedGroup.UID);
+                    item.Save();
+                    player.handle.SendNotification("Umiesciłeś przedmiot w magazynie grupowym.");
+
+                    return;
+                }
+
+                if (args[2] == "wyciagnij" || args[2] == "wyciągnij")
+                {
+                    if (args.Length < 4)
+                        goto StorageUsage;
+
+                    int itemID;
+
+                    if (!Int32.TryParse(args[3], out itemID))
+                        goto StorageUsage;
+
+                    var item = Managers.ItemManager.Instance().GetByID(itemID);
+                    if (item == null)
+                    {
+                        player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
+                        return;
+                    }
+
+                    if (item.ownerType != OwnerType.Group || item.ownerID != selectedGroup.UID)
+                    {
+                        player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
+                        return;
+                    }
+
+                    item.ChangeOwner(OwnerType.Character, player.character.UID);
+                    item.Save();
+                    player.handle.SendNotification("Zabrałeś przedmiot z magazynu grupowego.");
+
+                    return;
+                }
+
+                goto StorageUsage;
+            }
+
         Usage:
-
-            player.handle.SendNotification($"Użyj: /g {groupID} [info, duty, przebierz, online, zamów]");
+            player.handle.SendNotification($"Użyj: /g {groupID} [info, duty, przebierz, online, zamów, magazyn]");
             return;
-
         OrderUsage:
             player.handle.SendNotification($"Użyj: /g {groupID} zamów [lista/identyfikator produktu] [ilość]");
             return;
+        StorageUsage:
+            player.handle.SendNotification($"Użyj: /g {groupID} magazyn [lista/włóż/wyciągnij] [identyfikator przedmiotu]");
+            return;
         }
+
     }
 }

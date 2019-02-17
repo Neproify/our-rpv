@@ -93,6 +93,11 @@ namespace roleplay.Entities
             return Managers.PlayerManager.Instance().GetAll().FindAll(x => x.groupDuty?.member.group == this);
         }
 
+        public List<Entities.Item> GetItems()
+        {
+            return Managers.ItemManager.Instance().GetItemsOf(OwnerType.Group, UID);
+        }
+
         public void Save()
         {
             var command = Database.Instance().Connection.CreateCommand();

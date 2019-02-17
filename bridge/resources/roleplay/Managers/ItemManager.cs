@@ -112,8 +112,6 @@ namespace roleplay.Managers
             while(reader.Read())
             {
                 var item = Load(reader);
-
-                Add(item);
             }
 
             reader.Close();
@@ -163,6 +161,8 @@ namespace roleplay.Managers
             item.ownerType = ownerType;
             item.ownerID = ownerID;
             item.position = position;
+
+            Add(item);
 
             return item;
         }

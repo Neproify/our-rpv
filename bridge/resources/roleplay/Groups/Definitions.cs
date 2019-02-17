@@ -28,6 +28,7 @@ namespace roleplay.Groups
         MembersManagement = 1,
         VehicleManagement = 2,
         BuildingsManagement = 4,
-        OrdersManagement = 8
+        OrdersManagement = 8,
+        ItemsManagement = 16
     }
 }
