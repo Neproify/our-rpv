@@ -53,7 +53,7 @@ namespace roleplay.Admin
                     goto NameUsage;
                 }
 
-                string name = string.Join(" ", args, 2, args.Length);
+                string name = string.Join(" ", args, 2, args.Length - 2);
 
                 item.name = name;
                 item.Save();
@@ -106,6 +106,7 @@ namespace roleplay.Admin
                 }
 
                 item.ChangeOwner(type, ownerID);
+                item.Save();
                 return;
             }
 

@@ -16,13 +16,13 @@ namespace roleplay.Scripts
             if (!player.isLogged || player.character == null)
                 return;
 
-            if(player.isBrutallyWounded)
+            if (player.isBrutallyWounded)
             {
                 player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
                 return;
             }
 
-            if(player.isGagged)
+            if (player.isGagged)
             {
                 player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz mówić.");
                 return;
@@ -35,13 +35,16 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} mówi{player.phoneCall == null : '' ? '(telefon)'}: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} mówi{(player.phoneCall?.active == true ? "" : "(telefon)")}: {message}");
             }
 
-            if(player.phoneCall != null)
+            if (player.phoneCall != null)
             {
+                if (player.phoneCall.receiverPhone == 911)
+                    goto AlarmPhone;
+
                 Entities.Player receiver = null;
-                if(player.phoneCall.sender == player)
+                if (player.phoneCall.sender == player)
                 {
                     receiver = player.phoneCall.receiver;
                 }
@@ -51,6 +54,13 @@ namespace roleplay.Scripts
                 }
 
                 receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}): {message}");
+                return;
+
+            AlarmPhone:
+                player.phoneCall = null;
+                var onDutyPlayers = Managers.PlayerManager.Instance().GetAll().FindAll(x => x.groupDuty?.member.group.type == Groups.GroupType.Police || x.groupDuty?.member.group.type == Groups.GroupType.Medical);
+                onDutyPlayers.ForEach(x => x.handle.SendChatMessage($"[911]Zgłoszenie({player.activePhone.properties[0]}): {message}"));
+                return;
             }
         }
 
@@ -147,7 +157,7 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} krzyczy{player.phoneCall == null: '' ? '(telefon)'}: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} krzyczy{(player.phoneCall?.active == true ? "" : "(telefon)")}: {message}");
             }
 
             if (player.phoneCall != null)
@@ -191,7 +201,7 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} szepcze{player.phoneCall == null: '' ? '(telefon)'}: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} szepcze{(player.phoneCall?.active == true ? "" : "(telefon)")}: {message}");
             }
 
             if (player.phoneCall != null)
@@ -245,12 +255,12 @@ namespace roleplay.Scripts
             }
 
             var onDutyPlayers = group.GetPlayersOnDuty();
-            foreach(var dutyPlayer in onDutyPlayers)
+            foreach (var dutyPlayer in onDutyPlayers)
             {
                 dutyPlayer.handle.SendChatMessage($"!{{#0039e6}}[RADIO]{player.formattedName}: {message}");
             }
         }
-        
+
         [Command("m", GreedyArg = true)]
         public void MegaphoneCommand(Client client, string message)
         {
@@ -279,7 +289,7 @@ namespace roleplay.Scripts
 
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(50, player.handle.Position);
 
-            foreach(var nearPlayer in players)
+            foreach (var nearPlayer in players)
             {
                 nearPlayer.SendChatMessage($"!{{#ffff00}}>> {player.formattedName}(megafon): {message}");
             }
@@ -295,13 +305,13 @@ namespace roleplay.Scripts
 
             var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
 
-            if(targetPlayer == null)
+            if (targetPlayer == null)
             {
                 player.handle.SendNotification("~r~Podany gracz nie jest zalogowany!");
                 return;
             }
 
-            if(!targetPlayer.isLogged || targetPlayer.character == null)
+            if (!targetPlayer.isLogged || targetPlayer.character == null)
             {
                 player.handle.SendNotification("~r~Podany gracz nie jest zalogowany!");
                 return;

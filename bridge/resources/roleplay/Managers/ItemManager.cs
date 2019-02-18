@@ -153,6 +153,9 @@ namespace roleplay.Managers
                 case (int)ItemType.Document:
                     item = new Items.ItemType.Document();
                     break;
+                case (int)ItemType.Phone:
+                    item = new Items.ItemType.Phone();
+                    break;
                 default:
                     NAPI.Util.ConsoleOutput("[WARNING]Used default on creating item, type: " + type);
                     item = new Entities.Item();

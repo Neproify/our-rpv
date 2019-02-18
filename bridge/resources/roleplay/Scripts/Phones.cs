@@ -10,7 +10,7 @@ namespace roleplay.Scripts
         [Command("tel", GreedyArg = true)]
         public void PhoneCommand(Client client, string parameters)
         {
-            var player = Managers.PlayerManager.Instance().CreateFromHandle(client);
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
             if (!player.isLogged || player.character == null)
                 return;
@@ -26,21 +26,21 @@ namespace roleplay.Scripts
             if (args.Length < 1)
                 goto Usage;
 
-            if(args[0] == "odbierz")
+            if (args[0] == "odbierz")
             {
-                if(player.phoneCall == null)
+                if (player.phoneCall == null)
                 {
                     player.handle.SendNotification("~r~Nikt do ciebie nie dzwoni. Nie możesz odebrać.");
                     return;
                 }
 
-                if(player.phoneCall.active == true)
+                if (player.phoneCall.active == true)
                 {
                     player.handle.SendNotification("~r~Rozmowa już trwa. Nie możesz odebrać ponownie.");
                     return;
                 }
 
-                if(player.phoneCall.receiver != player)
+                if (player.phoneCall.receiver != player)
                 {
                     player.handle.SendNotification("~r~Nie możesz odebrać. Jesteś dzwoniącym.");
                     return;
@@ -54,7 +54,7 @@ namespace roleplay.Scripts
 
             if (args[0] == "zakończ")
             {
-                if(player.phoneCall == null)
+                if (player.phoneCall == null)
                 {
                     player.handle.SendNotification("~r~Nie masz aktywnego połączenia. Nie możesz zakończyć.");
                     return;
@@ -74,9 +74,27 @@ namespace roleplay.Scripts
 
             player.OutputMe("wyciąga telefon i dzwoni.");
 
+            if (player.phoneCall != null)
+            {
+                player.handle.SendNotification("~r~Posiadasz aktywną rozmowę telefoniczną.");
+                return;
+            }
+
+            if(phoneNumber == 911) // Numer alarmowy
+            {
+                Items.ItemType.PhoneCall alarmCall = new Items.ItemType.PhoneCall();
+                alarmCall.senderPhone = player.activePhone.properties[0];
+                alarmCall.sender = player;
+                alarmCall.receiverPhone = 911;
+                alarmCall.active = true;
+                player.phoneCall = alarmCall;
+                player.handle.SendChatMessage($"!{{#FFFFFF}}Telefon(Operator): 911, podaj swoje zgłoszenie i lokalizację.");
+                return;
+            }
+
             var phone = Managers.ItemManager.Instance().GetByTypeAndProperty(ItemType.Phone, 0, phoneNumber);
 
-            if(phone == null || phone?.ownerType != OwnerType.Character)
+            if (phone == null || phone?.ownerType != OwnerType.Character)
             {
                 player.handle.SendNotification("~r~Telefon nie odpowiada.");
                 return;
@@ -90,19 +108,13 @@ namespace roleplay.Scripts
                 return;
             }
 
-            if(secondPlayer.activePhone != phone)
+            if (secondPlayer.activePhone != phone)
             {
                 player.handle.SendNotification("~r~Telefon nie odpowiada.");
                 return;
             }
 
-            if(player.phoneCall != null)
-            {
-                player.handle.SendNotification("~r~Posiadasz aktywną rozmowę telefoniczną.");
-                return;
-            }
-
-            if(secondPlayer.phoneCall != null)
+            if (secondPlayer.phoneCall != null)
             {
                 player.handle.SendNotification("~r~Linia jest zajęta.");
                 return;
@@ -123,7 +135,7 @@ namespace roleplay.Scripts
             secondPlayer.handle.SendNotification("Ktoś do ciebie dzwoni!");
             secondPlayer.handle.SendNotification("Użyj /tel odbierz aby odebrać.");
 
-            Usage:
+        Usage:
             player.handle.SendNotification("Użyj: /tel [numer telefonu/odbierz/zakończ]");
             return;
         }

@@ -29,7 +29,7 @@ namespace roleplay
 
         public static string GetNameFromOwnerType(OwnerType type)
         {
-            switch(type)
+            switch (type)
             {
                 case OwnerType.None:
                     return "Brak";
@@ -66,6 +66,12 @@ namespace roleplay
             if (name == "bron" || name == "broń")
                 return ItemType.Weapon;
 
+            if (name == "dokument")
+                return ItemType.Document;
+
+            if (name == "telefon")
+                return ItemType.Phone;
+
             return ItemType.Invalid;
         }
 
@@ -77,6 +83,10 @@ namespace roleplay
                     return "Brak";
                 case ItemType.Weapon:
                     return "Broń";
+                case ItemType.Document:
+                    return "Dokument";
+                case ItemType.Phone:
+                    return "Telefon";
                 default:
                     NAPI.Util.ConsoleOutput($"GETNAMEFROMITEMTYPE ERROR, TYPE: {type}");
                     return "Brak";
@@ -86,7 +96,7 @@ namespace roleplay
         public static string GetItemTypes()
         {
             string[] types = new string[sizeof(ItemType)];
-            for(int i = 0; i < sizeof(ItemType); i++)
+            for (int i = 0; i < sizeof(ItemType); i++)
             {
                 types[i] = GetNameFromItemType((ItemType)i);
             }

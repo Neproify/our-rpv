@@ -11,6 +11,12 @@ namespace roleplay.Items.ItemType
         {
             base.Use(player);
 
+            if(player.phoneCall != null)
+            {
+                player.handle.SendNotification("~r~Posiadasz aktywną rozmowę telefoniczną.");
+                return;
+            }
+
 
             if(player.activePhone == this)
             {
