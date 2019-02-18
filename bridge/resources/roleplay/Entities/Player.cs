@@ -55,6 +55,8 @@ namespace roleplay.Entities
         }
 
         public Entities.Building building;
+        public Items.ItemType.Phone activePhone = null;
+        public Items.ItemType.PhoneCall phoneCall = null;
 
         public void Save()
         {
@@ -68,6 +70,16 @@ namespace roleplay.Entities
             foreach (var player in players)
             {
                 player.SendChatMessage($"!{{#C2A2DA}}*{formattedName} {action}");
+            }
+        }
+
+        public void OutputDo(string action)
+        {
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, handle.Position);
+
+            foreach (var nearPlayer in players)
+            {
+                nearPlayer.SendChatMessage($"!{{#9A9CCD}}* {action} (({formattedName}))");
             }
         }
 

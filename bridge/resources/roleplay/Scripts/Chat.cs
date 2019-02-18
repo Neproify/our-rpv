@@ -35,7 +35,22 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} mówi: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} mówi{player.phoneCall == null : '' ? '(telefon)'}: {message}");
+            }
+
+            if(player.phoneCall != null)
+            {
+                Entities.Player receiver = null;
+                if(player.phoneCall.sender == player)
+                {
+                    receiver = player.phoneCall.receiver;
+                }
+                else
+                {
+                    receiver = player.phoneCall.sender;
+                }
+
+                receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}): {message}");
             }
         }
 
@@ -58,12 +73,7 @@ namespace roleplay.Scripts
             if (!player.isLogged || player.character == null)
                 return;
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
-
-            foreach (var nearPlayer in players)
-            {
-                nearPlayer.SendChatMessage($"!{{#9A9CCD}}* {action} (({player.formattedName}))");
-            }
+            player.OutputDo(action);
         }
 
         [Command("b", GreedyArg = true)]
@@ -137,7 +147,22 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} krzyczy: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} krzyczy{player.phoneCall == null: '' ? '(telefon)'}: {message}");
+            }
+
+            if (player.phoneCall != null)
+            {
+                Entities.Player receiver = null;
+                if (player.phoneCall.sender == player)
+                {
+                    receiver = player.phoneCall.receiver;
+                }
+                else
+                {
+                    receiver = player.phoneCall.sender;
+                }
+
+                receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}, krzyk): {message}");
             }
         }
 
@@ -166,7 +191,22 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} szepcze: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} szepcze{player.phoneCall == null: '' ? '(telefon)'}: {message}");
+            }
+
+            if (player.phoneCall != null)
+            {
+                Entities.Player receiver = null;
+                if (player.phoneCall.sender == player)
+                {
+                    receiver = player.phoneCall.receiver;
+                }
+                else
+                {
+                    receiver = player.phoneCall.sender;
+                }
+
+                receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}, szept): {message}");
             }
         }
 

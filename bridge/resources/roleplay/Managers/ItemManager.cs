@@ -48,6 +48,11 @@ namespace roleplay.Managers
             return items.Find(x => x.UID == UID);
         }
 
+        public Entities.Item GetByTypeAndProperty(ItemType type, int propertyNumber, int propertyValue)
+        {
+            return items.Find(x => x.type == type && x.properties[propertyNumber] == propertyValue);
+        }
+
         public List<Entities.Item> GetItemsOf(OwnerType ownerType, int ownerID)
         {
             if (!itemsOfOwner[ownerType].ContainsKey(ownerID))

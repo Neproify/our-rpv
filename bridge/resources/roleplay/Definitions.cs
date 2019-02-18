@@ -19,7 +19,8 @@ namespace roleplay
         Invalid = -1,
         None,
         Weapon,
-        Document
+        Document,
+        Phone
     }
 
     public enum DocumentType
