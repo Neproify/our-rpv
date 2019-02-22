@@ -35,7 +35,7 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} mówi{(player.phoneCall?.active == true ? "" : "(telefon)")}: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} mówi{(player.phoneCall?.active == true ? "(telefon)" : "")}: {message}");
             }
 
             if (player.phoneCall != null)
@@ -157,7 +157,7 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} krzyczy{(player.phoneCall?.active == true ? "" : "(telefon)")}: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} krzyczy{(player.phoneCall?.active == true ? "(telefon)" : "")}: {message}");
             }
 
             if (player.phoneCall != null)
@@ -201,7 +201,7 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} szepcze{(player.phoneCall?.active == true ? "" : "(telefon)")}: {message}");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}{player.formattedName} szepcze{(player.phoneCall?.active == true ? "(telefon)" : "")}: {message}");
             }
 
             if (player.phoneCall != null)

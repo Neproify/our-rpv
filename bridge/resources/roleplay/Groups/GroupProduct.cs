@@ -24,7 +24,17 @@ namespace roleplay.Groups
 
         public void Save()
         {
-#warning Implement this(GroupProduct).
+            var command = Database.Instance().Connection.CreateCommand();
+            command.CommandText = "UPDATE `rp_products` SET `name`=@name, `type`=@type, `properties`=@properties, `price`=@price WHERE `UID`=@UID;";
+            command.Prepare();
+
+            command.Parameters.AddWithValue("@name", name);
+            command.Parameters.AddWithValue("@type", type);
+            command.Parameters.AddWithValue("@properties", propertiesString);
+            command.Parameters.AddWithValue("@price", price);
+            command.Parameters.AddWithValue("@UID", UID);
+
+            command.ExecuteNonQuery();
         }
     }
 }
