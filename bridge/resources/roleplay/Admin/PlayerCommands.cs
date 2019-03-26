@@ -154,6 +154,32 @@ namespace roleplay.Admin
             NAPI.Chat.SendChatMessageToAll($"!{{#9A9CCD}}* {action}");
         }
 
+        [Command("ban", GreedyArg = true)]
+        public void BanCommand(Client client, int playerID, string reason)
+        {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.isLogged || player.character == null)
+                return;
+
+            if (!player.IsAdminOfLevel(AdminLevel.Supporter))
+            {
+                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                return;
+            }
+
+            var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
+            if (targetPlayer == null)
+            {
+                player.handle.SendNotification("~r~Podany gracz nie jest w grze!");
+                return;
+            }
+
+            targetPlayer.CreatePenalty(Penalties.PenaltyType.Ban, reason, player.character.UID, DateTime.Now);
+            targetPlayer.handle.Kick(reason);
+        }
+
+
         [Command("kick", GreedyArg = true)]
         public void KickCommand(Client client, int playerID, string reason)
         {

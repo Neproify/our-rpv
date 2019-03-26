@@ -77,6 +77,12 @@ namespace roleplay.Auth
             player.globalInfo = globalInfo;
             player.LoadPenalties();
 
+            if(player.HaveActivePenaltyOfType(Penalties.PenaltyType.Ban))
+            {
+                player.handle.Kick("Posiadasz aktywną karę administracyjną.");
+                return;
+            }
+
             NAPI.ClientEvent.TriggerClientEvent(client, "LoginSuccessful");
 
             client.SendNotification("~g~Pomyślnie zalogowałeś się!");
