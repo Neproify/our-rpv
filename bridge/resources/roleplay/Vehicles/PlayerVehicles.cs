@@ -7,44 +7,31 @@ namespace roleplay.Vehicles
 {
     public class PlayerVehicles : Script
     {
-        [Command("tuning")]
-        public void TuningCommand(Client client, int modIndex, int modLevel)
-        {
-#warning delete this.
-            var player = Managers.PlayerManager.Instance().GetByHandle(client);
-
-            var vehicle = player.vehicle;
-
-            if (vehicle == null)
-                return;
-
-            vehicle.handle.SetMod(modIndex, modLevel);
-        }
 
         [Command("v", GreedyArg = true)]
         public void VehicleCommand(Client client, string arg)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
-            if(arg == "z" || arg == "zamek")
+            if (arg == "z" || arg == "zamek")
             {
                 var vehicle = player.vehicle;
-                if(vehicle == null)
+                if (vehicle == null)
                 {
                     vehicle = player.GetClosestVehicle(5);
-                    if(vehicle == null)
+                    if (vehicle == null)
                     {
                         player.handle.SendNotification("~r~Nie znajdujesz się w pobliżu żadnego pojazdu!");
                         return;
                     }
                 }
 
-                if(!vehicle.CanBeAccessedBy(player))
+                if (!vehicle.CanBeAccessedBy(player))
                 {
                     player.handle.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
                     return;
                 }
 
-                if(vehicle.handle.Locked)
+                if (vehicle.handle.Locked)
                 {
                     player.handle.SendNotification("~g~Otworzyłeś pojazd.");
                     vehicle.handle.Locked = false;
@@ -60,9 +47,9 @@ namespace roleplay.Vehicles
                 return;
             }
 
-            if(arg == "silnik")
+            if (arg == "silnik")
             {
-                if(player.handle.Vehicle == null || player.handle.VehicleSeat != -1)
+                if (player.handle.Vehicle == null || player.handle.VehicleSeat != -1)
                 {
                     player.handle.SendNotification("~r~Nie siedzisz w żadnym pojeździe lub nie jesteś kierowcą!");
                     return;
@@ -70,13 +57,13 @@ namespace roleplay.Vehicles
 
                 var vehicle = Managers.VehicleManager.Instance().GetByHandle(player.handle.Vehicle);
 
-                if(!vehicle.CanBeAccessedBy(player))
+                if (!vehicle.CanBeAccessedBy(player))
                 {
                     player.handle.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
                     return;
                 }
 
-                if(vehicle.engineStatus == false)
+                if (vehicle.engineStatus == false)
                 {
                     player.handle.SendNotification("~g~Uruchomiłeś silnik.");
                     vehicle.engineStatus = true;
@@ -92,7 +79,7 @@ namespace roleplay.Vehicles
                 return;
             }
 
-            if(arg == "parkuj")
+            if (arg == "parkuj")
             {
                 if (player.handle.Vehicle == null || player.handle.VehicleSeat != -1)
                 {
