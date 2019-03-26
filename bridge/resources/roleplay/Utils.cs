@@ -103,5 +103,68 @@ namespace roleplay
 
             return string.Join(",", types);
         }
+
+        public static Groups.GroupType GetGroupTypeByName(string name)
+        {
+            if (name == "rzad" || name == "rząd" || name == "urzad" || name == "urząd")
+                return Groups.GroupType.Government;
+
+            if (name == "policja")
+                return Groups.GroupType.Police;
+
+            if (name == "szpital")
+                return Groups.GroupType.Medical;
+
+            if (name == "radio")
+                return Groups.GroupType.Radio;
+
+            if (name == "warsztat")
+                return Groups.GroupType.Workshop;
+
+            if (name == "gang")
+                return Groups.GroupType.Gang;
+
+            if (name == "mafia")
+                return Groups.GroupType.Mafia;
+
+            return Groups.GroupType.None;
+        }
+
+        public static string GetNameFromGroupType(Groups.GroupType name)
+        {
+            switch (name)
+            {
+                case Groups.GroupType.None:
+                    return "Brak";
+                case Groups.GroupType.Government:
+                    return "Urząd";
+                case Groups.GroupType.Police:
+                    return "Policja";
+                case Groups.GroupType.Medical:
+                    return "Szpital";
+                case Groups.GroupType.Radio:
+                    return "Radio";
+                case Groups.GroupType.Workshop:
+                    return "Warsztat";
+                case Groups.GroupType.Gang:
+                    return "Gang";
+                case Groups.GroupType.Mafia:
+                    return "Mafia";
+
+                default:
+                    return "Brak";
+            }
+        }
+
+        public static string GetGroupTypes()
+        {
+            string[] types = new string[sizeof(Groups.GroupType)];
+            for (int i = 0; i < sizeof(Groups.GroupType); i++)
+            {
+                types[i] = GetNameFromGroupType((Groups.GroupType)i);
+            }
+
+            return string.Join(",", types);
+        }
     }
 }

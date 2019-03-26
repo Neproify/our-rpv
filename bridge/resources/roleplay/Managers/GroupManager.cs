@@ -26,6 +26,11 @@ namespace roleplay.Managers
             groups.ForEach(x => x.Save());
         }
 
+        public Entities.Group GetByID(int ID)
+        {
+            return groups.Find(x => x.UID == ID);
+        }
+
         public List<Entities.Group> GetPlayerGroups(Entities.Player player)
         {
             return groups.FindAll(x => x.members.Find(y => y.charID == player.character.UID) != null);
@@ -39,24 +44,37 @@ namespace roleplay.Managers
 
             while(reader.Read())
             {
-                var group = new Entities.Group
-                {
-                    UID = reader.GetInt32("UID"),
-                    name = reader.GetString("name"),
-                    bank = reader.GetInt32("bank"),
-                    leaderRank = reader.GetInt32("leaderRank"),
-                    leaderID = reader.GetInt32("leaderID"),
-                    type = (Groups.GroupType)reader.GetInt32("type"),
-                    specialPermissions = reader.GetInt32("specialPermissions")
-                };
-
-                Add(group);
+                Load(reader);
             }
 
             reader.Close();
 
             groups.ForEach(x => x.LoadRanks());
             groups.ForEach(x => x.LoadMembers());
+        }
+
+        public Entities.Group Load(MySql.Data.MySqlClient.MySqlDataReader reader)
+        {
+            var group = new Entities.Group
+            {
+                UID = reader.GetInt32("UID"),
+                name = reader.GetString("name"),
+                bank = reader.GetInt32("bank"),
+                leaderRank = reader.GetInt32("leaderRank"),
+                leaderID = reader.GetInt32("leaderID"),
+                type = (Groups.GroupType)reader.GetInt32("type"),
+                specialPermissions = reader.GetInt32("specialPermissions")
+            };
+
+            Add(group);
+
+            return group;
+        }
+
+        public Entities.Group CreateGroup()
+        {
+#warning TODO
+            return null;
         }
     }
 }
