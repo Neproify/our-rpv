@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RAGE;
 
 namespace roleplay_client.Items
@@ -22,7 +20,7 @@ namespace roleplay_client.Items
 
         private void Tick(List<Events.TickNametagData> nametags)
         {
-            if(RAGE.Input.IsDown(0x50) && framesWhenIsUp > 60 && !Chat.Active)
+            if(Input.IsDown(0x50) && framesWhenIsUp > 60 && !Chat.Active)
             {
                 if(isVisible)
                 {
@@ -38,7 +36,7 @@ namespace roleplay_client.Items
                 framesWhenIsUp = 0;
             }
 
-            if (RAGE.Input.IsUp(0x50))
+            if (Input.IsUp(0x50))
             {
                 framesWhenIsUp += 1;
             }
@@ -58,11 +56,10 @@ namespace roleplay_client.Items
         {
             var items = args[0].ToString();
 
-            if (window != null)
-                window.Destroy();
+            window?.Destroy();
 
             window = new RAGE.Ui.HtmlWindow("package://static/items/items.html");
-            window.ExecuteJs(string.Format("loadItems('{0}');", items));
+            window.ExecuteJs($"loadItems('{items}');");
             window.Active = true;
             RAGE.Ui.Cursor.Visible = true;
             isVisible = true;

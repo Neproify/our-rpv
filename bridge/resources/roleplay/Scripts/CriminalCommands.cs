@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Scripts
 {
@@ -23,7 +20,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            if(!player.IsOnDutyOfGroupType(Groups.GroupType.Gang) && !player.IsOnDutyOfGroupType(Groups.GroupType.Mafia))
+            if(!player.IsOnDutyOfGroupType(GroupType.Gang) && !player.IsOnDutyOfGroupType(GroupType.Mafia))
             {
                 player.handle.SendNotification("~r~Nie posiadasz uprawnień do wykonania tej komendy.");
                 return;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 using System.Timers;
 
 namespace roleplay.Scripts
@@ -17,7 +14,7 @@ namespace roleplay.Scripts
 
         private void BrutallyWoundedTimer(object sender, ElapsedEventArgs e)
         {
-            var players = Managers.PlayerManager.Instance().GetAll().FindAll(x => x.isBrutallyWounded == true);
+            var players = Managers.PlayerManager.Instance().GetAll().FindAll(x => x.isBrutallyWounded);
             foreach(var player in players)
             {
                 player.secondsToEndOfBrutallyWounded -= 1;
@@ -47,7 +44,7 @@ namespace roleplay.Scripts
             if (!player.isLogged || player.character == null)
                 return;
 
-            if (player.isBrutallyWounded == true)
+            if (player.isBrutallyWounded)
                 player.KillCharacter(reason);
 
             foreach(var loopPlayer in Managers.PlayerManager.Instance().GetAll())

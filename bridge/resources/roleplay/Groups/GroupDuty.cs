@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace roleplay.Groups
+﻿namespace roleplay
 {
     public class GroupDuty
     {
-        public Groups.GroupMember member;
+        public GroupMember member;
     }
 }

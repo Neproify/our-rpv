@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Scripts
@@ -34,7 +32,7 @@ namespace roleplay.Scripts
                     return;
                 }
 
-                if (player.phoneCall.active == true)
+                if (player.phoneCall.active)
                 {
                     player.handle.SendNotification("~r~Rozmowa już trwa. Nie możesz odebrać ponownie.");
                     return;
@@ -67,9 +65,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            int phoneNumber;
-
-            if (!Int32.TryParse(args[0], out phoneNumber))
+            if (!Int32.TryParse(args[0], out var phoneNumber))
                 goto Usage;
 
             player.OutputMe("wyciąga telefon i dzwoni.");
@@ -82,19 +78,21 @@ namespace roleplay.Scripts
 
             if(phoneNumber == 911) // Numer alarmowy
             {
-                Items.ItemType.PhoneCall alarmCall = new Items.ItemType.PhoneCall();
-                alarmCall.senderPhone = player.activePhone.properties[0];
-                alarmCall.sender = player;
-                alarmCall.receiverPhone = 911;
-                alarmCall.active = true;
+                Items.ItemType.PhoneCall alarmCall = new Items.ItemType.PhoneCall
+                {
+                    senderPhone = player.activePhone.properties[0],
+                    sender = player,
+                    receiverPhone = 911,
+                    active = true
+                };
                 player.phoneCall = alarmCall;
-                player.handle.SendChatMessage($"!{{#FFFFFF}}Telefon(Operator): 911, podaj swoje zgłoszenie i lokalizację.");
+                player.handle.SendChatMessage("!{{#FFFFFF}}Telefon(Operator): 911, podaj swoje zgłoszenie i lokalizację.");
                 return;
             }
 
             var phone = Managers.ItemManager.Instance().GetByTypeAndProperty(ItemType.Phone, 0, phoneNumber);
 
-            if (phone == null || phone?.ownerType != OwnerType.Character)
+            if (phone?.ownerType != OwnerType.Character)
             {
                 player.handle.SendNotification("~r~Telefon nie odpowiada.");
                 return;
@@ -120,12 +118,14 @@ namespace roleplay.Scripts
                 return;
             }
 
-            Items.ItemType.PhoneCall phoneCall = new Items.ItemType.PhoneCall();
-            phoneCall.sender = player;
-            phoneCall.senderPhone = player.activePhone.properties[0];
-            phoneCall.receiver = secondPlayer;
-            phoneCall.receiverPhone = secondPlayer.activePhone.properties[0];
-            phoneCall.active = false;
+            Items.ItemType.PhoneCall phoneCall = new Items.ItemType.PhoneCall
+            {
+                sender = player,
+                senderPhone = player.activePhone.properties[0],
+                receiver = secondPlayer,
+                receiverPhone = secondPlayer.activePhone.properties[0],
+                active = false
+            };
 
             player.phoneCall = phoneCall;
             secondPlayer.phoneCall = phoneCall;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Items
 {
@@ -15,7 +12,7 @@ namespace roleplay.Items
             if (!player.isLogged || player.character == null)
                 return;
 
-            var weapon = player.GetItems().Find(x => x.properties[0] == weaponHash && x.isUsed == true);
+            var weapon = player.GetItems().Find(x => x.properties[0] == weaponHash && x.isUsed);
 
             if (weapon == null)
                 return;

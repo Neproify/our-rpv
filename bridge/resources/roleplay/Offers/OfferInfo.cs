@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace roleplay.Offers
+﻿namespace roleplay.Offers
 {
     public enum OfferType
     {
@@ -88,7 +84,7 @@ namespace roleplay.Offers
 
                 if (sender.handle.Position.DistanceTo(vehicle.handle.Position) > 5)
                 {
-                    sender.handle.SendNotification($"Jesteś za daleko od pojazdu który próbujesz naprawić.");
+                    sender.handle.SendNotification("Jesteś za daleko od pojazdu który próbujesz naprawić.");
                     return;
                 }
 

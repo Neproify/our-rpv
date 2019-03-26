@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RAGE;
+﻿using RAGE;
 
 namespace roleplay_client
 {
@@ -14,8 +11,7 @@ namespace roleplay_client
 
         private void SetMoney(object[] args)
         {
-            int money;
-            if (int.TryParse(args[0].ToString(), out money))
+            if (int.TryParse(args[0].ToString(), out var money))
             {
                 RAGE.Elements.Player.LocalPlayer.SetMoney(money);
             }

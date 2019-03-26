@@ -1,23 +1,22 @@
-﻿using MySql.Data;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 
 namespace roleplay
 {
     public class Database
     {
-        public string Address;
-        public string Login;
-        public string Password;
-        public string DatabaseName;
+        public string adress;
+        public string login;
+        public string password;
+        public string databaseName;
 
-        public MySqlConnection Connection;
+        public MySqlConnection connection;
 
         public bool Connect()
         {
-            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", Address, DatabaseName, Login, Password);
-            Connection = new MySqlConnection(connectionString);
-            Connection.Open();
-            if(Connection.State == System.Data.ConnectionState.Open)
+            string connectionString = $"Server={adress}; database={databaseName}; UID={login}; password={password}";
+            connection = new MySqlConnection(connectionString);
+            connection.Open();
+            if(connection.State == System.Data.ConnectionState.Open)
             {
                 return true;
             }
@@ -27,9 +26,7 @@ namespace roleplay
         private static Database _instance;
         public static Database Instance()
         {
-            if (_instance == null)
-                _instance = new Database();
-            return _instance;
+            return _instance ?? (_instance = new Database());
         }
     }
 }

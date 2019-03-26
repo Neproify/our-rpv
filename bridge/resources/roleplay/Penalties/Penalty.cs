@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace roleplay.Penalties
 {
@@ -25,13 +23,13 @@ namespace roleplay.Penalties
         public int penaltiedBy;
         public DateTime expireDate;
 
-        public void Load(int UID)
+        public void Load(int UIDToLoad)
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_penalties` WHERE `UID`=@UID LIMIT 1;";
             command.Prepare();
 
-            command.Parameters.AddWithValue("@UID", UID);
+            command.Parameters.AddWithValue("@UID", UIDToLoad);
 
             var reader = command.ExecuteReader();
 
@@ -60,7 +58,7 @@ namespace roleplay.Penalties
             if (!isLoaded)
                 return;
 
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "UPDATE `rp_penalties` SET `globalID`=@globalID, `characterID`=@characterID, `type`=@type, `reason`=@reason, `penaltiedBy`=@penaltiedBy, `expireDate`=@expireDate WHERE `UID`=@UID";
             command.Prepare();
 

@@ -1,8 +1,4 @@
-using System;
 using GTANetworkAPI;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
 
 namespace roleplay
 {
@@ -14,10 +10,10 @@ namespace roleplay
             NAPI.Util.ConsoleOutput("Trwa nawi¹zywanie po³¹czenia z baz¹ danych...");
 
             Database database = Database.Instance();
-            database.Address = "127.0.0.1";
-            database.Login = "vrp";
-            database.Password = "STdyt125";
-            database.DatabaseName = "vrp";
+            database.adress = "127.0.0.1";
+            database.login = "vrp";
+            database.password = "STdyt125";
+            database.databaseName = "vrp";
             if(!database.Connect())
             {
                 NAPI.Util.ConsoleOutput("B³¹d podczas ³¹czenia z baz¹ danych.");

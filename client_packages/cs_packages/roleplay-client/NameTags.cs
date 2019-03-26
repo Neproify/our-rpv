@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RAGE;
 
 namespace roleplay_client
@@ -10,7 +8,7 @@ namespace roleplay_client
         public NameTags()
         {
             Events.Tick += Tick;
-            RAGE.Nametags.Enabled = false;
+            Nametags.Enabled = false;
         }
 
         private void Tick(List<Events.TickNametagData> nametags)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace roleplay.Groups
+﻿namespace roleplay
 {
     public class GroupProduct
     {
@@ -24,7 +20,7 @@ namespace roleplay.Groups
 
         public void Save()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "UPDATE `rp_products` SET `name`=@name, `type`=@type, `properties`=@properties, `price`=@price WHERE `UID`=@UID;";
             command.Prepare();
 

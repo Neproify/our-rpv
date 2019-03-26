@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Entities
@@ -11,7 +9,6 @@ namespace roleplay.Entities
         public string name;
         public ItemType type;
         public int[] properties = new int[8]; // Have no idea why 8, we should think about list maybe?
-        private string _propertiesString;
         public string propertiesString
         {
             set
@@ -24,12 +21,8 @@ namespace roleplay.Entities
                         properties[i] = Convert.ToInt32(temp[i]);
                     }
                 }
-                this._propertiesString = value;
             }
-            get
-            {
-                return string.Join("|", properties);
-            }
+            get => string.Join("|", properties);
         }
         public OwnerType ownerType;
         public int ownerID;
@@ -47,7 +40,7 @@ namespace roleplay.Entities
             }
         }
 
-        public virtual void Use(Entities.Player player)
+        public virtual void Use(Player player)
         {
             if (!player.CanUseItem(this))
                 return;
@@ -66,17 +59,17 @@ namespace roleplay.Entities
                 NAPI.Entity.DeleteEntity(objectHandle);
         }
 
-        public virtual void ChangeOwner(OwnerType ownerType, int ownerID)
+        public virtual void ChangeOwner(OwnerType newOwnerType, int newOwnerID)
         {
-            if(this.ownerType == OwnerType.Character)
+            if(ownerType == OwnerType.Character)
             {
-                if(this.isUsed)
+                if(isUsed)
                 {
-                    var player = Managers.PlayerManager.Instance().GetByCharacterID(this.ownerID);
+                    var player = Managers.PlayerManager.Instance().GetByCharacterID(ownerID);
 
                     if (player == null)
                     {
-                        this.isUsed = false; // must be bug :(
+                        isUsed = false; // must be bug :(
                     }
                     else
                     {
@@ -88,11 +81,11 @@ namespace roleplay.Entities
             Unspawn();
 
             Managers.ItemManager.Instance().Remove(this);
-            this.ownerType = ownerType;
-            this.ownerID = ownerID;
+            ownerType = newOwnerType;
+            ownerID = newOwnerID;
             Managers.ItemManager.Instance().Add(this);
 
-            if(this.ownerType == OwnerType.World)
+            if(ownerType == OwnerType.World)
             {
                 Spawn();
             }
@@ -100,7 +93,7 @@ namespace roleplay.Entities
 
         public virtual void Save()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "UPDATE `rp_items` SET `name`=@name, `type`=@type, `properties`=@properties, `ownerType`=@ownerType, `ownerID`=@ownerID, `positionX`=@positionX, `positionY`=@positionY, `positionZ`=@positionZ WHERE `UID`=@UID";
             command.Prepare();
 

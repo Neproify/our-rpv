@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RAGE;
-using RAGE.Elements;
 
 namespace roleplay_client
 {
@@ -13,7 +10,7 @@ namespace roleplay_client
         {
             RAGE.Ui.Cursor.Visible = false;
             Events.Tick += Tick;
-            RAGE.Discord.Update("Gra na Our Role Play Developer", "Logowanie");
+            Discord.Update("Gra na Our Role Play Developer", "Logowanie");
         }
 
         private void Tick(List<Events.TickNametagData> nametags)

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Admin
@@ -30,12 +28,10 @@ namespace roleplay.Admin
                 return;
             }
 
-            int vehicleID;
-
             if (args.Length < 2)
                 goto Usage;
 
-            if (!Int32.TryParse(args[0], out vehicleID))
+            if (!Int32.TryParse(args[0], out var vehicleID))
                 goto Usage;
 
             Entities.Vehicle vehicle = Managers.VehicleManager.Instance().GetByID(vehicleID);
@@ -57,9 +53,7 @@ namespace roleplay.Admin
                 if (args.Length != 4)
                     goto ColorUsage;
 
-                int color1, color2;
-
-                if (!Int32.TryParse(args[2], out color1) || !Int32.TryParse(args[3], out color2))
+                if (!Int32.TryParse(args[2], out var color1) || !Int32.TryParse(args[3], out var color2))
                     goto ColorUsage;
 
                 vehicle.vehicleData.color1 = color1;
@@ -77,9 +71,7 @@ namespace roleplay.Admin
                 if (args.Length != 3)
                     goto HealthUsage;
 
-                int healthValue;
-
-                if (!Int32.TryParse(args[2], out healthValue))
+                if (!Int32.TryParse(args[2], out var healthValue))
                     goto HealthUsage;
 
                 vehicle.handle.Health = healthValue;
@@ -104,9 +96,7 @@ namespace roleplay.Admin
                     return;
                 }
 
-                int ownerID;
-
-                if (!Int32.TryParse(args[3], out ownerID))
+                if (!Int32.TryParse(args[3], out var ownerID))
                 {
                     goto OwnerUsage;
                 }
@@ -185,9 +175,7 @@ namespace roleplay.Admin
                 if (args.Length != 3)
                     goto ModelUsage;
 
-                uint modelHash;
-
-                if (!UInt32.TryParse(args[2], out modelHash))
+                if (!UInt32.TryParse(args[2], out var modelHash))
                     goto ModelUsage;
 
                 vehicle.vehicleData.model = modelHash;

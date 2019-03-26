@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace roleplay.Groups
+﻿namespace roleplay
 {
     public class GroupMember
     {
@@ -13,11 +9,11 @@ namespace roleplay.Groups
         public int dutyTime;
 
         public Entities.Group group;
-        public Groups.GroupRank rank;
+        public GroupRank rank;
 
         public void Save()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "UPDATE `rp_groups_members` SET `dutyTime`=@dutyTime WHERE `UID`=@UID;";
             command.Prepare();
 

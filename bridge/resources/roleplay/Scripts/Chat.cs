@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Scripts
@@ -43,22 +41,14 @@ namespace roleplay.Scripts
                 if (player.phoneCall.receiverPhone == 911)
                     goto AlarmPhone;
 
-                Entities.Player receiver = null;
-                if (player.phoneCall.sender == player)
-                {
-                    receiver = player.phoneCall.receiver;
-                }
-                else
-                {
-                    receiver = player.phoneCall.sender;
-                }
+                var receiver = player.phoneCall.sender == player ? player.phoneCall.receiver : player.phoneCall.sender;
 
                 receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}): {message}");
                 return;
 
             AlarmPhone:
                 player.phoneCall = null;
-                var onDutyPlayers = Managers.PlayerManager.Instance().GetAll().FindAll(x => x.groupDuty?.member.group.type == Groups.GroupType.Police || x.groupDuty?.member.group.type == Groups.GroupType.Medical);
+                var onDutyPlayers = Managers.PlayerManager.Instance().GetAll().FindAll(x => x.groupDuty?.member.group.type == GroupType.Police || x.groupDuty?.member.group.type == GroupType.Medical);
                 onDutyPlayers.ForEach(x => x.handle.SendChatMessage($"[911]Zgłoszenie({player.activePhone.properties[0]}): {message}"));
                 return;
             }
@@ -122,14 +112,9 @@ namespace roleplay.Scripts
 
             foreach (var nearPlayer in players)
             {
-                if (result % 2 == 0)
-                {
-                    nearPlayer.SendChatMessage($"!{{#C2A2DA}}* {player.formattedName} poległ próbując {action}");
-                }
-                else
-                {
-                    nearPlayer.SendChatMessage($"!{{#C2A2DA}}* {player.formattedName} odniósł sukces próbując {action}");
-                }
+                nearPlayer.SendChatMessage(result % 2 == 0
+                    ? $"!{{#C2A2DA}}* {player.formattedName} poległ próbując {action}"
+                    : $"!{{#C2A2DA}}* {player.formattedName} odniósł sukces próbując {action}");
             }
         }
 
@@ -162,15 +147,7 @@ namespace roleplay.Scripts
 
             if (player.phoneCall != null)
             {
-                Entities.Player receiver = null;
-                if (player.phoneCall.sender == player)
-                {
-                    receiver = player.phoneCall.receiver;
-                }
-                else
-                {
-                    receiver = player.phoneCall.sender;
-                }
+                var receiver = player.phoneCall.sender == player ? player.phoneCall.receiver : player.phoneCall.sender;
 
                 receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}, krzyk): {message}");
             }
@@ -206,15 +183,7 @@ namespace roleplay.Scripts
 
             if (player.phoneCall != null)
             {
-                Entities.Player receiver = null;
-                if (player.phoneCall.sender == player)
-                {
-                    receiver = player.phoneCall.receiver;
-                }
-                else
-                {
-                    receiver = player.phoneCall.sender;
-                }
+                var receiver = player.phoneCall.sender == player ? player.phoneCall.receiver : player.phoneCall.sender;
 
                 receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}, szept): {message}");
             }
@@ -281,7 +250,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            if (!player.HasSpecialPermissionInGroup(Groups.GroupSpecialPermission.Megaphone))
+            if (!player.HasSpecialPermissionInGroup(GroupSpecialPermission.Megaphone))
             {
                 player.handle.SendNotification("~r~Nie masz uprawnień aby użyć megafonu!");
                 return;

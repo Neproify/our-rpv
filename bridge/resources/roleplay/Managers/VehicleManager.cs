@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using GTANetworkAPI;
 
 namespace roleplay.Managers
 {
     public class VehicleManager
     {
-        private List<Entities.Vehicle> vehicles = new List<Entities.Vehicle>();
-        private Dictionary<GTANetworkAPI.NetHandle, Entities.Vehicle> vehiclesDictionary = new Dictionary<GTANetworkAPI.NetHandle, Entities.Vehicle>();
+        private readonly List<Entities.Vehicle> vehicles = new List<Entities.Vehicle>();
+        private readonly Dictionary<NetHandle, Entities.Vehicle> vehiclesDictionary = new Dictionary<NetHandle, Entities.Vehicle>();
 
         private static VehicleManager _instance;
         public static VehicleManager Instance()
         {
-            if (_instance == null)
-                _instance = new VehicleManager();
-            return _instance;
+            return _instance ?? (_instance = new VehicleManager());
         }
 
         public void Add(Entities.Vehicle vehicle)
@@ -70,7 +66,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_vehicles`;";
             var reader = command.ExecuteReader();
 
@@ -105,8 +101,7 @@ namespace roleplay.Managers
                 spawnRotation = rotation
             };
 
-            var vehicle = new Entities.Vehicle();
-            vehicle.vehicleData = vehicleData;
+            var vehicle = new Entities.Vehicle {vehicleData = vehicleData};
             Add(vehicle);
             vehicle.Spawn();
 
@@ -115,7 +110,7 @@ namespace roleplay.Managers
         
         public Entities.Vehicle Load(int UID)
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_vehicles` WHERE `UID`=@UID;";
             command.Prepare();
 
@@ -133,7 +128,7 @@ namespace roleplay.Managers
 
         public Entities.Vehicle CreateVehicle()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "INSERT INTO `rp_vehicles` SET `model`=1119641113, `ownerType`=0, `ownerID`=-1, `color1`=1, `color2`=1, `spawnPosX`=0, `spawnPosY`=0, `spawnPosZ`=0, `spawnRotX`=0, `spawnRotY`=0, `spawnRotZ`=0";
             command.ExecuteNonQuery();
 

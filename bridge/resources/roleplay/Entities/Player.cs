@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Entities
@@ -8,13 +7,7 @@ namespace roleplay.Entities
     public class Player
     {
         public bool isLogged;
-        public string formattedName
-        {
-            get
-            {
-                return handle.Name.Replace("_", " ");
-            }
-        }
+        public string formattedName => handle.Name.Replace("_", " ");
 
         public bool isBrutallyWounded = false;
         public int secondsToEndOfBrutallyWounded = 0;
@@ -23,7 +16,7 @@ namespace roleplay.Entities
         public Client handle;
         public GlobalInfo globalInfo;
         public Character character;
-        public Groups.GroupDuty groupDuty;
+        public GroupDuty groupDuty;
         public Offers.OfferInfo offerInfo;
         public List<Penalties.Penalty> penalties = new List<Penalties.Penalty>();
 
@@ -43,7 +36,7 @@ namespace roleplay.Entities
             }
         }
 
-        public Entities.Vehicle vehicle
+        public Vehicle vehicle
         {
             get
             {
@@ -54,7 +47,7 @@ namespace roleplay.Entities
             }
         }
 
-        public Entities.Building building;
+        public Building building;
         public Items.ItemType.Phone activePhone = null;
         public Items.ItemType.PhoneCall phoneCall = null;
 
@@ -83,38 +76,38 @@ namespace roleplay.Entities
             }
         }
 
-        public bool SendMoneyTo(Entities.Player player, int amount)
+        public bool SendMoneyTo(Player player, int amount)
         {
-            if (!this.isLogged || this.character == null)
+            if (!isLogged || character == null)
                 return false;
 
             if (!player.isLogged || player.character == null)
                 return false;
 
-            if(this.money < amount)
+            if(money < amount)
             {
-                this.handle.SendNotification("~r~Masz za mało pieniędzy!");
+                handle.SendNotification("~r~Masz za mało pieniędzy!");
                 return false;
             }
 
-            this.money -= amount;
+            money -= amount;
             player.money += amount;
 
             return true;
         }
 
-        public bool SendMoneyTo(Entities.Group group, int amount)
+        public bool SendMoneyTo(Group group, int amount)
         {
-            if (this.isLogged || this.character == null)
+            if (isLogged || character == null)
                 return false;
 
-            if(this.money < amount)
+            if(money < amount)
             {
-                this.handle.SendNotification("~r~Masz za mało pieniędzy!");
+                handle.SendNotification("~r~Masz za mało pieniędzy!");
                 return false;
             }
 
-            this.money -= amount;
+            money -= amount;
             group.bank += amount;
 
             return true;
@@ -150,7 +143,7 @@ namespace roleplay.Entities
 
         public Penalties.Penalty CreatePenalty(Penalties.PenaltyType type, string reason, int penaltiedBy, DateTime expireDate)
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "INSERT INTO `rp_penalties` SET `globalID`=@globalID, `characterID`=@characterID, `type`=@type, `reason`=@reason, `penaltiedBy`=@penaltiedBy, `expireDate`=@expireDate";
             command.Prepare();
 
@@ -175,7 +168,7 @@ namespace roleplay.Entities
         {
             penalties.Clear();
 
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_penalties` WHERE `globalID`=@globalID AND `expireDate` > @currentDate;";
             command.Prepare();
 
@@ -213,7 +206,7 @@ namespace roleplay.Entities
             return false;
         }
 
-        public List<Entities.Item> GetItems()
+        public List<Item> GetItems()
         {
             if (!isLogged)
                 return null;
@@ -221,7 +214,7 @@ namespace roleplay.Entities
             return Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID);
         }
 
-        public bool CanUseItem(Entities.Item item)
+        public bool CanUseItem(Item item)
         {
             if (item == null)
                 return false;
@@ -239,20 +232,20 @@ namespace roleplay.Entities
             return CanUseItem(item);
         }
 
-        public Entities.Vehicle GetClosestVehicle()
+        public Vehicle GetClosestVehicle()
         {
             var vehicles = NAPI.Pools.GetAllVehicles();
 
             GTANetworkAPI.Vehicle returnedVehicle = null;
             float distance = 99999;
 
-            foreach(var vehicle in vehicles)
+            foreach(var loopVehicle in vehicles)
             {
-                var tempDistance = handle.Position.DistanceTo(vehicle.Position);
+                var tempDistance = handle.Position.DistanceTo(loopVehicle.Position);
                 if(tempDistance < distance)
                 {
                     distance = tempDistance;
-                    returnedVehicle = vehicle;
+                    returnedVehicle = loopVehicle;
                 }
             }
 
@@ -262,35 +255,35 @@ namespace roleplay.Entities
             return Managers.VehicleManager.Instance().GetByHandle(returnedVehicle);
         }
 
-        public Entities.Vehicle GetClosestVehicle(float maxDistance)
+        public Vehicle GetClosestVehicle(float maxDistance)
         {
-            var vehicle = GetClosestVehicle();
+            var closestVehicle = GetClosestVehicle();
 
-            if (vehicle == null)
+            if (closestVehicle == null)
                 return null;
 
-            if (handle.Position.DistanceTo(vehicle.handle.Position) >= maxDistance)
+            if (handle.Position.DistanceTo(closestVehicle.handle.Position) >= maxDistance)
                 return null;
 
-            return vehicle;
+            return closestVehicle;
         }
 
-        public Entities.Building GetClosestBuilding(float maxDistance = 3f)
+        public Building GetClosestBuilding(float maxDistance = 3f)
         {
             return Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);
         }
 
-        public Entities.Item GetClosestItem(float maxDistance = 5f)
+        public Item GetClosestItem(float maxDistance = 5f)
         {
             return Managers.ItemManager.Instance().GetClosestItem(handle.Position, maxDistance);
         }
 
-        public List<Entities.Group> GetGroups()
+        public List<Group> GetGroups()
         {
             return Managers.GroupManager.Instance().GetPlayerGroups(this);
         }
 
-        public bool HasSpecialPermissionInGroup(Groups.GroupSpecialPermission permission)
+        public bool HasSpecialPermissionInGroup(GroupSpecialPermission permission)
         {
             var group = groupDuty?.member.group;
 
@@ -303,7 +296,7 @@ namespace roleplay.Entities
             return false;
         }
 
-        public bool IsOnDutyOfGroupType(Groups.GroupType type)
+        public bool IsOnDutyOfGroupType(GroupType type)
         {
             if (groupDuty == null)
                 return false;
@@ -360,7 +353,7 @@ namespace roleplay.Entities
 
         public void Save()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "UPDATE `rp_characters` SET `model`=@model, `money`=@money, `health`=@health, `jailBuilding`=@jailBuildingID, " +
                 "`jailPositionX`=@jailPositionX, `jailPositionY`=@jailPositionY, `jailPositionZ`=@jailPositionZ WHERE `UID`=@UID";
             command.Prepare();

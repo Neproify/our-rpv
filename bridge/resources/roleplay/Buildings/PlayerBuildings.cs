@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Buildings
 {
@@ -33,7 +30,7 @@ namespace roleplay.Buildings
                 }
             }
 
-            var building = player.GetClosestBuilding(3f);
+            var building = player.GetClosestBuilding();
 
             if (building == null)
                 return;

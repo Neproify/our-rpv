@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Offers
 {
@@ -36,10 +33,9 @@ namespace roleplay.Offers
                 goto Usage;
             }
 
-            int playerID, price;
             string offerType = args[2];
 
-            if (!int.TryParse(args[0], out playerID) || !int.TryParse(args[1], out price))
+            if (!int.TryParse(args[0], out var playerID) || !int.TryParse(args[1], out var price))
             {
                 goto Usage;
             }
@@ -72,18 +68,17 @@ namespace roleplay.Offers
 
             if (args[2] == "ulecz")
             {
-                if(!player.IsOnDutyOfGroupType(Groups.GroupType.Medical))
+                if(!player.IsOnDutyOfGroupType(GroupType.Medical))
                 {
                     player.handle.SendNotification("~r~Nie masz uprawnień aby leczyć inne osoby!");
                     return;
                 }
 
-                OfferInfo offerInfo = new OfferInfo();
+                OfferInfo offerInfo = new OfferInfo
+                {
+                    sender = player, receiver = secondPlayer, type = OfferType.Healing, price = price
+                };
 
-                offerInfo.sender = player;
-                offerInfo.receiver = secondPlayer;
-                offerInfo.type = OfferType.Healing;
-                offerInfo.price = price;
 
                 player.offerInfo = offerInfo;
                 secondPlayer.offerInfo = offerInfo;
@@ -91,15 +86,13 @@ namespace roleplay.Offers
 
             if(args[2] == "przedmiot")
             {
-                int itemID;
-
                 if(args[3] == null)
                 {
                     player.handle.SendNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
                     return;
                 }
 
-                if(!int.TryParse(args[3], out itemID))
+                if(!int.TryParse(args[3], out var itemID))
                 {
                     player.handle.SendNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
                     return;
@@ -113,13 +106,15 @@ namespace roleplay.Offers
                     return;
                 }
 
-                OfferInfo offerInfo = new OfferInfo();
+                OfferInfo offerInfo = new OfferInfo
+                {
+                    sender = player,
+                    receiver = secondPlayer,
+                    type = OfferType.Item,
+                    price = price,
+                    args = {[0] = itemID}
+                };
 
-                offerInfo.sender = player;
-                offerInfo.receiver = secondPlayer;
-                offerInfo.type = OfferType.Item;
-                offerInfo.price = price;
-                offerInfo.args[0] = itemID;
 
                 player.offerInfo = offerInfo;
                 secondPlayer.offerInfo = offerInfo;
@@ -127,19 +122,21 @@ namespace roleplay.Offers
 
             if(args[2] == "mandat")
             {
-                if(!player.IsOnDutyOfGroupType(Groups.GroupType.Police))
+                if(!player.IsOnDutyOfGroupType(GroupType.Police))
                 {
                     player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania mandatów!");
                     return;
                 }
 
-                OfferInfo offerInfo = new OfferInfo();
+                OfferInfo offerInfo = new OfferInfo
+                {
+                    sender = player,
+                    receiver = secondPlayer,
+                    type = OfferType.Ticket,
+                    price = price,
+                    args = {[0] = player.groupDuty.member.group}
+                };
 
-                offerInfo.sender = player;
-                offerInfo.receiver = secondPlayer;
-                offerInfo.type = OfferType.Ticket;
-                offerInfo.price = price;
-                offerInfo.args[0] = player.groupDuty.member.group;
 
                 player.offerInfo = offerInfo;
                 secondPlayer.offerInfo = offerInfo;
@@ -147,20 +144,21 @@ namespace roleplay.Offers
 
             if(args[2] == "napraw")
             {
-                if(!player.IsOnDutyOfGroupType(Groups.GroupType.Workshop))
+                if(!player.IsOnDutyOfGroupType(GroupType.Workshop))
                 {
                     player.handle.SendNotification("~r~Nie masz uprawnień do naprawiania pojazdów!");
                     return;
                 }
 
-                OfferInfo offerInfo = new OfferInfo();
+                OfferInfo offerInfo = new OfferInfo
+                {
+                    sender = player,
+                    receiver = secondPlayer,
+                    type = OfferType.VehicleRepair,
+                    price = price,
+                    args = {[0] = secondPlayer.vehicle, [1] = player.groupDuty.member.group}
+                };
 
-                offerInfo.sender = player;
-                offerInfo.receiver = secondPlayer;
-                offerInfo.type = OfferType.VehicleRepair;
-                offerInfo.price = price;
-                offerInfo.args[0] = secondPlayer.vehicle;
-                offerInfo.args[1] = player.groupDuty.member.group;
 
                 player.offerInfo = offerInfo;
                 secondPlayer.offerInfo = offerInfo;
@@ -168,18 +166,17 @@ namespace roleplay.Offers
 
             if (args[2] == "dowod" || args[2] == "dowód")
             {
-                if(!player.IsOnDutyOfGroupType(Groups.GroupType.Government))
+                if(!player.IsOnDutyOfGroupType(GroupType.Government))
                 {
                     player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania dowodów osobistych!");
                     return;
                 }
 
-                OfferInfo offerInfo = new OfferInfo();
+                OfferInfo offerInfo = new OfferInfo
+                {
+                    sender = player, receiver = secondPlayer, type = OfferType.PersonalDocument, price = price
+                };
 
-                offerInfo.sender = player;
-                offerInfo.receiver = secondPlayer;
-                offerInfo.type = OfferType.PersonalDocument;
-                offerInfo.price = price;
 
                 player.offerInfo = offerInfo;
                 secondPlayer.offerInfo = offerInfo;
@@ -187,18 +184,17 @@ namespace roleplay.Offers
 
             if (args[2] == "prawko")
             {
-                if (!player.IsOnDutyOfGroupType(Groups.GroupType.Government))
+                if (!player.IsOnDutyOfGroupType(GroupType.Government))
                 {
                     player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania dowodów osobistych!");
                     return;
                 }
 
-                OfferInfo offerInfo = new OfferInfo();
+                OfferInfo offerInfo = new OfferInfo
+                {
+                    sender = player, receiver = secondPlayer, type = OfferType.VehicleLicenseDocument, price = price
+                };
 
-                offerInfo.sender = player;
-                offerInfo.receiver = secondPlayer;
-                offerInfo.type = OfferType.VehicleLicenseDocument;
-                offerInfo.price = price;
 
                 player.offerInfo = offerInfo;
                 secondPlayer.offerInfo = offerInfo;

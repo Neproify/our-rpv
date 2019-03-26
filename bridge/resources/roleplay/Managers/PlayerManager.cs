@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using GTANetworkAPI;
 
 namespace roleplay.Managers
 {
     public class PlayerManager
     {
-        private Dictionary<Client, Entities.Player> playersDictionary = new Dictionary<Client, Entities.Player>();
+        private readonly Dictionary<Client, Entities.Player> playersDictionary = new Dictionary<Client, Entities.Player>();
 
         private static PlayerManager _instance;
         public static PlayerManager Instance()
         {
-            if (_instance == null)
-                _instance = new PlayerManager();
-            return _instance;
+            return _instance ?? (_instance = new PlayerManager());
         }
 
         public Entities.Player CreateFromHandle(Client client)
         {
-            Entities.Player player = new Entities.Player();
-            player.handle = client;
+            Entities.Player player = new Entities.Player {handle = client};
             playersDictionary.Add(client, player);
             return player;
         }

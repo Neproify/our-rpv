@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RAGE;
+﻿using RAGE;
 
 namespace roleplay_client.Auth
 {
@@ -24,10 +21,9 @@ namespace roleplay_client.Auth
         private void OnPlayerCharactersLoaded(object[] args)
         {
             string characters = args[0].ToString();
-            window = new RAGE.Ui.HtmlWindow("package://static/auth/characterSelection.html");
-            window.Active = true;
+            window = new RAGE.Ui.HtmlWindow("package://static/auth/characterSelection.html") {Active = true};
             RAGE.Ui.Cursor.Visible = true;
-            window.ExecuteJs(string.Format("LoadCharacters({0});", characters));
+            window.ExecuteJs($"LoadCharacters({characters});");
         }
 
         private void OnCharacterSelectionSuccessful(object[] args)
@@ -36,7 +32,7 @@ namespace roleplay_client.Auth
             RAGE.Ui.Cursor.Visible = false;
             Chat.PreventShowing = false;
             Chat.Show(true);
-            RAGE.Discord.Update("Gra na Our Role Play Developer", "W grze.");
+            Discord.Update("Gra na Our Role Play Developer", "W grze.");
         }
     }
 }

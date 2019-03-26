@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using GTANetworkAPI;
 using Newtonsoft.Json;
 
@@ -22,7 +20,7 @@ namespace roleplay.Items
             if (!player.isLogged && player.character == null)
                 return;
 
-            var item = player.GetClosestItem(5f);
+            var item = player.GetClosestItem();
 
             item.ChangeOwner(OwnerType.Character, player.character.UID);
             item.Save();
@@ -71,10 +69,7 @@ namespace roleplay.Items
 
             var item = Managers.ItemManager.Instance().GetByID(itemUID);
 
-            if (item == null)
-                return;
-
-            item.Use(player);
+            item?.Use(player);
         }
 
         [RemoteEvent("DropPlayerItem")]
@@ -106,7 +101,7 @@ namespace roleplay.Items
             if (!player.isLogged || player.character == null)
                 return;
 
-            if (!player.IsOnDutyOfGroupType(Groups.GroupType.Police))
+            if (!player.IsOnDutyOfGroupType(GroupType.Police))
             {
                 player.handle.SendNotification("~r~Nie posiadasz uprawnień do przeszukiwania.");
                 return;
@@ -131,7 +126,7 @@ namespace roleplay.Items
             {
                 player.handle.SendChatMessage($"Nazwa: {item.name}, typ: {item.type}");
             }
-            player.handle.SendChatMessage($"====KONIEC LISTY====");
+            player.handle.SendChatMessage("====KONIEC LISTY====");
 
             player.OutputMe($"przeszukuje {searchedPlayer.formattedName}.");
         }

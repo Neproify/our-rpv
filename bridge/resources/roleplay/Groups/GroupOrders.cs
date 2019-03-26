@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
-namespace roleplay.Groups
+namespace roleplay
 {
     public class GroupOrders : Script
     {

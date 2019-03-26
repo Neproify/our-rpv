@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Admin
@@ -30,12 +28,10 @@ namespace roleplay.Admin
                 return;
             }
 
-            int groupID;
-
             if (args.Length < 2)
                 goto Usage;
 
-            if (!Int32.TryParse(args[0], out groupID))
+            if (!Int32.TryParse(args[0], out var groupID))
                 goto Usage;
 
             Entities.Group group = Managers.GroupManager.Instance().GetByID(groupID);
@@ -48,12 +44,10 @@ namespace roleplay.Admin
 
             if(args[1] == "lider")
             {
-                int leaderID;
-
                 if (args.Length < 3)
                     goto LeaderUsage;
 
-                if (!Int32.TryParse(args[2], out leaderID))
+                if (!Int32.TryParse(args[2], out var leaderID))
                     goto LeaderUsage;
 
                 group.leaderID = leaderID;
@@ -83,9 +77,9 @@ namespace roleplay.Admin
                     goto TypeUsage;
                 }
 
-                Groups.GroupType type = Utils.GetGroupTypeByName(args[2]);
+                GroupType type = Utils.GetGroupTypeByName(args[2]);
 
-                if (type == Groups.GroupType.None)
+                if (type == GroupType.None)
                 {
                     player.handle.SendNotification("~r~Podałeś nieprawidłowy typ grupy.");
                     return;
@@ -104,9 +98,7 @@ namespace roleplay.Admin
                     goto SpecialPermissionsUsage;
                 }
 
-                int permissions;
-
-                if (!Int32.TryParse(args[2], out permissions))
+                if (!Int32.TryParse(args[2], out var permissions))
                 {
                     goto SpecialPermissionsUsage;
                 }
@@ -124,9 +116,7 @@ namespace roleplay.Admin
                     goto BankUsage;
                 }
 
-                int bank;
-
-                if(!Int32.TryParse(args[2], out bank))
+                if(!Int32.TryParse(args[2], out var bank))
                 {
                     goto BankUsage;
                 }

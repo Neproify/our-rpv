@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Entities
 {
@@ -44,7 +41,7 @@ namespace roleplay.Entities
 
         public void Save()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "UPDATE `rp_objects` SET `model`=@model, `positionX`=@positionX, `positionY`=@positionY, `positionZ`=@positionZ, " +
                 "`rotationX`=@rotationX, `rotationY`=@rotationY, `rotationZ`=@rotationZ, " +
                 "`ownerType`=@ownerType, `ownerID`=@ownerID WHERE `UID`=@UID;";

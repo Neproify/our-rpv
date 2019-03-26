@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
-namespace roleplay.Groups
+namespace roleplay
 {
     public class PlayerGroups : Script
     {
@@ -36,17 +35,13 @@ namespace roleplay.Groups
                 return;
             }
 
-            Entities.Group selectedGroup = null;
-            int groupID;
-            bool result = Int32.TryParse(args[0], out groupID);
-
-            if (!result)
+            if (!Int32.TryParse(args[0], out var groupID))
             {
                 player.handle.SendNotification("Użyj: /g [lista, identyfikator grupy]");
                 return;
             }
 
-            selectedGroup = groups.Find(x => x.UID == groupID);
+            var selectedGroup = groups.Find(x => x.UID == groupID);
 
             if (selectedGroup == null)
             {
@@ -72,8 +67,7 @@ namespace roleplay.Groups
                     if (member == null)
                         return;
 
-                    player.groupDuty = new GroupDuty();
-                    player.groupDuty.member = member;
+                    player.groupDuty = new GroupDuty {member = member};
                     player.handle.SendNotification($"~g~Rozpocząłeś pracę w grupie {selectedGroup.name}.");
                 }
                 else
@@ -125,7 +119,7 @@ namespace roleplay.Groups
                 {
                     player.handle.SendChatMessage($"{groupPlayer.formattedName}(ID: {groupPlayer.handle.Handle})");
                 }
-                player.handle.SendChatMessage($"====KONIEC LISTY====");
+                player.handle.SendChatMessage("====KONIEC LISTY====");
                 return;
             }
 
@@ -136,7 +130,7 @@ namespace roleplay.Groups
                 if (member == null)
                     return;
 
-                if ((member.rank.permissions & (int)Groups.GroupMemberPermission.OrdersManagement) == 0)
+                if ((member.rank.permissions & (int)GroupMemberPermission.OrdersManagement) == 0)
                 {
                     player.handle.SendNotification("~r~Nie masz uprawnień do zamawiania przedmiotów w tej grupie!");
                     return;
@@ -154,19 +148,17 @@ namespace roleplay.Groups
                     {
                         player.handle.SendChatMessage($"[{productToList.UID}] {productToList.name}, typ: {Utils.GetNameFromItemType(productToList.type)}, właściwości: {productToList.propertiesString}, cena: ${productToList.price}");
                     }
-                    player.handle.SendChatMessage($"====KONIEC LISTY====");
+                    player.handle.SendChatMessage("====KONIEC LISTY====");
                     return;
                 }
 
                 if (args.Length < 4)
                     goto OrderUsage;
 
-                int productID, quantity;
-
-                if (!Int32.TryParse(args[2], out productID))
+                if (!Int32.TryParse(args[2], out var productID))
                     goto OrderUsage;
 
-                if (!Int32.TryParse(args[3], out quantity))
+                if (!Int32.TryParse(args[3], out var quantity))
                     quantity = 1;
 
                 var product = Managers.GroupProductManager.Instance().GetByID(productID);
@@ -250,9 +242,7 @@ namespace roleplay.Groups
                     if (args.Length < 4)
                         goto StorageUsage;
 
-                    int itemID;
-
-                    if (!Int32.TryParse(args[3], out itemID))
+                    if (!Int32.TryParse(args[3], out var itemID))
                         goto StorageUsage;
 
                     var item = Managers.ItemManager.Instance().GetByID(itemID);
@@ -280,9 +270,7 @@ namespace roleplay.Groups
                     if (args.Length < 4)
                         goto StorageUsage;
 
-                    int itemID;
-
-                    if (!Int32.TryParse(args[3], out itemID))
+                    if (!Int32.TryParse(args[3], out var itemID))
                         goto StorageUsage;
 
                     var item = Managers.ItemManager.Instance().GetByID(itemID);

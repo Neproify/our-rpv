@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using GTANetworkAPI;
 
 namespace roleplay.Managers
@@ -12,9 +10,7 @@ namespace roleplay.Managers
         private static ObjectManager _instance;
         public static ObjectManager Instance()
         {
-            if (_instance == null)
-                _instance = new ObjectManager();
-            return _instance;
+            return _instance ?? (_instance = new ObjectManager());
         }
 
         public void Add(Entities.Object @object)
@@ -39,7 +35,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_objects`";
             command.Prepare();
 
@@ -83,7 +79,7 @@ namespace roleplay.Managers
 
         public Entities.Object Load(int UID)
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_objects` WHERE `UID`=@UID;";
             command.Prepare();
 
@@ -101,7 +97,7 @@ namespace roleplay.Managers
 
         public Entities.Object CreateObject()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "INSERT INTO `rp_objects` SET `model`=579156093, `ownerType`=0, `ownerID`=-1, `postionX`=0, `positionY`=0, `positionZ`=0, `rotationX`=0, `rotationY`=0, `rotationZ`=0";
             command.ExecuteNonQuery();
 

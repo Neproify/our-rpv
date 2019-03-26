@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RAGE;
 
 namespace roleplay_client
@@ -13,14 +11,8 @@ namespace roleplay_client
         private static bool _isActive;
         public static bool Active
         {
-            get
-            {
-                return _isActive;
-            }
-            set
-            {
-                SetActive(value);
-            }
+            get => _isActive;
+            set => SetActive(value);
         }
 
         public static void InitializeWindow()
@@ -28,8 +20,7 @@ namespace roleplay_client
             RAGE.Chat.SafeMode = false;
             RAGE.Chat.Show(false);
 
-            window = new RAGE.Ui.HtmlWindow("package://static/chat/chat.html");
-            window.Active = true;
+            window = new RAGE.Ui.HtmlWindow("package://static/chat/chat.html") {Active = true};
             window.MarkAsChat();
         }
 
@@ -86,7 +77,7 @@ namespace roleplay_client
 
         private void Tick(List<Events.TickNametagData> nametags)
         {
-            if (RAGE.Input.IsDown(0x54))
+            if (Input.IsDown(0x54))
             {
                 if (!Chat.Active)
                 {
@@ -94,7 +85,7 @@ namespace roleplay_client
                 }
             }
 
-            if (RAGE.Input.IsDown(0x1B))
+            if (Input.IsDown(0x1B))
             {
                 if(Chat.Active)
                 {
@@ -102,7 +93,7 @@ namespace roleplay_client
                 }
             }
 
-            if(RAGE.Input.IsDown(0x0D))
+            if(Input.IsDown(0x0D))
             {
                 if(Chat.Active)
                 {

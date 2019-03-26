@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using GTANetworkAPI;
 
 namespace roleplay.Managers
@@ -12,9 +10,7 @@ namespace roleplay.Managers
         private static BuildingManager _instance;
         public static BuildingManager Instance()
         {
-            if (_instance == null)
-                _instance = new BuildingManager();
-            return _instance;
+            return _instance ?? (_instance = new BuildingManager());
         }
 
         public void Add(Entities.Building building)
@@ -55,7 +51,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_buildings`";
             command.Prepare();
 
@@ -71,14 +67,14 @@ namespace roleplay.Managers
 
         public Entities.Building Load(MySql.Data.MySqlClient.MySqlDataReader reader)
         {
-            Vector3 enterPosition = new Vector3();
-            enterPosition.X = reader.GetFloat("enterPosX");
-            enterPosition.Y = reader.GetFloat("enterPosY");
-            enterPosition.Z = reader.GetFloat("enterPosZ");
-            Vector3 exitPosition = new Vector3();
-            exitPosition.X = reader.GetFloat("exitPosX");
-            exitPosition.Y = reader.GetFloat("exitPosY");
-            exitPosition.Z = reader.GetFloat("exitPosZ");
+            Vector3 enterPosition = new Vector3
+            {
+                X = reader.GetFloat("enterPosX"), Y = reader.GetFloat("enterPosY"), Z = reader.GetFloat("enterPosZ")
+            };
+            Vector3 exitPosition = new Vector3
+            {
+                X = reader.GetFloat("exitPosX"), Y = reader.GetFloat("exitPosY"), Z = reader.GetFloat("exitPosZ")
+            };
 
             var building = new Entities.Building
             {
@@ -101,7 +97,7 @@ namespace roleplay.Managers
 
         public Entities.Building Load(int UID)
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_buildings` WHERE `UID`=@UID";
             command.Prepare();
 
@@ -124,7 +120,7 @@ namespace roleplay.Managers
 
         public Entities.Building CreateBuilding()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "INSERT INTO `rp_buildings` SET `name`='', `description`='', `enterPosX`=0, `enterPosY`=0, `enterPosZ`=0, " +
                 "`enterDimension`=0, `exitPosX`=0, `exitPosY`=0, `exitPosZ`=0, `ownerType`=0, `ownerID`=-1";
 

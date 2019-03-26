@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
-using Newtonsoft.Json;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Auth
 {
@@ -34,7 +30,7 @@ namespace roleplay.Auth
                 return;
             }
 
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `ipb_core_members` WHERE `name`=@name LIMIT 1;";
             command.Prepare();
 

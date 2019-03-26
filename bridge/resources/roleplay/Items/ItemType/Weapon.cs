@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using roleplay.Entities;
+﻿using roleplay.Entities;
 using GTANetworkAPI;
 
 namespace roleplay.Items.ItemType
 {
-    public class Weapon : Entities.Item
+    public class Weapon : Item
     {
         public override void Use(Player player)
         {
             base.Use(player);
             if(!isUsed)
             {
-                if(player.GetItems().Find(x => x.properties[0] == properties[0] && x.isUsed == true) != null)
+                if(player.GetItems().Find(x => x.properties[0] == properties[0] && x.isUsed) != null)
                 {
                     player.handle.SendNotification("~r~Posiadasz już wyjętą broń tego typu.");
                     return;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace roleplay.Items.ItemType
+﻿namespace roleplay.Items.ItemType
 {
     public class Document : Entities.Item
     {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using GTANetworkAPI;
 using Newtonsoft.Json;
 
@@ -26,7 +24,7 @@ namespace roleplay.Auth
                 return;
             }
 
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_characters` WHERE `GID`=@GID;";
             command.Prepare();
             command.Parameters.AddWithValue("@GID", player.globalInfo.UID);
@@ -67,7 +65,7 @@ namespace roleplay.Auth
                 return;
             }
 
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_characters` WHERE `GID`=@GID AND `UID`=@UID LIMIT 1;";
             command.Prepare();
             command.Parameters.AddWithValue("@GID", player.globalInfo.UID);
@@ -80,10 +78,12 @@ namespace roleplay.Auth
                 return;
             }
 
-            Vector3 jailPosition = new Vector3();
-            jailPosition.X = reader.GetFloat("jailPositionX");
-            jailPosition.Y = reader.GetFloat("jailPositionY");
-            jailPosition.Z = reader.GetFloat("jailPositionZ");
+            Vector3 jailPosition = new Vector3
+            {
+                X = reader.GetFloat("jailPositionX"),
+                Y = reader.GetFloat("jailPositionY"),
+                Z = reader.GetFloat("jailPositionZ")
+            };
 
             var character = new Entities.Character
             {

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using roleplay.Entities;
+﻿using roleplay.Entities;
 
 namespace roleplay.Items.ItemType
 {
-    public class Phone : Entities.Item
+    public class Phone : Item
     {
         public override void Use(Player player)
         {
@@ -21,15 +18,14 @@ namespace roleplay.Items.ItemType
             if(player.activePhone == this)
             {
                 player.activePhone = null;
-                this.isUsed = false;
+                isUsed = false;
             }
             else
             {
-                if(player.activePhone != null)
-                    player.activePhone.Use(player);
+                player.activePhone?.Use(player);
 
                 player.activePhone = this;
-                this.isUsed = true;
+                isUsed = true;
             }
         }
     }
@@ -37,9 +33,9 @@ namespace roleplay.Items.ItemType
     public class PhoneCall
     {
         public int senderPhone = 0;
-        public Entities.Player sender = null;
+        public Player sender = null;
         public int receiverPhone = 0;
-        public Entities.Player receiver = null;
+        public Player receiver = null;
         public bool active = false;
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Entities
 {
@@ -14,13 +11,7 @@ namespace roleplay.Entities
         public uint enterDimension;
         public Vector3 exitPosition;
 
-        public uint exitDimension
-        {
-            get
-            {
-                return enterDimension + 10000;
-            }
-        }
+        public uint exitDimension => enterDimension + 10000;
 
         public OwnerType ownerType;
         public int ownerID;
@@ -51,7 +42,7 @@ namespace roleplay.Entities
 
         public void Save()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "UPDATE `rp_buildings` SET `name`=@name, `description`=@description, `enterPosX`=@enterPosX, " +
                 "`enterPosY`=@enterPosY, `enterPosZ`=@enterPosZ, `enterDimension`=@enterDimension, " +
                 "`exitPosX`=@exitPosX, `exitPosY`=@exitPosY, `exitPosZ`=@exitPosZ, `ownerType`=@ownerType, `ownerID`=@ownerID " +

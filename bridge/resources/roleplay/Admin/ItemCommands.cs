@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Admin
@@ -30,12 +28,10 @@ namespace roleplay.Admin
                 return;
             }
 
-            int itemID;
-
             if (args.Length < 2)
                 goto Usage;
 
-            if (!Int32.TryParse(args[0], out itemID))
+            if (!Int32.TryParse(args[0], out var itemID))
                 goto Usage;
 
             Entities.Item item = Managers.ItemManager.Instance().GetByID(itemID);
@@ -98,9 +94,7 @@ namespace roleplay.Admin
                     return;
                 }
 
-                int ownerID;
-
-                if(!Int32.TryParse(args[3], out ownerID))
+                if(!Int32.TryParse(args[3], out var ownerID))
                 {
                     goto OwnerUsage;
                 }
@@ -131,9 +125,7 @@ namespace roleplay.Admin
                     goto PropertyUsage;
                 }
 
-                int propertyNumber, propertyValue;
-
-                if(!Int32.TryParse(args[2], out propertyNumber) || !Int32.TryParse(args[3], out propertyValue))
+                if(!Int32.TryParse(args[2], out var propertyNumber) || !Int32.TryParse(args[3], out var propertyValue))
                 {
                     goto PropertyUsage;
                 }

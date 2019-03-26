@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Entities
 {
@@ -14,10 +11,7 @@ namespace roleplay.Entities
         private bool _engineStatus;
         public bool engineStatus
         {
-            get
-            {
-                return _engineStatus;
-            }
+            get => _engineStatus;
             set
             {
                 _engineStatus = value;
@@ -48,7 +42,7 @@ namespace roleplay.Entities
                 return;
 
 #warning Use vector for rotation in future. Crashes in current(0.3.7.2) release
-            var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, vehicleData.spawnPosition, 0f, vehicleData.color1, vehicleData.color2, "SA " + vehicleData.UID, 255, true, false, 0);
+            var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, vehicleData.spawnPosition, 0f, vehicleData.color1, vehicleData.color2, "SA " + vehicleData.UID, 255, true, false);
             handle = vehicle;
             Managers.VehicleManager.Instance().LinkWithHandle(this);
             engineStatus = false;
@@ -72,7 +66,7 @@ namespace roleplay.Entities
             return false;
         }
 
-        public bool CanBeAccessedBy(Entities.Player player)
+        public bool CanBeAccessedBy(Player player)
         {
             if (vehicleData.ownerType == OwnerType.Character && vehicleData.ownerID == player.character.UID)
                 return true;
@@ -97,7 +91,7 @@ namespace roleplay.Entities
 
         public void Save()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "UPDATE `rp_vehicles` SET `model`=@model, `ownerType`=@ownerType, `ownerID`=@ownerID, `color1`=@color1, `color2`=@color2, `spawnPosX`=@spawnPosX, `spawnPosY`=@spawnPosY, `spawnPosZ`=@spawnPosZ, `spawnRotX`=@spawnRotX, `spawnRotY`=@spawnRotY, `spawnRotZ`=@spawnRotZ WHERE `UID`=@UID";
             command.Prepare();
             command.Parameters.AddWithValue("@model", model);

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Managers
 {
     public class ItemManager
     {
-        private List<Entities.Item> items;
-        private Dictionary<OwnerType, Dictionary<int, List<Entities.Item>>> itemsOfOwner;
+        private readonly List<Entities.Item> items;
+        private readonly Dictionary<OwnerType, Dictionary<int, List<Entities.Item>>> itemsOfOwner;
 
         public ItemManager()
         {
@@ -26,9 +25,7 @@ namespace roleplay.Managers
         private static ItemManager _instance;
         public static ItemManager Instance()
         {
-            if (_instance == null)
-                _instance = new ItemManager();
-            return _instance;
+            return _instance ?? (_instance = new ItemManager());
         }
 
         public void Add(Entities.Item item)
@@ -85,10 +82,10 @@ namespace roleplay.Managers
 
         public Entities.Item GetClosestItem(Vector3 position, float maxDistance = 5f)
         {
-            var items = itemsOfOwner[OwnerType.World][0];
+            var worldItems = itemsOfOwner[OwnerType.World][0];
             Entities.Item closestItem = null;
             float distance = maxDistance;
-            foreach(var item in items)
+            foreach(var item in worldItems)
             {
                 var distanceFromPosition = item.position.DistanceTo(position);
                 if (distanceFromPosition <= distance)
@@ -110,7 +107,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_items`;";
             var reader = command.ExecuteReader();
 
@@ -137,10 +134,10 @@ namespace roleplay.Managers
             var properties = reader.GetString("properties");
             var ownerType = (OwnerType)reader.GetInt32("ownerType");
             var ownerID = reader.GetInt32("ownerID");
-            var position = new Vector3();
-            position.X = reader.GetFloat("positionX");
-            position.Y = reader.GetFloat("positionY");
-            position.Z = reader.GetFloat("positionZ");
+            var position = new Vector3
+            {
+                X = reader.GetFloat("positionX"), Y = reader.GetFloat("positionY"), Z = reader.GetFloat("positionZ")
+            };
 
             switch (type)
             {
@@ -177,7 +174,7 @@ namespace roleplay.Managers
 
         public Entities.Item Load(int UID)
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_items` WHERE `UID`=@UID";
             command.Prepare();
 
@@ -193,7 +190,7 @@ namespace roleplay.Managers
 
         public Entities.Item CreateItem()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "INSERT INTO `rp_items` SET `name`='', `type`=0, `properties`='', `ownerType`=0, `ownerID`=0, `positionX`=0, `positionY`=0, `positionZ`=0;";
             command.ExecuteNonQuery();
 

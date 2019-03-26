@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GTANetworkAPI;
 
 namespace roleplay.Admin
@@ -22,12 +20,11 @@ namespace roleplay.Admin
             }
 
             string[] args = parameters.Split(" ");
-            int playerID;
 
             if (args.Length < 2)
                 goto Usage;
 
-            if (!Int32.TryParse(args[0], out playerID))
+            if (!Int32.TryParse(args[0], out var playerID))
                 goto Usage;
 
             Entities.Player targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
@@ -45,9 +42,7 @@ namespace roleplay.Admin
                     goto HPUsage;
                 }
 
-                int healthValue;
-
-                if (!Int32.TryParse(args[2], out healthValue))
+                if (!Int32.TryParse(args[2], out var healthValue))
                 {
                     goto HPUsage;
                 }
@@ -69,9 +64,7 @@ namespace roleplay.Admin
                     goto ModelUsage;
                 }
 
-                uint modelHash;
-
-                if (!UInt32.TryParse(args[2], out modelHash))
+                if (!UInt32.TryParse(args[2], out var modelHash))
                 {
                     goto ModelUsage;
                 }
@@ -100,9 +93,7 @@ namespace roleplay.Admin
                     goto MoneyUsage;
                 }
 
-                int moneyValue;
-
-                if (!Int32.TryParse(args[2], out moneyValue))
+                if (!Int32.TryParse(args[2], out var moneyValue))
                 {
                     goto MoneyUsage;
                 }

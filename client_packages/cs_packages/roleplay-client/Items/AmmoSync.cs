@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RAGE;
+﻿using RAGE;
 using RAGE.Elements;
 
 namespace roleplay_client.Items

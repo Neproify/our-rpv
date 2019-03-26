@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace roleplay.Managers
 {
@@ -11,9 +9,7 @@ namespace roleplay.Managers
         private static GroupManager _instance;
         public static GroupManager Instance()
         {
-            if (_instance == null)
-                _instance = new GroupManager();
-            return _instance;
+            return _instance ?? (_instance = new GroupManager());
         }
 
         public void Add(Entities.Group group)
@@ -38,7 +34,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().Connection.CreateCommand();
+            var command = Database.Instance().connection.CreateCommand();
             command.CommandText = "SELECT * FROM `rp_groups`";
             var reader = command.ExecuteReader();
 
@@ -62,7 +58,7 @@ namespace roleplay.Managers
                 bank = reader.GetInt32("bank"),
                 leaderRank = reader.GetInt32("leaderRank"),
                 leaderID = reader.GetInt32("leaderID"),
-                type = (Groups.GroupType)reader.GetInt32("type"),
+                type = (GroupType)reader.GetInt32("type"),
                 specialPermissions = reader.GetInt32("specialPermissions")
             };
 

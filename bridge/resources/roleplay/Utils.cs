@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 
 namespace roleplay
 {
@@ -104,51 +101,51 @@ namespace roleplay
             return string.Join(",", types);
         }
 
-        public static Groups.GroupType GetGroupTypeByName(string name)
+        public static GroupType GetGroupTypeByName(string name)
         {
             if (name == "rzad" || name == "rząd" || name == "urzad" || name == "urząd")
-                return Groups.GroupType.Government;
+                return GroupType.Government;
 
             if (name == "policja")
-                return Groups.GroupType.Police;
+                return GroupType.Police;
 
             if (name == "szpital")
-                return Groups.GroupType.Medical;
+                return GroupType.Medical;
 
             if (name == "radio")
-                return Groups.GroupType.Radio;
+                return GroupType.Radio;
 
             if (name == "warsztat")
-                return Groups.GroupType.Workshop;
+                return GroupType.Workshop;
 
             if (name == "gang")
-                return Groups.GroupType.Gang;
+                return GroupType.Gang;
 
             if (name == "mafia")
-                return Groups.GroupType.Mafia;
+                return GroupType.Mafia;
 
-            return Groups.GroupType.None;
+            return GroupType.None;
         }
 
-        public static string GetNameFromGroupType(Groups.GroupType name)
+        public static string GetNameFromGroupType(GroupType name)
         {
             switch (name)
             {
-                case Groups.GroupType.None:
+                case GroupType.None:
                     return "Brak";
-                case Groups.GroupType.Government:
+                case GroupType.Government:
                     return "Urząd";
-                case Groups.GroupType.Police:
+                case GroupType.Police:
                     return "Policja";
-                case Groups.GroupType.Medical:
+                case GroupType.Medical:
                     return "Szpital";
-                case Groups.GroupType.Radio:
+                case GroupType.Radio:
                     return "Radio";
-                case Groups.GroupType.Workshop:
+                case GroupType.Workshop:
                     return "Warsztat";
-                case Groups.GroupType.Gang:
+                case GroupType.Gang:
                     return "Gang";
-                case Groups.GroupType.Mafia:
+                case GroupType.Mafia:
                     return "Mafia";
 
                 default:
@@ -158,10 +155,10 @@ namespace roleplay
 
         public static string GetGroupTypes()
         {
-            string[] types = new string[sizeof(Groups.GroupType)];
-            for (int i = 0; i < sizeof(Groups.GroupType); i++)
+            string[] types = new string[sizeof(GroupType)];
+            for (int i = 0; i < sizeof(GroupType); i++)
             {
-                types[i] = GetNameFromGroupType((Groups.GroupType)i);
+                types[i] = GetNameFromGroupType((GroupType)i);
             }
 
             return string.Join(",", types);
