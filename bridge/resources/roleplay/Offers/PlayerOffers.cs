@@ -1,6 +1,7 @@
 ﻿using GTANetworkAPI;
+using roleplay.Offers;
 
-namespace roleplay.Offers
+namespace roleplay
 {
     public class PlayerOffers : Script
     {

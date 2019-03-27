@@ -53,4 +53,29 @@
         OrdersManagement = 8,
         ItemsManagement = 16
     }
+
+    public enum AdminLevel
+    {
+        None,
+        Supporter,
+        GameMaster,
+        Admin,
+        HeadAdmin
+    }
+
+    public enum AdminPermissions
+    {
+        None
+    }
+
+    public enum OfferType
+    {
+        None,
+        Healing,
+        Item,
+        Ticket,
+        VehicleRepair,
+        PersonalDocument,
+        VehicleLicenseDocument
+    }
 }

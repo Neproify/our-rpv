@@ -1,16 +1,5 @@
 ﻿namespace roleplay.Offers
 {
-    public enum OfferType
-    {
-        None,
-        Healing,
-        Item,
-        Ticket,
-        VehicleRepair,
-        PersonalDocument,
-        VehicleLicenseDocument
-    }
-
     public class OfferInfo
     {
         public Entities.Player sender;

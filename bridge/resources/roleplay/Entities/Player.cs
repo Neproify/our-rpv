@@ -321,7 +321,7 @@ namespace roleplay.Entities
             return false;
         }
 
-        public bool IsAdminOfLevel(Admin.AdminLevel level)
+        public bool IsAdminOfLevel(AdminLevel level)
         {
             if (globalInfo == null)
                 return false;

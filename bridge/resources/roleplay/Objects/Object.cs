@@ -20,12 +20,12 @@ namespace roleplay.Entities
         public void Spawn()
         {
             if (IsSpawned())
-                Unspawn();
+                UnSpawn();
 
             handle = NAPI.Object.CreateObject(model, position, rotation, 255, GetDimension());
         }
 
-        public void Unspawn()
+        public void UnSpawn()
         {
             if (!IsSpawned())
                 return;
