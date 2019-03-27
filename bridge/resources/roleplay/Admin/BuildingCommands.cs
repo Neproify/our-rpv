@@ -88,13 +88,13 @@ namespace roleplay.Admin
 
             if(args[1] == "otworz" || args[1] == "otwórz")
             {
-#warning Implement later.
+                building.isLocked = false;
                 return;
             }
 
             if(args[1] == "zamknij")
             {
-#warning Implement later.
+                building.isLocked = true;
                 return;
             }
 

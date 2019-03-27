@@ -11,6 +11,8 @@ namespace roleplay.Entities
         public uint enterDimension;
         public Vector3 exitPosition;
 
+        public bool isLocked = false;
+
         public uint exitDimension => enterDimension + 10000;
 
         public OwnerType ownerType;
@@ -63,6 +65,18 @@ namespace roleplay.Entities
             command.Parameters.AddWithValue("@UID", UID);
 
             command.ExecuteNonQuery();
+        }
+
+        public bool CanBeAccessedBy(Entities.Player player)
+        {
+            switch (ownerType)
+            {
+                case OwnerType.Character when ownerID == player.character.UID:
+                case OwnerType.Group when ownerID == player.groupDuty?.member.group.UID:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }
