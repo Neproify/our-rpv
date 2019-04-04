@@ -11,6 +11,7 @@
             {
                 player.OutputMe("pokazuje dowód osobisty.");
             }
+
             if(properties[0] == (int)DocumentType.VehicleLicense)
             {
                 player.OutputMe("pokazuje prawo jazdy.");

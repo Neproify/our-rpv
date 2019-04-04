@@ -332,6 +332,14 @@ namespace roleplay.Entities
 			return false;
 		}
 
+        public bool IsOnDutyOfGroupID(int UID)
+        {
+            if (groupDuty?.member.groupID == UID)
+                return true;
+
+            return false;
+        }
+
 		public bool IsInBuildingOfHisGroup()
 		{
 			if (groupDuty == null)
