@@ -24,9 +24,9 @@ namespace roleplay.Items.ItemType
                     return false;
                 }
 
-                if(properties[1] != 0)
+                if(properties[2] != 0)
                 {
-                    if(!player.IsOnDutyOfGroupID(properties[1]))
+                    if(!player.IsOnDutyOfGroupID(properties[2]))
                     {
                         player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej broni. Jest ona podpisana pod grupę.");
                         return false;

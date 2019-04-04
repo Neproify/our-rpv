@@ -63,7 +63,7 @@ namespace roleplay.Entities
                 {
                     UID = reader.GetInt32("UID"),
                     charID = reader.GetInt32("charID"),
-                    groupID = reader.GetInt32("charID"),
+                    groupID = reader.GetInt32("groupID"),
                     rankID = reader.GetInt32("rankID"),
                     dutyTime = reader.GetInt32("dutyTime"),
                     group = this
