@@ -1,17 +1,10 @@
 ﻿using System.Collections.Generic;
 using GTANetworkAPI;
-using Newtonsoft.Json;
 
 namespace roleplay.Items
 {
     public class PlayerItems : Script
     {
-        public class ItemInfo
-        {
-            public int UID;
-            public string name;
-        }
-
         [Command("podnies")]
         public void ItemPickupCommand(Client client)
         {
@@ -25,7 +18,7 @@ namespace roleplay.Items
             item.ChangeOwner(OwnerType.Character, player.character.UID);
             item.Save();
 
-            player.handle.SendNotification($"~g~ Podniosłeś przedmiot {item.name}.");
+            player.handle.SendNotification($"~g~Podniosłeś przedmiot {item.name}.");
         }
 
         [RemoteEvent("ShowPlayerItems")]
@@ -42,21 +35,7 @@ namespace roleplay.Items
                 return;
             }
 
-            List<ItemInfo> items = new List<ItemInfo>();
-
-            foreach (var item in player.GetItems())
-            {
-                items.Add(new ItemInfo
-                {
-                    UID = item.UID,
-                    name = item.name
-                });
-
-            }
-
-            var output = JsonConvert.SerializeObject(items);
-
-            NAPI.ClientEvent.TriggerClientEvent(client, "ShowPlayerItems", output);
+			player.ShowItems();
         }
 
         [RemoteEvent("UsePlayerItem")]

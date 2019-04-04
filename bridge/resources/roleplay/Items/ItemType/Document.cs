@@ -2,9 +2,10 @@
 {
     public class Document : Entities.Item
     {
-        public override void Use(Entities.Player player)
+        public override bool Use(Entities.Player player)
         {
-            base.Use(player);
+            if (!base.Use(player))
+                return false;
 
             if(properties[0] == (int)DocumentType.Personal)
             {
@@ -14,6 +15,8 @@
             {
                 player.OutputMe("pokazuje prawo jazdy.");
             }
+
+            return true;
         }
     }
 }

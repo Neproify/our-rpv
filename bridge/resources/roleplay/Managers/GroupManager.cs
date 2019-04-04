@@ -67,10 +67,51 @@ namespace roleplay.Managers
             return group;
         }
 
+		public Entities.Group Load(int UID)
+		{
+			var command = Database.Instance().connection.CreateCommand();
+			command.CommandText = "SELECT * FROM `rp_groups` WHERE `UID` = @UID";
+
+			var reader = command.ExecuteReader();
+
+			reader.Read();
+
+			var group = Load(reader);
+
+			reader.Close();
+
+			return group;
+		}
+
         public Entities.Group CreateGroup()
         {
-#warning TODO
-            return null;
+			var command = Database.Instance().connection.CreateCommand();
+
+			command.CommandText = "INSERT INTO `rp_groups` SET `name` = 'Nowa grupa', `bank` = 0, `leaderRank` = -1, `leaderID` = -1, `type` = 0, `specialPermissions` = 0";
+
+			command.ExecuteNonQuery();
+
+			int createdGroupID = (int)command.LastInsertedId;
+
+			command.CommandText = "INSERT INTO `rp_groups_ranks` SET `groupID` = @groupID, `name` = 'Lider', `salary` = 0, `skin` = 0, `permissions` = @permissions";
+			command.Prepare();
+
+			command.Parameters.AddWithValue("@groupID", createdGroupID);
+			command.Parameters.AddWithValue("@permissions", GroupMemberPermission.All);
+
+			command.ExecuteNonQuery();
+
+			int createdRankID = (int)command.LastInsertedId;
+
+			command.CommandText = "UPDATE `rp_groups` SET `leaderRank` = @rankID WHERE `UID` = @UID";
+			command.Prepare();
+
+			command.Parameters.AddWithValue("@rankID", createdRankID);
+			command.Parameters.AddWithValue("@UID", createdGroupID);
+
+			command.ExecuteNonQuery();
+
+			return Load(createdGroupID);
         }
     }
 }

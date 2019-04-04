@@ -4,14 +4,15 @@ namespace roleplay.Items.ItemType
 {
     public class Phone : Item
     {
-        public override void Use(Player player)
+        public override bool Use(Player player)
         {
-            base.Use(player);
+            if (!base.Use(player))
+                return false;
 
-            if(player.phoneCall != null)
+            if (player.phoneCall != null)
             {
                 player.handle.SendNotification("~r~Posiadasz aktywną rozmowę telefoniczną.");
-                return;
+                return false;
             }
 
 
@@ -27,6 +28,8 @@ namespace roleplay.Items.ItemType
                 player.activePhone = this;
                 isUsed = true;
             }
+
+            return true;
         }
     }
 

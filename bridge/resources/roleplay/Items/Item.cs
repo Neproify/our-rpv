@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GTANetworkAPI;
 
 namespace roleplay.Entities
@@ -40,10 +41,9 @@ namespace roleplay.Entities
             }
         }
 
-        public virtual void Use(Player player)
+        public virtual bool Use(Player player)
         {
-            if (!player.CanUseItem(this))
-                return;
+            return player.CanUseItem(this);
         }
 
         public virtual void Spawn()
@@ -61,11 +61,14 @@ namespace roleplay.Entities
 
         public virtual void ChangeOwner(OwnerType newOwnerType, int newOwnerID)
         {
+            Entities.Player playerWhosEquipmentShouldBeReloaded = null;
+
             if(ownerType == OwnerType.Character)
             {
-                if(isUsed)
+                var player = Managers.PlayerManager.Instance().GetByCharacterID(ownerID);
+
+                if (isUsed)
                 {
-                    var player = Managers.PlayerManager.Instance().GetByCharacterID(ownerID);
 
                     if (player == null)
                     {
@@ -76,6 +79,8 @@ namespace roleplay.Entities
                         Use(player);
                     }
                 }
+
+                playerWhosEquipmentShouldBeReloaded = player;
             }
 
             Unspawn();
@@ -89,6 +94,8 @@ namespace roleplay.Entities
             {
                 Spawn();
             }
+
+			playerWhosEquipmentShouldBeReloaded?.ReloadItems();
         }
 
         public virtual void Save()

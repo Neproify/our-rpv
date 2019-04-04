@@ -5,21 +5,23 @@ namespace roleplay.Items.ItemType
 {
     public class Weapon : Item
     {
-        public override void Use(Player player)
+        public override bool Use(Player player)
         {
-            base.Use(player);
-            if(!isUsed)
+            if (!base.Use(player))
+                return false;
+
+            if (!isUsed)
             {
                 if(player.GetItems().Find(x => x.properties[0] == properties[0] && x.isUsed) != null)
                 {
                     player.handle.SendNotification("~r~Posiadasz już wyjętą broń tego typu.");
-                    return;
+                    return false;
                 }
 
                 if(properties[1] <= 0)
                 {
                     player.handle.SendNotification("~r~Wybrana broń nie posiada amunicji.");
-                    return;
+                    return false;
                 }
 
                 player.handle.GiveWeapon((WeaponHash)properties[0], properties[1]);
@@ -35,6 +37,8 @@ namespace roleplay.Items.ItemType
             }
 
             NAPI.ClientEvent.TriggerClientEvent(player.handle, "HidePlayerItems");
+
+            return true;
         }
     }
 }

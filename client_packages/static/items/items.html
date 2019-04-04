@@ -85,8 +85,6 @@
             text-align: center;
         }
     </style>
-
-    <script type="text/javascript" src="items.js"></script>
 </head>
 
 <body>
@@ -104,9 +102,16 @@
                     <th>Nazwa</th>
                     <th>Opcje</th>
                 </tr>
+                <tr v-for="item in items">
+                    <td>{{item.UID}}</td>
+                    <td v-on:click="useItem(item.UID)">{{item.name}}</td>
+                    <td v-on:click="dropItem(item.UID)">Wyrzuć</td>
+                </tr>
             </table>
         </div>
     </div>
+    <script type="text/javascript" src="package://static/libs/vue.min.js"></script>
+    <script type="text/javascript" src="items.js"></script>
 </body>
 
 </html>

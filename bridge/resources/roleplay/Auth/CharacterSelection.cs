@@ -135,5 +135,10 @@ namespace roleplay.Auth
             player.handle.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
             return;
         }
+
+        public void CustomizationCommand(Client client)
+        {
+            client.TriggerEvent("ShowCharacterCustomization");
+        }
     }
 }

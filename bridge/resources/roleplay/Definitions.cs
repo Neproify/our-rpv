@@ -51,7 +51,8 @@
         VehicleManagement = 2,
         BuildingsManagement = 4,
         OrdersManagement = 8,
-        ItemsManagement = 16
+        ItemsManagement = 16,
+		All = 31
     }
 
     public enum AdminLevel
@@ -78,4 +79,9 @@
         PersonalDocument,
         VehicleLicenseDocument
     }
+	public class ItemInfo
+	{
+		public int UID;
+		public string name;
+	}
 }

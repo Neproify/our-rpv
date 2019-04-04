@@ -5,7 +5,7 @@ namespace roleplay_client.Items
 {
     public class Items : Events.Script
     {
-        RAGE.Ui.HtmlWindow window;
+        private RAGE.Ui.HtmlWindow window;
         public bool isVisible;
         public int framesWhenIsUp;
 
@@ -15,6 +15,7 @@ namespace roleplay_client.Items
             Events.Add("HidePlayerItems", HidePlayerItems);
             Events.Add("UseItem", UseItem);
             Events.Add("DropItem", DropItem);
+            Events.Add("ReloadPlayerItems", ReloadPlayerItems);
             Events.Tick += Tick;
         }
 
@@ -74,6 +75,14 @@ namespace roleplay_client.Items
                 RAGE.Ui.Cursor.Visible = false;
                 isVisible = false;
             }
+        }
+
+        private void ReloadPlayerItems(object[] args)
+        {
+            if (!isVisible)
+                return;
+
+            window.ExecuteJs($"loadItems('{args[0].ToString()}');");
         }
     }
 }
