@@ -10,7 +10,7 @@ namespace roleplay.Admin
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
@@ -133,7 +133,7 @@ namespace roleplay.Admin
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
@@ -150,7 +150,7 @@ namespace roleplay.Admin
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
@@ -176,7 +176,7 @@ namespace roleplay.Admin
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
@@ -201,7 +201,7 @@ namespace roleplay.Admin
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
@@ -218,7 +218,7 @@ namespace roleplay.Admin
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
@@ -242,7 +242,7 @@ namespace roleplay.Admin
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))

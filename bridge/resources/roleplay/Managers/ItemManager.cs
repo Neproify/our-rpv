@@ -11,7 +11,6 @@ namespace roleplay.Managers
 
         public ItemManager()
         {
-            // Messy but works.
             items = new List<Entities.Item>();
             itemsOfOwner = new Dictionary<OwnerType, Dictionary<int, List<Entities.Item>>>();
             foreach (var i in Enum.GetValues(typeof(OwnerType)))
@@ -57,28 +56,6 @@ namespace roleplay.Managers
 
             return itemsOfOwner[ownerType][ownerID];
         }
-
-        /*public object GetItemConverted(int UID)
-        {
-            var item = GetItem(UID);
-
-            if (item == null)
-                return null;
-
-            object convertedItem = null;
-
-            switch (item.type)
-            {
-                case (int)ItemType.None:
-                    convertedItem = item;
-                    break;
-                case (int)ItemType.Weapon:
-                    convertedItem = item as Items.ItemType.Weapon;
-                    break;
-            }
-
-            return convertedItem;
-        }*/
 
         public Entities.Item GetClosestItem(Vector3 position, float maxDistance = 5f)
         {
@@ -152,6 +129,9 @@ namespace roleplay.Managers
                     break;
                 case (int)ItemType.Phone:
                     item = new Items.ItemType.Phone();
+                    break;
+                case (int)ItemType.Balaclava:
+                    item = new Items.ItemType.Balaclava();
                     break;
                 default:
                     NAPI.Util.ConsoleOutput("[WARNING]Used default on creating item, type: " + type);

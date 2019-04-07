@@ -24,7 +24,7 @@ namespace roleplay.Auth
 
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (player.isLogged)
+            if (player.IsLoggedIn())
             {
                 client.SendNotification("~r~Jesteś już zalogowany.");
                 return;
@@ -69,7 +69,7 @@ namespace roleplay.Auth
                 return;
             }
 
-            player.isLogged = true;
+            player.SetIsLoggedIn(true);
             player.globalInfo = globalInfo;
             player.LoadPenalties();
 

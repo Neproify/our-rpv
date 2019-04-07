@@ -10,7 +10,7 @@ namespace roleplay
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (parameters == null)
@@ -43,7 +43,7 @@ namespace roleplay
 
             var secondPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
 
-            if (secondPlayer == null || !secondPlayer.isLogged || secondPlayer.character == null)
+            if (secondPlayer?.IsReady() == null)
             {
                 player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator gracza!");
                 return;

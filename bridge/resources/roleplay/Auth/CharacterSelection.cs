@@ -19,7 +19,7 @@ namespace roleplay.Auth
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged)
+            if (!player.IsLoggedIn())
             {
                 return;
             }
@@ -53,7 +53,7 @@ namespace roleplay.Auth
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged)
+            if (!player.IsLoggedIn())
             {
                 client.SendNotification("~r~Nie możesz wybrać postaci, nie jesteś zalogowany!");
                 return;

@@ -7,7 +7,7 @@ namespace roleplay.Entities
 {
 	public class Player
 	{
-		public bool isLogged;
+		private bool isLogged;
 		public string formattedName => handle.Name.Replace("_", " ");
 
 		public bool isBrutallyWounded = false;
@@ -57,6 +57,12 @@ namespace roleplay.Entities
 			character.Save();
 		}
 
+        public bool IsLoggedIn() => isLogged;
+
+        public void SetIsLoggedIn(bool logged) => isLogged = logged;
+
+        public bool IsReady() => IsLoggedIn() && character != null;
+
 		public void OutputMe(string action)
 		{
 			var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, handle.Position);
@@ -82,7 +88,7 @@ namespace roleplay.Entities
 			if (!isLogged || character == null)
 				return false;
 
-			if (!player.isLogged || player.character == null)
+			if (!player.IsReady())
 				return false;
 
 			if (money < amount)
@@ -207,33 +213,15 @@ namespace roleplay.Entities
 			return false;
 		}
 
-		public List<Item> GetItems()
-		{
-			if (!isLogged)
-				return null;
+		public List<Item> GetItems() => isLogged ? Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID) : null;
 
-			return Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID);
-		}
+		public bool CanUseItem(Item item) => item?.ownerType == OwnerType.Character && item?.ownerID == character.UID;
 
-		public bool CanUseItem(Item item)
-		{
-			if (item == null)
-				return false;
+        public bool CanUseItem(int itemUID) => CanUseItem(Managers.ItemManager.Instance().GetByID(itemUID));
 
-			if (item.ownerType == OwnerType.Character && item.ownerID == character.UID)
-				return true;
+        public bool IsUsingItemOfType(ItemType type) => GetItems().Find(x => x.type == type && x.isUsed == true) != null;
 
-			return false;
-		}
-
-		public bool CanUseItem(int itemUID)
-		{
-			var item = Managers.ItemManager.Instance().GetByID(itemUID);
-
-			return CanUseItem(item);
-		}
-
-		public void ShowItems()
+        public void ShowItems()
 		{
 			List<ItemInfo> items = new List<ItemInfo>();
 
@@ -245,19 +233,16 @@ namespace roleplay.Entities
 					name = item.name
 				});
 
-			}
+            }
 
 			var output = JsonConvert.SerializeObject(items);
 
 			handle.TriggerEvent("ShowPlayerItems", output);
 		}
 
-		public void ReloadItems()
-		{
-			ShowItems();
-		}
+        public void ReloadItems() => ShowItems();
 
-		public Vehicle GetClosestVehicle()
+        public Vehicle GetClosestVehicle()
 		{
 			var vehicles = NAPI.Pools.GetAllVehicles();
 
@@ -293,74 +278,21 @@ namespace roleplay.Entities
 			return closestVehicle;
 		}
 
-		public Building GetClosestBuilding(float maxDistance = 3f)
-		{
-			return Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);
-		}
+        public Building GetClosestBuilding(float maxDistance = 3f) => Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);
 
-		public Item GetClosestItem(float maxDistance = 5f)
-		{
-			return Managers.ItemManager.Instance().GetClosestItem(handle.Position, maxDistance);
-		}
+        public Item GetClosestItem(float maxDistance = 5f) => Managers.ItemManager.Instance().GetClosestItem(handle.Position, maxDistance);
 
-		public List<Group> GetGroups()
-		{
-			return Managers.GroupManager.Instance().GetPlayerGroups(this);
-		}
+        public List<Group> GetGroups() => Managers.GroupManager.Instance().GetPlayerGroups(this);
 
-		public bool HasSpecialPermissionInGroup(GroupSpecialPermission permission)
-		{
-			var group = groupDuty?.member.group;
+        public bool HasSpecialPermissionInGroup(GroupSpecialPermission permission) => (groupDuty?.member.group.specialPermissions & (int)permission) == (int)permission;
 
-			if (group == null)
-				return false;
+        public bool IsOnDutyOfGroupType(GroupType type) => groupDuty?.member.group.type == type;
 
-			if ((group.specialPermissions & (int)permission) == (int)permission)
-				return true;
+        public bool IsOnDutyOfGroupID(int UID) => groupDuty?.member.groupID == UID;
 
-			return false;
-		}
+        public bool IsInBuildingOfHisGroup() => building?.ownerType == OwnerType.Group && building?.ownerID == groupDuty?.member.groupID;
 
-		public bool IsOnDutyOfGroupType(GroupType type)
-		{
-			if (groupDuty == null)
-				return false;
-
-			if (groupDuty.member.group.type == type)
-				return true;
-
-			return false;
-		}
-
-        public bool IsOnDutyOfGroupID(int UID)
-        {
-            if (groupDuty?.member.groupID == UID)
-                return true;
-
-            return false;
-        }
-
-		public bool IsInBuildingOfHisGroup()
-		{
-			if (groupDuty == null)
-				return false;
-
-			if (building == null)
-				return false;
-
-			if (building.ownerType == OwnerType.Group && building.ownerID == groupDuty.member.groupID)
-				return true;
-
-			return false;
-		}
-
-		public bool IsAdminOfLevel(AdminLevel level)
-		{
-			if (globalInfo == null)
-				return false;
-
-			return globalInfo.adminLevel >= (int)level;
-		}
+        public bool IsAdminOfLevel(AdminLevel level) => globalInfo?.adminLevel >= (int)level;
 	}
 
 	public class GlobalInfo

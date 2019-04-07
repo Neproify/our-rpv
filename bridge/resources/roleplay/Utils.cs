@@ -69,6 +69,9 @@ namespace roleplay
             if (name == "telefon")
                 return ItemType.Phone;
 
+            if (name == "kominiarka")
+                return ItemType.Balaclava;
+
             return ItemType.Invalid;
         }
 
@@ -84,6 +87,8 @@ namespace roleplay
                     return "Dokument";
                 case ItemType.Phone:
                     return "Telefon";
+                case ItemType.Balaclava:
+                    return "Kominiarka";
                 default:
                     NAPI.Util.ConsoleOutput($"GETNAMEFROMITEMTYPE ERROR, TYPE: {type}");
                     return "Brak";

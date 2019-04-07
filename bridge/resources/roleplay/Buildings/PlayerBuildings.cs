@@ -9,7 +9,7 @@ namespace roleplay.Buildings
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             var building = player.building ?? player.GetClosestBuilding();

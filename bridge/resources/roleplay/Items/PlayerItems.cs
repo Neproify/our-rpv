@@ -10,7 +10,7 @@ namespace roleplay.Items
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged && player.character == null)
+            if (!player.IsReady())
                 return;
 
             var item = player.GetClosestItem();
@@ -26,7 +26,7 @@ namespace roleplay.Items
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged && player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (player.GetItems() == null)
@@ -43,7 +43,7 @@ namespace roleplay.Items
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             var item = Managers.ItemManager.Instance().GetByID(itemUID);
@@ -56,7 +56,7 @@ namespace roleplay.Items
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             var item = Managers.ItemManager.Instance().GetByID(itemUID);
@@ -77,7 +77,7 @@ namespace roleplay.Items
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (!player.IsOnDutyOfGroupType(GroupType.Police))
@@ -88,7 +88,7 @@ namespace roleplay.Items
 
             var searchedPlayer = Managers.PlayerManager.Instance().GetByID(ID);
 
-            if(searchedPlayer == null || !searchedPlayer.isLogged || searchedPlayer.character == null)
+            if(searchedPlayer?.IsReady() == false)
             {
                 player.handle.SendNotification("~r~Podałeś zły identyfikator gracza!");
                 return;

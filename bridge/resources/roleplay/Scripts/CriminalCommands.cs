@@ -9,7 +9,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);

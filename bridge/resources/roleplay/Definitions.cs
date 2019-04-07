@@ -16,7 +16,8 @@
         None,
         Weapon,
         Document,
-        Phone
+        Phone,
+        Balaclava
     }
 
     public enum DocumentType

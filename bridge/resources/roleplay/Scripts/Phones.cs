@@ -10,7 +10,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (player.activePhone == null)

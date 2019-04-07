@@ -11,7 +11,7 @@ namespace roleplay
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             List<Entities.Group> groups = player.GetGroups();

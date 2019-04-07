@@ -11,7 +11,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (player.isBrutallyWounded)
@@ -59,7 +59,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             player.OutputMe(action);
@@ -70,7 +70,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             player.OutputDo(action);
@@ -81,7 +81,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
@@ -97,7 +97,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (player.isBrutallyWounded)
@@ -123,7 +123,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (player.isBrutallyWounded)
@@ -159,7 +159,7 @@ namespace roleplay.Scripts
 
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (player.isBrutallyWounded)
@@ -194,7 +194,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (player.isBrutallyWounded)
@@ -235,7 +235,7 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             if (player.isBrutallyWounded)
@@ -269,18 +269,12 @@ namespace roleplay.Scripts
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
 
-            if (targetPlayer == null)
-            {
-                player.handle.SendNotification("~r~Podany gracz nie jest zalogowany!");
-                return;
-            }
-
-            if (!targetPlayer.isLogged || targetPlayer.character == null)
+            if (targetPlayer?.IsReady() == null)
             {
                 player.handle.SendNotification("~r~Podany gracz nie jest zalogowany!");
                 return;

@@ -9,7 +9,7 @@ namespace roleplay.Items
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            if (!player.isLogged || player.character == null)
+            if (!player.IsReady())
                 return;
 
             var weapon = player.GetItems().Find(x => x.properties[0] == weaponHash && x.isUsed);
