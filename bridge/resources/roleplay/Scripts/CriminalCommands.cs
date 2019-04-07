@@ -16,19 +16,19 @@ namespace roleplay.Scripts
 
             if(targetPlayer == null)
             {
-                player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator gracza!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
             if(!player.IsOnDutyOfGroupType(GroupType.Gang) && !player.IsOnDutyOfGroupType(GroupType.Mafia))
             {
-                player.handle.SendNotification("~r~Nie posiadasz uprawnień do wykonania tej komendy.");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
-            if(player.handle.Position.DistanceTo(targetPlayer.handle.Position) > 5)
+            if(player.GetPosition().DistanceTo(targetPlayer.GetPosition()) > 5)
             {
-                player.handle.SendNotification("~r~Jesteś za daleko od gracza.");
+                player.SendNotification("~r~Jesteś za daleko od gracza.");
                 return;
             }
 

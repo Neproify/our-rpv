@@ -55,13 +55,13 @@ namespace roleplay.Auth
 
             if (!player.IsLoggedIn())
             {
-                client.SendNotification("~r~Nie możesz wybrać postaci, nie jesteś zalogowany!");
+                player.SendNotification("~r~Nie możesz wybrać postaci, nie jesteś zalogowany!");
                 return;
             }
 
             if (player.character != null)
             {
-                client.SendNotification("~r~Masz już wybraną postać!");
+                player.SendNotification("~r~Masz już wybraną postać!");
                 return;
             }
 
@@ -103,18 +103,18 @@ namespace roleplay.Auth
 
             if (player.HaveActivePenaltyOfType(Penalties.PenaltyType.CharacterKill))
             {
-                player.handle.SendNotification("~r~Podana postać jest zablokowana. Nie możesz jej wybrać.");
+                player.SendNotification("~r~Podana postać jest zablokowana. Nie możesz jej wybrać.");
                 player.character = null;
                 return;
             }
 
-            player.handle.Name = character.name;
-            player.handle.Freeze(false);
-            player.handle.Invincible = false;
-            player.handle.Transparency = 255;
-            player.handle.Health = character.health;
-            NAPI.Entity.SetEntityModel(player.handle, player.character.model);
-            NAPI.ClientEvent.TriggerClientEvent(client, "OnCharacterSelectionSuccessful");
+            player.SetName(character.name);
+            player.SetFreezed(false);
+            player.SetInvicible(false);
+            player.SetTransparency(255);
+            player.SetHealth(character.health);
+            player.SetModel(player.character.model);
+            player.TriggerEvent("OnCharacterSelectionSuccessful");
 
             Vector3 spawnPosition = new Vector3(1398.96, 3591.61, 35);
             uint spawnDimension = 0;
@@ -131,8 +131,8 @@ namespace roleplay.Auth
 
 
             NAPI.Player.SpawnPlayer(client, spawnPosition, 180);
-            player.handle.Dimension = spawnDimension;
-            player.handle.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
+            player.SetDimension(spawnDimension);
+            player.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
             return;
         }
 

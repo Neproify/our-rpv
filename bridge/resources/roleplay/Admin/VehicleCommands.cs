@@ -15,7 +15,7 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -24,7 +24,7 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Vehicle createdVehicle = Managers.VehicleManager.Instance().CreateVehicle();
-                player.handle.SendNotification($"ID stworzonego pojazdu: {createdVehicle.vehicleData.UID}.");
+                player.SendNotification($"ID stworzonego pojazdu: {createdVehicle.vehicleData.UID}.");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace roleplay.Admin
             Entities.Vehicle vehicle = Managers.VehicleManager.Instance().GetByID(vehicleID);
             if (vehicle == null)
             {
-                player.handle.SendNotification("~r~Nie znaleziono pojazdu o podanym identyfikatorze.");
+                player.SendVehicleNotFoundNotification();
                 return;
             }
 
@@ -92,7 +92,7 @@ namespace roleplay.Admin
 
                 if (type == OwnerType.Invalid)
                 {
-                    player.handle.SendNotification("~r~Podałeś nieprawidłowy typ właściciela.");
+                    player.SendInvalidOwnerTypeNotification();
                     return;
                 }
 
@@ -137,7 +137,7 @@ namespace roleplay.Admin
                 if (!vehicle.IsSpawned())
                     return;
 
-                player.handle.Position = vehicle.handle.Position;
+                player.SetPosition(vehicle.handle.Position);
 
                 return;
             }
@@ -147,7 +147,7 @@ namespace roleplay.Admin
                 if (!vehicle.IsSpawned())
                     return;
 
-                vehicle.handle.Position = player.handle.Position;
+                vehicle.handle.Position = player.GetPosition();
 
                 return;
             }
@@ -192,19 +192,19 @@ namespace roleplay.Admin
             }
 
         Usage:
-            player.handle.SendNotification("Użycie komendy: /apojazd [id pojazdu/stwórz] [napraw, hp, właściciel, parkuj, spawn, unspawn, tpto, tphere, otwórz, zamknij, model, paliwo]");
+            player.SendUsageNotification("Użycie komendy: /apojazd [id pojazdu/stwórz] [napraw, hp, właściciel, parkuj, spawn, unspawn, tpto, tphere, otwórz, zamknij, model, paliwo]");
             return;
         ColorUsage:
-            player.handle.SendNotification($"Użycie komendy: /apojazd {vehicleID} kolor [1 kolor] [2 kolor]");
+            player.SendUsageNotification($"Użycie komendy: /apojazd {vehicleID} kolor [1 kolor] [2 kolor]");
             return;
         HealthUsage:
-            player.handle.SendNotification($"Użycie komendy: /apojazd {vehicleID} hp [ilość]");
+            player.SendUsageNotification($"Użycie komendy: /apojazd {vehicleID} hp [ilość]");
             return;
         OwnerUsage:
-            player.handle.SendNotification($"Użycie komendy: /apojazd {vehicleID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator właściciela]");
+            player.SendUsageNotification($"Użycie komendy: /apojazd {vehicleID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator właściciela]");
             return;
         ModelUsage:
-            player.handle.SendNotification($"Użycie komendy: /apojazd {vehicleID} model [hash modelu]");
+            player.SendUsageNotification($"Użycie komendy: /apojazd {vehicleID} model [hash modelu]");
             return;
         }
     }

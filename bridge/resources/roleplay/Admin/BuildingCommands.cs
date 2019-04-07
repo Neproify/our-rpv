@@ -15,7 +15,7 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -24,7 +24,7 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Building createdBuilding = Managers.BuildingManager.Instance().CreateBuilding();
-                player.handle.SendNotification($"ID stworzonego budynku: {createdBuilding.UID}.");
+                player.SendNotification($"ID stworzonego budynku: {createdBuilding.UID}.");
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace roleplay.Admin
 
             if (building == null)
             {
-                player.handle.SendNotification("~r~Nie znaleziono budynku o podanym identyfikatorze.");
+                player.SendNotification("~r~Nie znaleziono budynku o podanym identyfikatorze.");
                 return;
             }
 
@@ -73,13 +73,13 @@ namespace roleplay.Admin
 
             if (args[1] == "tpto")
             {
-                player.handle.Position = building.enterPosition;
+                player.SetPosition(building.enterPosition);
                 return;
             }
 
             if(args[1] == "tphere")
             {
-                building.enterPosition = player.handle.Position;
+                building.enterPosition = player.GetPosition();
                 building.Unspawn();
                 building.Save();
                 building.Spawn();
@@ -109,7 +109,7 @@ namespace roleplay.Admin
 
                 if (type == OwnerType.Invalid)
                 {
-                    player.handle.SendNotification("~r~Podałeś nieprawidłowy typ właściciela.");
+                    player.SendInvalidOwnerTypeNotification();
                     return;
                 }
 
@@ -126,16 +126,16 @@ namespace roleplay.Admin
             }
 
         Usage:
-            player.handle.SendNotification("Użycie komendy: /abudynek [id budynku/stwórz] [nazwa, opis, tpto, tphere, otwórz, zamknij, właściciel]");
+            player.SendUsageNotification("Użycie komendy: /abudynek [id budynku/stwórz] [nazwa, opis, tpto, tphere, otwórz, zamknij, właściciel]");
             return;
         NameUsage:
-            player.handle.SendNotification($"Użycie komendy: /abudynek {building.UID} nazwa [wartość].");
+            player.SendUsageNotification($"Użycie komendy: /abudynek {building.UID} nazwa [wartość].");
             return;
         DescriptionUsage:
-            player.handle.SendNotification($"Użycie komendy: /abudynek {building.UID} opis [wartość].");
+            player.SendUsageNotification($"Użycie komendy: /abudynek {building.UID} opis [wartość].");
             return;
         OwnerUsage:
-            player.handle.SendNotification($"Użycie komendy: /abudynek {building.UID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator własciciela].");
+            player.SendUsageNotification($"Użycie komendy: /abudynek {building.UID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator własciciela].");
             return;
         }
 

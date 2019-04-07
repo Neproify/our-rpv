@@ -18,7 +18,7 @@ namespace roleplay
 
             if (groups.Count == 0)
             {
-                player.handle.SendNotification("~r~Nie należysz do żadnej grupy.");
+                player.SendNotification("~r~Nie należysz do żadnej grupy.");
                 return;
             }
 
@@ -26,18 +26,18 @@ namespace roleplay
 
             if (args[0] == "lista")
             {
-                player.handle.SendChatMessage("====LISTA TWOICH GRUP====");
+                player.SendChatMessage("====LISTA TWOICH GRUP====");
                 foreach (var group in groups)
                 {
-                    player.handle.SendChatMessage($"[{group.UID}]{group.name}");
+                    player.SendChatMessage($"[{group.UID}]{group.name}");
                 }
-                player.handle.SendChatMessage("====KONIEC LISTY GRUP====");
+                player.SendChatMessage("====KONIEC LISTY GRUP====");
                 return;
             }
 
             if (!Int32.TryParse(args[0], out var groupID))
             {
-                player.handle.SendNotification("Użyj: /g [lista, identyfikator grupy]");
+                player.SendUsageNotification("Użyj: /g [lista, identyfikator grupy]");
                 return;
             }
 
@@ -45,7 +45,7 @@ namespace roleplay
 
             if (selectedGroup == null)
             {
-                player.handle.SendNotification("~r~Podałeś identyfikator grupy do której nie należysz!");
+                player.SendGroupNotFoundNotification();
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace roleplay
 
             if (args[1] == "info")
             {
-                player.handle.SendChatMessage($"Nazwa grupy: {selectedGroup.name}, typ: {selectedGroup.type}, na służbie: {selectedGroup.GetPlayersOnDuty().Count}");
+                player.SendChatMessage($"Nazwa grupy: {selectedGroup.name}, typ: {selectedGroup.type}, na służbie: {selectedGroup.GetPlayersOnDuty().Count}");
                 return;
             }
 
@@ -68,18 +68,18 @@ namespace roleplay
                         return;
 
                     player.groupDuty = new GroupDuty {member = member};
-                    player.handle.SendNotification($"~g~Rozpocząłeś pracę w grupie {selectedGroup.name}.");
+                    player.SendNotification($"~g~Rozpocząłeś pracę w grupie {selectedGroup.name}.");
                 }
                 else
                 {
                     if (player.groupDuty.member.group == selectedGroup)
                     {
                         player.groupDuty = null;
-                        player.handle.SendNotification($"~g~Skończyłeś pracę w grupie {selectedGroup.name}");
+                        player.SendNotification($"~g~Skończyłeś pracę w grupie {selectedGroup.name}");
                     }
                     else
                     {
-                        player.handle.SendNotification($"~r~Nie możesz rozpocząć pracy w tej grupie({selectedGroup.UID}), ponieważ pracujesz obecnie w innej({player.groupDuty.member.group.UID}).");
+                        player.SendNotification($"~r~Nie możesz rozpocząć pracy w tej grupie({selectedGroup.UID}), ponieważ pracujesz obecnie w innej({player.groupDuty.member.group.UID}).");
                     }
                 }
                 return;
@@ -92,21 +92,21 @@ namespace roleplay
                 if (member == null)
                     return;
 
-                if (player.handle.Model == member.rank.skin)
+                if (player.GetModel() == member.rank.skin)
                 {
-                    NAPI.Entity.SetEntityModel(player.handle, player.character.model);
-                    player.handle.SendNotification("~g~Przebrałeś się w codzienne ubranie.");
+                    player.SetModel(player.character.model);
+                    player.SendNotification("~g~Przebrałeś się w codzienne ubranie.");
                 }
                 else
                 {
                     if (member.rank.skin == 0)
                     {
-                        player.handle.SendNotification("~r~Nie masz przypisanego ubrania grupowego!");
+                        player.SendNotification("~r~Nie masz przypisanego ubrania grupowego!");
                         return;
                     }
 
-                    NAPI.Entity.SetEntityModel(player.handle, member.rank.skin);
-                    player.handle.SendNotification("~g~Przebrałeś się w ubranie służbowe.");
+                    player.SetModel(member.rank.skin);
+                    player.SendNotification("~g~Przebrałeś się w ubranie służbowe.");
                 }
 
                 return;
@@ -114,12 +114,12 @@ namespace roleplay
 
             if (args[1] == "online")
             {
-                player.handle.SendChatMessage($"====OSOBY ONLINE W GRUPIE {selectedGroup.name}====");
+                player.SendChatMessage($"====OSOBY ONLINE W GRUPIE {selectedGroup.name}====");
                 foreach (var groupPlayer in selectedGroup.GetPlayersOnDuty())
                 {
-                    player.handle.SendChatMessage($"{groupPlayer.formattedName}(ID: {groupPlayer.handle.Handle})");
+                    player.SendChatMessage($"{groupPlayer.formattedName}(ID: {groupPlayer.GetGameID()})");
                 }
-                player.handle.SendChatMessage("====KONIEC LISTY====");
+                player.SendChatMessage("====KONIEC LISTY====");
                 return;
             }
 
@@ -132,7 +132,7 @@ namespace roleplay
 
                 if ((member.rank.permissions & (int)GroupMemberPermission.OrdersManagement) == 0)
                 {
-                    player.handle.SendNotification("~r~Nie masz uprawnień do zamawiania przedmiotów w tej grupie!");
+                    player.SendNoPermissionsToCommandNotification();
                     return;
                 }
 
@@ -143,12 +143,12 @@ namespace roleplay
                 {
                     var products = Managers.GroupProductManager.Instance().GetProductsForGroup(selectedGroup);
 
-                    player.handle.SendChatMessage($"====LISTA PRZEDMIOTÓW DO ZAMÓWIENIA W GRUPIE {selectedGroup.name}");
+                    player.SendChatMessage($"====LISTA PRZEDMIOTÓW DO ZAMÓWIENIA W GRUPIE {selectedGroup.name}");
                     foreach (var productToList in products)
                     {
-                        player.handle.SendChatMessage($"[{productToList.UID}] {productToList.name}, typ: {Utils.GetNameFromItemType(productToList.type)}, właściwości: {productToList.propertiesString}, cena: ${productToList.price}");
+                        player.SendChatMessage($"[{productToList.UID}] {productToList.name}, typ: {Utils.GetNameFromItemType(productToList.type)}, właściwości: {productToList.propertiesString}, cena: ${productToList.price}");
                     }
-                    player.handle.SendChatMessage("====KONIEC LISTY====");
+                    player.SendChatMessage("====KONIEC LISTY====");
                     return;
                 }
 
@@ -163,15 +163,9 @@ namespace roleplay
 
                 var product = Managers.GroupProductManager.Instance().GetByID(productID);
 
-                if (product == null)
+                if (product?.CanBeBoughtByGroup(selectedGroup) == false)
                 {
-                    player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator produktu");
-                    return;
-                }
-
-                if (!product.CanBeBoughtByGroup(selectedGroup))
-                {
-                    player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator produktu");
+                    player.SendNotification("~r~Podałeś nieprawidłowy identyfikator produktu");
                     return;
                 }
 
@@ -179,7 +173,7 @@ namespace roleplay
 
                 if (selectedGroup.bank < finalPrice)
                 {
-                    player.handle.SendNotification("~r~Grupa nie ma wystarczającej ilości środków na koncie.");
+                    player.SendNotification("~r~Grupa nie ma wystarczającej ilości środków na koncie.");
                     return;
                 }
 
@@ -197,7 +191,7 @@ namespace roleplay
                     Managers.ItemManager.Instance().ReloadItem(createdItem);
                 }
 
-                player.handle.SendNotification($"~g~Zakupiłeś {quantity} sztuk {product.name} za ${finalPrice}.");
+                player.SendNotification($"~g~Zakupiłeś {quantity} sztuk {product.name} za ${finalPrice}.");
 
                 return;
             }
@@ -208,7 +202,7 @@ namespace roleplay
 
                 if ((member.rank.permissions & (int)GroupMemberPermission.ItemsManagement) == 0)
                 {
-                    player.handle.SendNotification("~r~Nie masz dostępu do magazynu grupy.");
+                    player.SendNoPermissionsToCommandNotification();
                     return;
                 }
 
@@ -221,18 +215,18 @@ namespace roleplay
 
                     if (items == null)
                     {
-                        player.handle.SendNotification("~r~Magazyn grupy jest pusty.");
+                        player.SendNotification("~r~Magazyn grupy jest pusty.");
                         return;
                     }
 
-                    player.handle.SendChatMessage($"====MAGAZYN GRUPY {selectedGroup.name}====");
+                    player.SendChatMessage($"====MAGAZYN GRUPY {selectedGroup.name}====");
 
                     foreach (var item in items)
                     {
-                        player.handle.SendChatMessage($"[{item.UID}] {item.name}, typ: {item.type}");
+                        player.SendChatMessage($"[{item.UID}] {item.name}, typ: {item.type}");
                     }
 
-                    player.handle.SendChatMessage("====KONIEC LISTY====");
+                    player.SendChatMessage("====KONIEC LISTY====");
 
                     return;
                 }
@@ -246,21 +240,16 @@ namespace roleplay
                         goto StorageUsage;
 
                     var item = Managers.ItemManager.Instance().GetByID(itemID);
-                    if (item == null)
-                    {
-                        player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
-                        return;
-                    }
 
                     if (!player.CanUseItem(item))
                     {
-                        player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
+                        player.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
                         return;
                     }
 
                     item.ChangeOwner(OwnerType.Group, selectedGroup.UID);
                     item.Save();
-                    player.handle.SendNotification("Umiesciłeś przedmiot w magazynie grupowym.");
+                    player.SendNotification("Umiesciłeś przedmiot w magazynie grupowym.");
 
                     return;
                 }
@@ -274,21 +263,16 @@ namespace roleplay
                         goto StorageUsage;
 
                     var item = Managers.ItemManager.Instance().GetByID(itemID);
-                    if (item == null)
-                    {
-                        player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
-                        return;
-                    }
 
-                    if (item.ownerType != OwnerType.Group || item.ownerID != selectedGroup.UID)
+                    if (item?.ownerType != OwnerType.Group || item?.ownerID != selectedGroup.UID)
                     {
-                        player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
+                        player.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
                         return;
                     }
 
                     item.ChangeOwner(OwnerType.Character, player.character.UID);
                     item.Save();
-                    player.handle.SendNotification("Zabrałeś przedmiot z magazynu grupowego.");
+                    player.SendNotification("Zabrałeś przedmiot z magazynu grupowego.");
 
                     return;
                 }
@@ -297,13 +281,13 @@ namespace roleplay
             }
 
         Usage:
-            player.handle.SendNotification($"Użyj: /g {groupID} [info, duty, przebierz, online, zamów, magazyn]");
+            player.SendUsageNotification($"Użyj: /g {groupID} [info, duty, przebierz, online, zamów, magazyn]");
             return;
         OrderUsage:
-            player.handle.SendNotification($"Użyj: /g {groupID} zamów [lista/identyfikator produktu] [ilość]");
+            player.SendUsageNotification($"Użyj: /g {groupID} zamów [lista/identyfikator produktu] [ilość]");
             return;
         StorageUsage:
-            player.handle.SendNotification($"Użyj: /g {groupID} magazyn [lista/włóż/wyciągnij] [identyfikator przedmiotu]");
+            player.SendUsageNotification($"Użyj: /g {groupID} magazyn [lista/włóż/wyciągnij] [identyfikator przedmiotu]");
             return;
         }
 

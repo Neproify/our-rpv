@@ -11,7 +11,7 @@ namespace roleplay.Items.ItemType
 
             if (player.phoneCall != null)
             {
-                player.handle.SendNotification("~r~Posiadasz aktywną rozmowę telefoniczną.");
+                player.SendNotification("~r~Posiadasz aktywną rozmowę telefoniczną.");
                 return false;
             }
 

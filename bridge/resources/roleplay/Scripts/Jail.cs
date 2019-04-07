@@ -16,33 +16,33 @@ namespace roleplay.Scripts
 
             if (targetPlayer == null)
             {
-                player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator gracza!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
             if (!player.IsOnDutyOfGroupType(GroupType.Gang) && !player.IsOnDutyOfGroupType(GroupType.Mafia)
                 && !player.IsOnDutyOfGroupType(GroupType.Police))
             {
-                player.handle.SendNotification("~r~Nie posiadasz uprawnień do wykonania tej komendy.");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
-            if (player.handle.Position.DistanceTo(targetPlayer.handle.Position) > 5 && player.handle.Dimension == targetPlayer.handle.Dimension)
+            if (player.GetPosition().DistanceTo(targetPlayer.GetPosition()) > 5 && player.GetDimension() == targetPlayer.GetDimension())
             {
-                player.handle.SendNotification("~r~Jesteś za daleko od gracza.");
+                player.SendNotification("~r~Jesteś za daleko od gracza.");
                 return;
             }
 
             if(!player.IsInBuildingOfHisGroup())
             {
-                player.handle.SendNotification("~r~Nie jesteś w budynku swojej grupy!");
+                player.SendNotification("~r~Nie jesteś w budynku swojej grupy!");
                 return;
             }
 
             if(targetPlayer.character.jailBuildingID == -1)
             {
                 targetPlayer.character.jailBuildingID = player.building.UID;
-                targetPlayer.character.jailPosition = targetPlayer.handle.Position;
+                targetPlayer.character.jailPosition = targetPlayer.GetPosition();
                 targetPlayer.character.Save();
                 player.OutputMe($" więzi {targetPlayer.formattedName}.");
             }

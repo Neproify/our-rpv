@@ -16,18 +16,18 @@ namespace roleplay.Items.ItemType
 
             if(player.IsUsingItemOfType(roleplay.ItemType.Balaclava))
             {
-                player.handle.SendNotification("~r~Masz już na sobie kominiarkę!");
+                player.SendNotification("~r~Masz już na sobie kominiarkę!");
                 return false;
             }
 
             if(isUsed)
             {
-                player.handle.Name = player.character.name;
+                player.SetName(player.character.name);
                 isUsed = false;
             }
             else
             {
-                player.handle.Name = $"Nieznajomy_{Convert.ToString(player.character.UID, 16)}";
+                player.SetName($"Nieznajomy_{Convert.ToString(player.character.UID, 16)}");
                 isUsed = true;
             }
 

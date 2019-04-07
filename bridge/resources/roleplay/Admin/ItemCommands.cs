@@ -15,7 +15,7 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -24,7 +24,7 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Item createdItem = Managers.ItemManager.Instance().CreateItem();
-                player.handle.SendNotification($"ID stworzonego przedmiotu: {createdItem.UID}.");
+                player.SendNotification($"ID stworzonego przedmiotu: {createdItem.UID}.");
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace roleplay.Admin
 
             if (item == null)
             {
-                player.handle.SendNotification("~r~Nie znaleziono przedmiotu o podanym identyfikatorze.");
+                player.SendItemNotFoundNotification();
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace roleplay.Admin
 
                 if(type == ItemType.Invalid)
                 {
-                    player.handle.SendNotification("~r~Podałeś nieprawidłowy typ przedmiotu.");
+                    player.SendNotification("~r~Podałeś nieprawidłowy typ przedmiotu.");
                     return;
                 }
 
@@ -90,7 +90,7 @@ namespace roleplay.Admin
 
                 if (type == OwnerType.Invalid)
                 {
-                    player.handle.SendNotification("~r~Podałeś nieprawidłowy typ właściciela.");
+                    player.SendInvalidOwnerTypeNotification();
                     return;
                 }
 
@@ -141,7 +141,7 @@ namespace roleplay.Admin
             {
                 if(item.objectHandle != null)
                 {
-                    player.handle.Position = item.objectHandle.Position;
+                    player.SetPosition(item.objectHandle.Position);
                 }
                 return;
             }
@@ -150,7 +150,7 @@ namespace roleplay.Admin
             {
                 if(item.objectHandle != null)
                 {
-                    item.position = player.handle.Position;
+                    item.position = player.GetPosition();
                     item.objectHandle.Position = item.position;
                     item.Save();
                 }
@@ -158,22 +158,22 @@ namespace roleplay.Admin
             }
 
         Usage:
-            player.handle.SendNotification("Użycie komendy: /aprzedmiot [id przedmiotu/stwórz] [nazwa, typ, właściciel, właściwości, właściwość, tpto, tphere]");
+            player.SendUsageNotification("Użycie komendy: /aprzedmiot [id przedmiotu/stwórz] [nazwa, typ, właściciel, właściwości, właściwość, tpto, tphere]");
             return;
         NameUsage:
-            player.handle.SendNotification($"Użycie komendy: /aprzedmiot {item.UID} nazwa [wartość].");
+            player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} nazwa [wartość].");
             return;
         TypeUsage:
-            player.handle.SendNotification($"Użycie komendy: /aprzedmiot {item.UID} typ [{Utils.GetItemTypes()}].");
+            player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} typ [{Utils.GetItemTypes()}].");
             return;
         OwnerUsage:
-            player.handle.SendNotification($"Użycie komendy: /aprzedmiot {item.UID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator własciciela].");
+            player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator własciciela].");
             return;
         PropertiesUsage:
-            player.handle.SendNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwości [lista oddzielona znakiem |].");
+            player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwości [lista oddzielona znakiem |].");
             return;
         PropertyUsage:
-            player.handle.SendNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwość [numer] [wartość].");
+            player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwość [numer] [wartość].");
             return;
         }
     }

@@ -16,7 +16,7 @@ namespace roleplay.Buildings
 
             if (building == null)
             {
-                player.handle.SendNotification("~r~Nie znajdujesz się w pobliżu żadnych drzwi!");
+                player.SendNotification("~r~Nie znajdujesz się w pobliżu żadnych drzwi!");
                 return;
             }
 
@@ -24,30 +24,30 @@ namespace roleplay.Buildings
             {
                 if (building.isLocked)
                 {
-                    player.handle.SendNotification("~r~Drzwi są zamknięte.");
+                    player.SendNotification("~r~Drzwi są zamknięte.");
                     return;
                 }
 
                 if (building != null)
                 {
-                    if (player.handle.Position.DistanceTo(building.exitPosition) <= 3f)
+                    if (player.GetPosition().DistanceTo(building.exitPosition) <= 3f)
                     {
                         if (player.character.jailBuildingID != -1)
                         {
-                            player.handle.SendNotification("~r~Jesteś uwięziony. Nie możesz wyjść.");
+                            player.SendNotification("~r~Jesteś uwięziony. Nie możesz wyjść.");
                             return;
                         }
 
-                        player.handle.Position = building.enterPosition;
-                        player.handle.Dimension = building.enterDimension;
+                        player.SetPosition(building.enterPosition);
+                        player.SetDimension(building.enterDimension);
                         player.building = null;
 
                         return;
                     }
                 }
 
-                player.handle.Position = building.exitPosition;
-                player.handle.Dimension = building.exitDimension;
+                player.SetPosition(building.exitPosition);
+                player.SetDimension(building.exitDimension);
                 player.building = building;
 
                 return;
@@ -57,18 +57,18 @@ namespace roleplay.Buildings
             {
                 if (!building.CanBeAccessedBy(player))
                 {
-                    player.handle.SendNotification("~r~Nie posiadasz klucza do tych drzwi!");
+                    player.SendNotification("~r~Nie posiadasz klucza do tych drzwi!");
                     return;
                 }
 
-                player.handle.SendNotification($"{(building.isLocked ? "Otworzyłeś" : "Zamknąłeś")} drzwi.");
+                player.SendNotification($"{(building.isLocked ? "Otworzyłeś" : "Zamknąłeś")} drzwi.");
 
                 building.isLocked = !building.isLocked;
 
                 return;
             }
 
-            player.handle.SendNotification("Użyj: /drzwi [przejdz, zamek]");
+            player.SendUsageNotification("Użyj: /drzwi [przejdz, zamek]");
         }
     }
 }

@@ -49,7 +49,7 @@ namespace roleplay.Scripts
 
             foreach(var loopPlayer in Managers.PlayerManager.Instance().GetAll())
             {
-                loopPlayer.handle.SendNotification($"~r~ {player.formattedName} zmarł, powód: {reason}");
+                loopPlayer.SendNotification($"~r~ {player.formattedName} zmarł, powód: {reason}");
             }
         }
     }

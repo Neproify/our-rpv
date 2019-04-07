@@ -15,28 +15,29 @@ namespace roleplay.Vehicles
                 if (vehicle == null)
                 {
                     vehicle = player.GetClosestVehicle(5);
+
                     if (vehicle == null)
                     {
-                        player.handle.SendNotification("~r~Nie znajdujesz się w pobliżu żadnego pojazdu!");
+                        player.SendNotification("~r~Nie znajdujesz się w pobliżu żadnego pojazdu!");
                         return;
                     }
                 }
 
                 if (!vehicle.CanBeAccessedBy(player))
                 {
-                    player.handle.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
+                    player.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
                     return;
                 }
 
                 if (vehicle.handle.Locked)
                 {
-                    player.handle.SendNotification("~g~Otworzyłeś pojazd.");
+                    player.SendNotification("~g~Otworzyłeś pojazd.");
                     vehicle.handle.Locked = false;
                     player.OutputMe($"otwiera pojazd {vehicle.handle.DisplayName}.");
                 }
                 else
                 {
-                    player.handle.SendNotification("~g~Zamknąłeś pojazd.");
+                    player.SendNotification("~g~Zamknąłeś pojazd.");
                     vehicle.handle.Locked = true;
                     player.OutputMe($"zamyka pojazd {vehicle.handle.DisplayName}.");
                 }
@@ -46,29 +47,29 @@ namespace roleplay.Vehicles
 
             if (arg == "silnik")
             {
-                if (player.handle.Vehicle == null || player.handle.VehicleSeat != -1)
+                if (player.GetVehicleSeat() != -1)
                 {
-                    player.handle.SendNotification("~r~Nie siedzisz w żadnym pojeździe lub nie jesteś kierowcą!");
+                    player.SendNotADriverNotification();
                     return;
                 }
 
-                var vehicle = Managers.VehicleManager.Instance().GetByHandle(player.handle.Vehicle);
+                var vehicle = player.GetVehicle();
 
                 if (!vehicle.CanBeAccessedBy(player))
                 {
-                    player.handle.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
+                    player.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
                     return;
                 }
 
                 if (vehicle.engineStatus == false)
                 {
-                    player.handle.SendNotification("~g~Uruchomiłeś silnik.");
+                    player.SendNotification("~g~Uruchomiłeś silnik.");
                     vehicle.engineStatus = true;
                     player.OutputMe($"odpalił silnik w pojeździe {vehicle.handle.DisplayName}.");
                 }
                 else
                 {
-                    player.handle.SendNotification("~g~Zgasiłeś silnik.");
+                    player.SendNotification("~g~Zgasiłeś silnik.");
                     vehicle.engineStatus = false;
                     player.OutputMe($"zgasił silnik w pojeździe {vehicle.handle.DisplayName}.");
                 }
@@ -78,17 +79,17 @@ namespace roleplay.Vehicles
 
             if (arg == "parkuj")
             {
-                if (player.handle.Vehicle == null || player.handle.VehicleSeat != -1)
+                if (player.GetVehicleSeat() != -1)
                 {
-                    player.handle.SendNotification("~r~Nie siedzisz w żadnym pojeździe lub nie jesteś kierowcą!");
+                    player.SendNotADriverNotification();
                     return;
                 }
 
-                var vehicle = Managers.VehicleManager.Instance().GetByHandle(player.handle.Vehicle);
+                var vehicle = player.GetVehicle();
 
                 if (!vehicle.CanBeAccessedBy(player))
                 {
-                    player.handle.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
+                    player.SendNotification("~r~Nie masz kluczy do tego pojazdu!");
                     return;
                 }
 
@@ -100,7 +101,7 @@ namespace roleplay.Vehicles
                 return;
             }
 
-            client.SendNotification("Użycie komendy: /v [z(amek), silnik, parkuj]");
+            player.SendUsageNotification("Użycie komendy: /v [z(amek), silnik, parkuj]");
             return;
         }
     }

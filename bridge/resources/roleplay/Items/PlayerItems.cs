@@ -18,7 +18,7 @@ namespace roleplay.Items
             item.ChangeOwner(OwnerType.Character, player.character.UID);
             item.Save();
 
-            player.handle.SendNotification($"~g~Podniosłeś przedmiot {item.name}.");
+            player.SendNotification($"~g~Podniosłeś przedmiot {item.name}.");
         }
 
         [RemoteEvent("ShowPlayerItems")]
@@ -31,7 +31,7 @@ namespace roleplay.Items
 
             if (player.GetItems() == null)
             {
-                client.SendNotification("~r~Nie posiadasz żadnych przedmiotów!");
+                player.SendNotification("~r~Nie posiadasz żadnych przedmiotów!");
                 return;
             }
 
@@ -64,12 +64,12 @@ namespace roleplay.Items
             if (!player.CanUseItem(item))
                 return;
 
-            item.position = player.handle.Position;
+            item.position = player.GetPosition();
             item.position.Z -= 0.5f;
             item.ChangeOwner(OwnerType.World, 0);
             item.Save();
 
-            player.handle.SendNotification($"~g~Wyrzuciłeś przedmiot {item.name}");
+            player.SendNotification($"~g~Wyrzuciłeś przedmiot {item.name}");
         }
 
         [Command("przeszukaj")]
@@ -82,7 +82,7 @@ namespace roleplay.Items
 
             if (!player.IsOnDutyOfGroupType(GroupType.Police))
             {
-                player.handle.SendNotification("~r~Nie posiadasz uprawnień do przeszukiwania.");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -90,22 +90,22 @@ namespace roleplay.Items
 
             if(searchedPlayer?.IsReady() == false)
             {
-                player.handle.SendNotification("~r~Podałeś zły identyfikator gracza!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
-            if(player.handle.Position.DistanceTo(searchedPlayer.handle.Position) > 5)
+            if(player.GetPosition().DistanceTo(searchedPlayer.GetPosition()) > 5)
             {
-                player.handle.SendNotification("~r~Znajdujesz się za daleko od tego gracza.");
+                player.SendNotification("~r~Znajdujesz się za daleko od tego gracza.");
                 return;
             }
 
-            player.handle.SendChatMessage($"====LISTA PRZEDMIOTÓW GRACZA {searchedPlayer.formattedName}");
+            player.SendChatMessage($"====LISTA PRZEDMIOTÓW GRACZA {searchedPlayer.formattedName}");
             foreach(var item in searchedPlayer.GetItems())
             {
-                player.handle.SendChatMessage($"Nazwa: {item.name}, typ: {item.type}");
+                player.SendChatMessage($"Nazwa: {item.name}, typ: {item.type}");
             }
-            player.handle.SendChatMessage("====KONIEC LISTY====");
+            player.SendChatMessage("====KONIEC LISTY====");
 
             player.OutputMe($"przeszukuje {searchedPlayer.formattedName}.");
         }

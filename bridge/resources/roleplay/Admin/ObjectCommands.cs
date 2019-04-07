@@ -15,7 +15,7 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -24,7 +24,7 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Object createdObject = Managers.ObjectManager.Instance().CreateObject();
-                player.handle.SendNotification($"ID stworzonego pojazdu: {createdObject.UID}.");
+                player.SendNotification($"ID stworzonego pojazdu: {createdObject.UID}.");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace roleplay.Admin
             Entities.Object @object = Managers.ObjectManager.Instance().GetByID(objectID);
             if (@object == null)
             {
-                player.handle.SendNotification("~r~Nie znaleziono obiektu o podanym identyfikatorze.");
+                player.SendNotification("~r~Nie znaleziono obiektu o podanym identyfikatorze.");
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace roleplay.Admin
 
                 if (type == OwnerType.Invalid)
                 {
-                    player.handle.SendNotification("~r~Podałeś nieprawidłowy typ właściciela.");
+                    player.SendInvalidOwnerTypeNotification();
                     return;
                 }
 
@@ -73,7 +73,7 @@ namespace roleplay.Admin
                 if (!@object.IsSpawned())
                     return;
 
-                player.handle.Position = @object.handle.Position;
+                player.SetPosition(@object.handle.Position);
 
                 return;
             }
@@ -83,7 +83,7 @@ namespace roleplay.Admin
                 if (!@object.IsSpawned())
                     return;
 
-                @object.handle.Position = player.handle.Position;
+                @object.handle.Position = player.GetPosition();
 
                 return;
             }
@@ -104,13 +104,13 @@ namespace roleplay.Admin
             }
 
         Usage:
-            player.handle.SendNotification("Użycie komendy: /aobiekt [id obiektu/stwórz] [właściciel, tpto, tphere, model]");
+            player.SendUsageNotification("Użycie komendy: /aobiekt [id obiektu/stwórz] [właściciel, tpto, tphere, model]");
             return;
         OwnerUsage:
-            player.handle.SendNotification($"Użycie komendy: /aobiekt {objectID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator właściciela]");
+            player.SendUsageNotification($"Użycie komendy: /aobiekt {objectID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator właściciela]");
             return;
         ModelUsage:
-            player.handle.SendNotification($"Użycie komendy: /aobiekt {objectID} model [hash modelu]");
+            player.SendUsageNotification($"Użycie komendy: /aobiekt {objectID} model [hash modelu]");
             return;
         }
     }

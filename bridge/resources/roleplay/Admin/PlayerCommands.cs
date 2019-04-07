@@ -15,7 +15,7 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -31,7 +31,7 @@ namespace roleplay.Admin
 
             if (targetPlayer == null)
             {
-                player.handle.SendNotification("~r~Nie znaleziono gracza o podanym identyfikatorze.");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace roleplay.Admin
                     goto HPUsage;
                 }
 
-                targetPlayer.handle.Health = healthValue;
+                targetPlayer.SetHealth(healthValue);
                 return;
             }
 
@@ -69,20 +69,20 @@ namespace roleplay.Admin
                     goto ModelUsage;
                 }
 
-                NAPI.Entity.SetEntityModel(targetPlayer.handle, modelHash);
+                targetPlayer.SetModel(modelHash);
                 return;
             }
 
             if (args[1] == "przedmioty")
             {
-                player.handle.SendChatMessage($"==== LISTA PRZEDMIOTÓW GRACZA {targetPlayer.formattedName} ====");
+                player.SendChatMessage($"==== LISTA PRZEDMIOTÓW GRACZA {targetPlayer.formattedName} ====");
 
                 foreach (var item in targetPlayer.GetItems())
                 {
-                    player.handle.SendChatMessage($"[{item.UID}] - {item.name}");
+                    player.SendChatMessage($"[{item.UID}] - {item.name}");
                 }
 
-                player.handle.SendChatMessage("==== KONIEC LISTY ====");
+                player.SendChatMessage("==== KONIEC LISTY ====");
                 return;
             }
 
@@ -104,27 +104,27 @@ namespace roleplay.Admin
 
             if (args[1] == "tpto")
             {
-                player.handle.Position = targetPlayer.handle.Position;
+                player.SetPosition(targetPlayer.GetPosition());
                 return;
             }
 
             if (args[1] == "tphere")
             {
-                targetPlayer.handle.Position = player.handle.Position;
+                targetPlayer.SetPosition(player.GetPosition());
                 return;
             }
 
         Usage:
-            player.handle.SendNotification("Użycie komendy: /agracz [id gracza] [hp, unbw, model, przedmioty, money, tpto, tphere]");
+            player.SendUsageNotification("Użycie komendy: /agracz [id gracza] [hp, unbw, model, przedmioty, money, tpto, tphere]");
             return;
         HPUsage:
-            player.handle.SendNotification($"Użycie komendy: /agracz {playerID} hp [ilość].");
+            player.SendUsageNotification($"Użycie komendy: /agracz {playerID} hp [ilość].");
             return;
         ModelUsage:
-            player.handle.SendNotification($"Użycie komendy: /agracz {playerID} model [hash modelu].");
+            player.SendUsageNotification($"Użycie komendy: /agracz {playerID} model [hash modelu].");
             return;
         MoneyUsage:
-            player.handle.SendNotification($"Użycie komendy: /agracz {playerID} money [ilość].");
+            player.SendUsageNotification($"Użycie komendy: /agracz {playerID} money [ilość].");
             return;
         }
 
@@ -138,7 +138,7 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -155,19 +155,19 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
             var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
+
             if (targetPlayer == null)
             {
-                player.handle.SendNotification("~r~Podany gracz nie jest w grze!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
-            targetPlayer.CreatePenalty(Penalties.PenaltyType.Ban, reason, player.character.UID, DateTime.Now);
-            targetPlayer.handle.Kick(reason);
+            targetPlayer.Ban(reason, player.character.UID);
         }
 
 
@@ -181,19 +181,18 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
             var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
             if (targetPlayer == null)
             {
-                player.handle.SendNotification("~r~Podany gracz nie jest w grze!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
-            targetPlayer.CreatePenalty(Penalties.PenaltyType.Kick, reason, player.character.UID, DateTime.Now);
-            targetPlayer.handle.Kick(reason);
+            targetPlayer.Kick(reason, player.character.UID);
         }
 
         [Command("gooc", GreedyArg = true)]
@@ -206,7 +205,7 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -223,14 +222,14 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
             var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
             if (targetPlayer == null)
             {
-                player.handle.SendNotification("~r~Podany gracz nie jest w grze!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
@@ -247,14 +246,14 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
             var targetPlayer = Managers.PlayerManager.Instance().GetByID(playerID);
             if (targetPlayer == null)
             {
-                player.handle.SendNotification("~r~Podany gracz nie jest w grze!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 

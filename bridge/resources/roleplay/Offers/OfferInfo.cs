@@ -12,9 +12,9 @@
 
         public void ShowInfo(Entities.Player player)
         {
-            player.handle.SendChatMessage("====Dane oferty====");
-            player.handle.SendChatMessage($"Typ: x, nadawca: {sender.formattedName}, odbiorca: {receiver.formattedName}.");
-            player.handle.SendChatMessage($"Cena: ${price}");
+            player.SendChatMessage("====Dane oferty====");
+            player.SendChatMessage($"Typ: x, nadawca: {sender.formattedName}, odbiorca: {receiver.formattedName}.");
+            player.SendChatMessage($"Cena: ${price}");
         }
 
         public void Accept(Entities.Player player)
@@ -22,10 +22,10 @@
             if (receiver != player)
                 return;
 
-            if(sender.handle.Position.DistanceTo(receiver.handle.Position) > 10f)
+            if(sender.GetPosition().DistanceTo(receiver.GetPosition()) > 10f)
             {
-                sender.handle.SendNotification("~r~Oferta została zaakceptowana, ale znajdujecie się za daleko od siebie.");
-                receiver.handle.SendNotification("~r~Oferta została zaakceptowana, ale znajdujecie się za daleko od siebie.");
+                sender.SendNotification("~r~Oferta została zaakceptowana, ale znajdujecie się za daleko od siebie.");
+                receiver.SendNotification("~r~Oferta została zaakceptowana, ale znajdujecie się za daleko od siebie.");
                 return;
             }
 
@@ -34,9 +34,9 @@
                 if (!sender.SendMoneyTo(receiver, price))
                     return;
 
-                receiver.handle.Health = 100;
-                sender.handle.SendNotification($"Uleczyłeś {receiver.formattedName}.");
-                receiver.handle.SendNotification($"Zostałeś uleczony przez {sender.formattedName}.");
+                receiver.SetHealth(100);
+                sender.SendNotification($"Uleczyłeś {receiver.formattedName}.");
+                receiver.SendNotification($"Zostałeś uleczony przez {sender.formattedName}.");
             }
 
             if(type == OfferType.Item)
@@ -54,8 +54,8 @@
                 }
 
                 item.ChangeOwner(OwnerType.Character, receiver.character.UID);
-                sender.handle.SendNotification($"Sprzedałeś przedmiot {item.name} graczu {receiver.formattedName}.");
-                receiver.handle.SendNotification($"Kupiłeś przedmiot {item.name} od gracza {sender.formattedName}.");
+                sender.SendNotification($"Sprzedałeś przedmiot {item.name} graczu {receiver.formattedName}.");
+                receiver.SendNotification($"Kupiłeś przedmiot {item.name} od gracza {sender.formattedName}.");
             }
 
             if(type == OfferType.Ticket)
@@ -63,17 +63,17 @@
                 if (!receiver.SendMoneyTo((Entities.Group)args[0], price))
                     return;
 
-                sender.handle.SendNotification($"Gracz {receiver.formattedName} zapłacił mandat w wysokości {price}.");
-                receiver.handle.SendNotification($"Zapłaciłeś mandat w wysokości {price} wystawiony przez gracza {sender.formattedName}");
+                sender.SendNotification($"Gracz {receiver.formattedName} zapłacił mandat w wysokości {price}.");
+                receiver.SendNotification($"Zapłaciłeś mandat w wysokości {price} wystawiony przez gracza {sender.formattedName}");
             }
 
             if(type == OfferType.VehicleRepair)
             {
                 Entities.Vehicle vehicle = (Entities.Vehicle)args[0];
 
-                if (sender.handle.Position.DistanceTo(vehicle.handle.Position) > 5)
+                if (sender.GetPosition().DistanceTo(vehicle.handle.Position) > 5)
                 {
-                    sender.handle.SendNotification("Jesteś za daleko od pojazdu który próbujesz naprawić.");
+                    sender.SendNotification("Jesteś za daleko od pojazdu który próbujesz naprawić.");
                     return;
                 }
 
@@ -82,8 +82,8 @@
 
                 vehicle.handle.Repair();
 
-                sender.handle.SendNotification($"Naprawiłeś pojazd gracza {receiver.formattedName}.");
-                receiver.handle.SendNotification($"Gracz {sender.formattedName} naprawił twój pojazd.");
+                sender.SendNotification($"Naprawiłeś pojazd gracza {receiver.formattedName}.");
+                receiver.SendNotification($"Gracz {sender.formattedName} naprawił twój pojazd.");
             }
 
             if(type == OfferType.PersonalDocument)
@@ -95,8 +95,8 @@
                 item.ChangeOwner(OwnerType.Character, receiver.character.UID);
                 item.Save();
 
-                sender.handle.SendNotification($"Wystawiłeś dowód osobisty dla {receiver.formattedName}.");
-                receiver.handle.SendNotification($"Gracz {sender.formattedName} wyrobił ci dowód osobisty.");
+                sender.SendNotification($"Wystawiłeś dowód osobisty dla {receiver.formattedName}.");
+                receiver.SendNotification($"Gracz {sender.formattedName} wyrobił ci dowód osobisty.");
             }
 
             if (type == OfferType.VehicleLicenseDocument)
@@ -108,8 +108,8 @@
                 item.ChangeOwner(OwnerType.Character, receiver.character.UID);
                 item.Save();
 
-                sender.handle.SendNotification($"Wystawiłeś prawo jazdy dla {receiver.formattedName}.");
-                receiver.handle.SendNotification($"Gracz {sender.formattedName} wyrobił ci prawo jazdy.");
+                sender.SendNotification($"Wystawiłeś prawo jazdy dla {receiver.formattedName}.");
+                receiver.SendNotification($"Gracz {sender.formattedName} wyrobił ci prawo jazdy.");
             }
 
             sender.offerInfo = null;
@@ -123,14 +123,14 @@
 
             if(player == sender)
             {
-                sender.handle.SendNotification("Anulowałeś swoją ofertę.");
-                receiver.handle.SendNotification($"{sender.formattedName} anulował swoją ofertę.");
+                sender.SendNotification("Anulowałeś swoją ofertę.");
+                receiver.SendNotification($"{sender.formattedName} anulował swoją ofertę.");
             }
 
             if(player == receiver)
             {
-                sender.handle.SendNotification($"{receiver.formattedName} odrzucił twoją ofertę.");
-                receiver.handle.SendNotification($"Odrzuciłeś ofertę złożoną przez {sender.formattedName}.");
+                sender.SendNotification($"{receiver.formattedName} odrzucił twoją ofertę.");
+                receiver.SendNotification($"Odrzuciłeś ofertę złożoną przez {sender.formattedName}.");
             }
 
             sender.offerInfo = null;

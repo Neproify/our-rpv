@@ -16,17 +16,17 @@ namespace roleplay.Auth
         [RemoteEvent("OnLoginRequest")]
         public void OnLoginRequest(Client client, string login, string password)
         {
-            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
-            {
-                client.SendNotification("~r~Musisz podać login i hasło aby się zalogować!");
-                return;
-            }
-
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
             if (player.IsLoggedIn())
             {
-                client.SendNotification("~r~Jesteś już zalogowany.");
+                player.SendNotification("~r~Jesteś już zalogowany.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            {
+                player.SendNotification("~r~Musisz podać login i hasło aby się zalogować!");
                 return;
             }
 
@@ -39,7 +39,7 @@ namespace roleplay.Auth
             if (!reader.HasRows)
             {
                 reader.Close();
-                client.SendNotification("~r~Nie znaleźliśmy konta o podanej nazwie.");
+                player.SendNotification("~r~Nie znaleźliśmy konta o podanej nazwie.");
                 return;
             }
             reader.Read();
@@ -48,7 +48,7 @@ namespace roleplay.Auth
             if (!BCrypt.BCryptHelper.CheckPassword(password, passwordToCheck))
             {
                 reader.Close();
-                client.SendNotification("~r~Wpisałeś błędne hasło!");
+                player.SendNotification("~r~Wpisałeś błędne hasło!");
                 return;
             }
 
@@ -75,13 +75,13 @@ namespace roleplay.Auth
 
             if(player.HaveActivePenaltyOfType(Penalties.PenaltyType.Ban))
             {
-                player.handle.Kick("Posiadasz aktywną karę administracyjną.");
+                player.SilentKick("Posiadasz aktywną karę administracyjną.");
                 return;
             }
 
             NAPI.ClientEvent.TriggerClientEvent(client, "LoginSuccessful");
 
-            client.SendNotification("~g~Pomyślnie zalogowałeś się!");
+            player.SendNotification("~g~Pomyślnie zalogowałeś się!");
         }
     }
 }

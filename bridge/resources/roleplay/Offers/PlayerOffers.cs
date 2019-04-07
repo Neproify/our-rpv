@@ -45,25 +45,25 @@ namespace roleplay
 
             if (secondPlayer?.IsReady() == null)
             {
-                player.handle.SendNotification("~r~Podałeś nieprawidłowy identyfikator gracza!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
-            if (player.handle.Position.DistanceTo(secondPlayer.handle.Position) > 10f)
+            if (player.GetPosition().DistanceTo(secondPlayer.GetPosition()) > 10f)
             {
-                player.handle.SendNotification("~r~Gracz znajduje się za daleko!");
+                player.SendNotification("~r~Gracz znajduje się za daleko!");
                 return;
             }
 
             if (player.offerInfo != null)
             {
-                player.handle.SendNotification("~r~Masz już aktywną ofertę. Nie możesz złożyć następnej.");
+                player.SendNotification("~r~Masz już aktywną ofertę. Nie możesz złożyć następnej.");
                 return;
             }
 
             if (secondPlayer.offerInfo != null)
             {
-                player.handle.SendNotification("~r~Gracz ma już aktywną ofertę. Nie możesz złożyć następnej.");
+                player.SendNotification("~r~Gracz ma już aktywną ofertę. Nie możesz złożyć następnej.");
                 return;
             }
 
@@ -71,7 +71,7 @@ namespace roleplay
             {
                 if(!player.IsOnDutyOfGroupType(GroupType.Medical))
                 {
-                    player.handle.SendNotification("~r~Nie masz uprawnień aby leczyć inne osoby!");
+                    player.SendNoPermissionsToCommandNotification();
                     return;
                 }
 
@@ -89,13 +89,13 @@ namespace roleplay
             {
                 if(args[3] == null)
                 {
-                    player.handle.SendNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
+                    player.SendUsageNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
                     return;
                 }
 
                 if(!int.TryParse(args[3], out var itemID))
                 {
-                    player.handle.SendNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
+                    player.SendUsageNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
                     return;
                 }
 
@@ -103,7 +103,7 @@ namespace roleplay
 
                 if (!player.CanUseItem(item))
                 {
-                    player.handle.SendNotification("~r~Nie możesz przekazać przedmiotu którego nie posiadasz!");
+                    player.SendNotification("~r~Nie możesz przekazać przedmiotu którego nie posiadasz!");
                     return;
                 }
 
@@ -125,7 +125,7 @@ namespace roleplay
             {
                 if(!player.IsOnDutyOfGroupType(GroupType.Police))
                 {
-                    player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania mandatów!");
+                    player.SendNoPermissionsToCommandNotification();
                     return;
                 }
 
@@ -147,7 +147,7 @@ namespace roleplay
             {
                 if(!player.IsOnDutyOfGroupType(GroupType.Workshop))
                 {
-                    player.handle.SendNotification("~r~Nie masz uprawnień do naprawiania pojazdów!");
+                    player.SendNoPermissionsToCommandNotification();
                     return;
                 }
 
@@ -169,7 +169,7 @@ namespace roleplay
             {
                 if(!player.IsOnDutyOfGroupType(GroupType.Government))
                 {
-                    player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania dowodów osobistych!");
+                    player.SendNoPermissionsToCommandNotification();
                     return;
                 }
 
@@ -187,7 +187,7 @@ namespace roleplay
             {
                 if (!player.IsOnDutyOfGroupType(GroupType.Government))
                 {
-                    player.handle.SendNotification("~r~Nie masz uprawnień do wystawiania dowodów osobistych!");
+                    player.SendNoPermissionsToCommandNotification();
                     return;
                 }
 
@@ -204,14 +204,14 @@ namespace roleplay
 
             if (player.offerInfo != null)
             {
-                player.handle.SendNotification("Wysłałeś ofertę.");
-                secondPlayer.handle.SendNotification($"Otrzymałeś ofertę od {player.formattedName}. Więcej informacji: /o info.");
+                player.SendNotification("Wysłałeś ofertę.");
+                secondPlayer.SendNotification($"Otrzymałeś ofertę od {player.formattedName}. Więcej informacji: /o info.");
                 return;
             }
 
             goto Usage;
         Usage:
-            player.handle.SendNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat, napraw, dowód, prawko]");
+            player.SendUsageNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat, napraw, dowód, prawko]");
             return;
 
         InfoAndManagement:
@@ -236,7 +236,7 @@ namespace roleplay
             goto UsageActiveOffer;
 
         UsageActiveOffer:
-            player.handle.SendNotification("Użycie komendy: /o [info, akceptuj, odrzuc]");
+            player.SendUsageNotification("Użycie komendy: /o [info, akceptuj, odrzuc]");
             return;
         }
     }

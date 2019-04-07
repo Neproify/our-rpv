@@ -37,7 +37,7 @@ namespace roleplay.Entities
                     groupID = reader.GetInt32("groupID"),
                     name = reader.GetString("name"),
                     salary = reader.GetInt32("salary"),
-                    skin = reader.GetInt32("skin"),
+                    skin = reader.GetUInt32("skin"),
                     permissions = reader.GetInt32("permissions"),
                     group = this
                 };

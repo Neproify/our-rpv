@@ -14,13 +14,13 @@ namespace roleplay.Items.ItemType
             {
                 if(player.GetItems().Find(x => x.properties[0] == properties[0] && x.isUsed) != null)
                 {
-                    player.handle.SendNotification("~r~Posiadasz już wyjętą broń tego typu.");
+                    player.SendNotification("~r~Posiadasz już wyjętą broń tego typu.");
                     return false;
                 }
 
                 if(properties[1] <= 0)
                 {
-                    player.handle.SendNotification("~r~Wybrana broń nie posiada amunicji.");
+                    player.SendNotification("~r~Wybrana broń nie posiada amunicji.");
                     return false;
                 }
 
@@ -28,24 +28,24 @@ namespace roleplay.Items.ItemType
                 {
                     if(!player.IsOnDutyOfGroupID(properties[2]))
                     {
-                        player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej broni. Jest ona podpisana pod grupę.");
+                        player.SendNotification("~r~Nie masz uprawnień do użycia tej broni. Jest ona podpisana pod grupę.");
                         return false;
                     }
                 }
 
-                player.handle.GiveWeapon((WeaponHash)properties[0], properties[1]);
+                player.GiveWeapon((WeaponHash)properties[0], properties[1]);
                 isUsed = true;
                 player.OutputMe($"wyciąga {name}.");
             }
             else
             {
-                player.handle.RemoveWeapon((WeaponHash)properties[0]);
+                player.RemoveWeapon((WeaponHash)properties[0]);
                 isUsed = false;
                 player.OutputMe($"chowa {name}.");
                 Save();
             }
 
-            NAPI.ClientEvent.TriggerClientEvent(player.handle, "HidePlayerItems");
+           player.TriggerEvent("HidePlayerItems");
 
             return true;
         }

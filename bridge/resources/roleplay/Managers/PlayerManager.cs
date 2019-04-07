@@ -15,7 +15,7 @@ namespace roleplay.Managers
 
         public Entities.Player CreateFromHandle(Client client)
         {
-            Entities.Player player = new Entities.Player {handle = client};
+            Entities.Player player = new Entities.Player(client);
             playersDictionary.Add(client, player);
             return player;
         }

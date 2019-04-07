@@ -15,7 +15,7 @@ namespace roleplay.Admin
 
             if (!player.IsAdminOfLevel(AdminLevel.Supporter))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+                player.SendNoPermissionsToCommandNotification();
                 return;
             }
 
@@ -24,7 +24,7 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Group createdGroup = Managers.GroupManager.Instance().CreateGroup();
-                player.handle.SendNotification($"ID stworzonej grupy: {createdGroup.UID}.");
+                player.SendNotification($"ID stworzonej grupy: {createdGroup.UID}.");
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace roleplay.Admin
 
             if (group == null)
             {
-                player.handle.SendNotification("~r~Nie znaleziono budynku o podanym identyfikatorze.");
+                player.SendNotification("~r~Nie znaleziono budynku o podanym identyfikatorze.");
                 return;
             }
 
@@ -81,7 +81,7 @@ namespace roleplay.Admin
 
                 if (type == GroupType.None)
                 {
-                    player.handle.SendNotification("~r~Podałeś nieprawidłowy typ grupy.");
+                    player.SendNotification("~r~Podałeś nieprawidłowy typ grupy.");
                     return;
                 }
 
@@ -127,22 +127,22 @@ namespace roleplay.Admin
             }
 
         Usage:
-            player.handle.SendNotification("Użycie komendy: /agrupa [id grupy/stwórz] [lider, nazwa, typ, suprawnienia]");
+            player.SendUsageNotification("Użycie komendy: /agrupa [id grupy/stwórz] [lider, nazwa, typ, suprawnienia]");
             return;
         LeaderUsage:
-            player.handle.SendNotification($"Użycie komendy: /agrupa {groupID} lider [UID gracza]");
+            player.SendUsageNotification($"Użycie komendy: /agrupa {groupID} lider [UID gracza]");
             return;
         NameUsage:
-            player.handle.SendNotification($"Użycie komendy: /agrupa {groupID} nazwa [nazwa grupy]");
+            player.SendUsageNotification($"Użycie komendy: /agrupa {groupID} nazwa [nazwa grupy]");
             return;
         TypeUsage:
-            player.handle.SendNotification($"Użycie komendy: /agrupa {groupID} typ [{Utils.GetGroupTypes()}]");
+            player.SendUsageNotification($"Użycie komendy: /agrupa {groupID} typ [{Utils.GetGroupTypes()}]");
             return;
         SpecialPermissionsUsage:
-            player.handle.SendNotification($"Użycie komendy: /agrupa {groupID} suprawnienia [uprawnienia]");
+            player.SendUsageNotification($"Użycie komendy: /agrupa {groupID} suprawnienia [uprawnienia]");
             return;
         BankUsage:
-            player.handle.SendNotification($"Użycie komendy: /agrupa {groupID} bank [stan]");
+            player.SendUsageNotification($"Użycie komendy: /agrupa {groupID} bank [stan]");
         }
     }
 }

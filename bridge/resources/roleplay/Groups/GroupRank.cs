@@ -6,7 +6,7 @@
         public int groupID;
         public string name;
         public int salary;
-        public int skin; // it should be uint probably
+        public uint skin; // it should be uint probably
         public int permissions;
 
         public Entities.Group group;

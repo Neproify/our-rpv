@@ -15,7 +15,7 @@ namespace roleplay.Scripts
 
             if (player.activePhone == null)
             {
-                player.handle.SendNotification("~r~Nie masz żadnego aktywnego telefonu!");
+                player.SendNotification("~r~Nie masz żadnego aktywnego telefonu!");
                 return;
             }
 
@@ -28,25 +28,25 @@ namespace roleplay.Scripts
             {
                 if (player.phoneCall == null)
                 {
-                    player.handle.SendNotification("~r~Nikt do ciebie nie dzwoni. Nie możesz odebrać.");
+                    player.SendNotification("~r~Nikt do ciebie nie dzwoni. Nie możesz odebrać.");
                     return;
                 }
 
                 if (player.phoneCall.active)
                 {
-                    player.handle.SendNotification("~r~Rozmowa już trwa. Nie możesz odebrać ponownie.");
+                    player.SendNotification("~r~Rozmowa już trwa. Nie możesz odebrać ponownie.");
                     return;
                 }
 
                 if (player.phoneCall.receiver != player)
                 {
-                    player.handle.SendNotification("~r~Nie możesz odebrać. Jesteś dzwoniącym.");
+                    player.SendNotification("~r~Nie możesz odebrać. Jesteś dzwoniącym.");
                     return;
                 }
 
                 player.phoneCall.active = true;
-                player.handle.SendNotification("~r~Odebrałeś połączenie telefoniczne.");
-                player.phoneCall.sender.handle.SendNotification("~r~Rozmówca odebrał połączenie. Możecie rozmawiać.");
+                player.SendNotification("~r~Odebrałeś połączenie telefoniczne.");
+                player.phoneCall.sender.SendNotification("~r~Rozmówca odebrał połączenie. Możecie rozmawiać.");
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace roleplay.Scripts
             {
                 if (player.phoneCall == null)
                 {
-                    player.handle.SendNotification("~r~Nie masz aktywnego połączenia. Nie możesz zakończyć.");
+                    player.SendNotification("~r~Nie masz aktywnego połączenia. Nie możesz zakończyć.");
                     return;
                 }
 
@@ -72,7 +72,7 @@ namespace roleplay.Scripts
 
             if (player.phoneCall != null)
             {
-                player.handle.SendNotification("~r~Posiadasz aktywną rozmowę telefoniczną.");
+                player.SendNotification("~r~Posiadasz aktywną rozmowę telefoniczną.");
                 return;
             }
 
@@ -86,7 +86,7 @@ namespace roleplay.Scripts
                     active = true
                 };
                 player.phoneCall = alarmCall;
-                player.handle.SendChatMessage("!{{#FFFFFF}}Telefon(Operator): 911, podaj swoje zgłoszenie i lokalizację.");
+                player.SendChatMessage("!{{#FFFFFF}}Telefon(Operator): 911, podaj swoje zgłoszenie i lokalizację.");
                 return;
             }
 
@@ -94,27 +94,21 @@ namespace roleplay.Scripts
 
             if (phone?.ownerType != OwnerType.Character)
             {
-                player.handle.SendNotification("~r~Telefon nie odpowiada.");
+                player.SendPhoneIsNotRespondingNotification();
                 return;
             }
 
             var secondPlayer = Managers.PlayerManager.Instance().GetByCharacterID(phone.ownerID);
 
-            if (secondPlayer == null)
+            if (secondPlayer?.activePhone != phone)
             {
-                player.handle.SendNotification("~r~Telefon nie odpowiada.");
-                return;
-            }
-
-            if (secondPlayer.activePhone != phone)
-            {
-                player.handle.SendNotification("~r~Telefon nie odpowiada.");
+                player.SendPhoneIsNotRespondingNotification();
                 return;
             }
 
             if (secondPlayer.phoneCall != null)
             {
-                player.handle.SendNotification("~r~Linia jest zajęta.");
+                player.SendNotification("~r~Linia jest zajęta.");
                 return;
             }
 
@@ -132,11 +126,11 @@ namespace roleplay.Scripts
 
             secondPlayer.OutputDo("Słychać dzwonek telefonu.");
 
-            secondPlayer.handle.SendNotification("Ktoś do ciebie dzwoni!");
-            secondPlayer.handle.SendNotification("Użyj /tel odbierz aby odebrać.");
+            secondPlayer.SendNotification("Ktoś do ciebie dzwoni!");
+            secondPlayer.SendNotification("Użyj /tel odbierz aby odebrać.");
 
         Usage:
-            player.handle.SendNotification("Użyj: /tel [numer telefonu/odbierz/zakończ]");
+            player.SendNotification("Użyj: /tel [numer telefonu/odbierz/zakończ]");
             return;
         }
     }

@@ -16,17 +16,17 @@ namespace roleplay.Scripts
 
             if (player.isBrutallyWounded)
             {
-                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                player.SendBrutallyWoundedNoPermissionNotification();
                 return;
             }
 
             if (player.isGagged)
             {
-                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz mówić.");
+                player.SendGaggedNoPermissionNotification();
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.GetPosition());
 
             message = message.Replace("<", "!{#C2A2DA}*");
             message = message.Replace(">", "*!{#FFFFFF}");
@@ -43,13 +43,13 @@ namespace roleplay.Scripts
 
                 var receiver = player.phoneCall.sender == player ? player.phoneCall.receiver : player.phoneCall.sender;
 
-                receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}): {message}");
+                receiver.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}): {message}");
                 return;
 
             AlarmPhone:
                 player.phoneCall = null;
                 var onDutyPlayers = Managers.PlayerManager.Instance().GetAll().FindAll(x => x.groupDuty?.member.group.type == GroupType.Police || x.groupDuty?.member.group.type == GroupType.Medical);
-                onDutyPlayers.ForEach(x => x.handle.SendChatMessage($"[911]Zgłoszenie({player.activePhone.properties[0]}): {message}"));
+                onDutyPlayers.ForEach(x => x.SendChatMessage($"[911]Zgłoszenie({player.activePhone.properties[0]}): {message}"));
                 return;
             }
         }
@@ -84,11 +84,11 @@ namespace roleplay.Scripts
             if (!player.IsReady())
                 return;
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.GetPosition());
 
             foreach (var nearPlayer in players)
             {
-                nearPlayer.SendChatMessage($"!{{#FFFFFF}}(({player.formattedName}({player.handle.Handle}): {message}))");
+                nearPlayer.SendChatMessage($"!{{#FFFFFF}}(({player.formattedName}({player.GetGameID()}): {message}))");
             }
         }
 
@@ -102,11 +102,11 @@ namespace roleplay.Scripts
 
             if (player.isBrutallyWounded)
             {
-                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                player.SendBrutallyWoundedNoPermissionNotification();
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.GetPosition());
 
             var result = new Random().Next(9999);
 
@@ -128,17 +128,17 @@ namespace roleplay.Scripts
 
             if (player.isBrutallyWounded)
             {
-                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                player.SendBrutallyWoundedNoPermissionNotification();
                 return;
             }
 
             if (player.isGagged)
             {
-                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz krzyczeć.");
+                player.SendGaggedNoPermissionNotification();
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(30, player.handle.Position);
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(30, player.GetPosition());
 
             foreach (var nearPlayer in players)
             {
@@ -149,7 +149,7 @@ namespace roleplay.Scripts
             {
                 var receiver = player.phoneCall.sender == player ? player.phoneCall.receiver : player.phoneCall.sender;
 
-                receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}, krzyk): {message}");
+                receiver.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}, krzyk): {message}");
             }
         }
 
@@ -164,17 +164,17 @@ namespace roleplay.Scripts
 
             if (player.isBrutallyWounded)
             {
-                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                player.SendBrutallyWoundedNoPermissionNotification();
                 return;
             }
 
             if (player.isGagged)
             {
-                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz szepczeć.");
+                player.SendGaggedNoPermissionNotification();
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(5, player.handle.Position);
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(5, player.GetPosition());
 
             foreach (var nearPlayer in players)
             {
@@ -185,7 +185,7 @@ namespace roleplay.Scripts
             {
                 var receiver = player.phoneCall.sender == player ? player.phoneCall.receiver : player.phoneCall.sender;
 
-                receiver.handle.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}, szept): {message}");
+                receiver.SendChatMessage($"!{{#FFFFFF}}Telefon({player.formattedName}, szept): {message}");
             }
         }
 
@@ -199,24 +199,24 @@ namespace roleplay.Scripts
 
             if (player.isBrutallyWounded)
             {
-                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                player.SendBrutallyWoundedNoPermissionNotification();
                 return;
             }
 
             if (player.isGagged)
             {
-                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz mówić.");
+                player.SendGaggedNoPermissionNotification();
                 return;
             }
 
             var group = player.groupDuty?.member.rank.group;
             if (group == null)
             {
-                player.handle.SendNotification("~r~Nie jesteś na służbie żadnej grupy.");
+                player.SendNotification("~r~Nie jesteś na służbie żadnej grupy.");
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.handle.Position);
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.GetPosition());
 
             foreach (var nearPlayer in players)
             {
@@ -226,7 +226,7 @@ namespace roleplay.Scripts
             var onDutyPlayers = group.GetPlayersOnDuty();
             foreach (var dutyPlayer in onDutyPlayers)
             {
-                dutyPlayer.handle.SendChatMessage($"!{{#0039e6}}[RADIO]{player.formattedName}: {message}");
+                dutyPlayer.SendChatMessage($"!{{#0039e6}}[RADIO]{player.formattedName}: {message}");
             }
         }
 
@@ -240,23 +240,23 @@ namespace roleplay.Scripts
 
             if (player.isBrutallyWounded)
             {
-                player.handle.SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+                player.SendBrutallyWoundedNoPermissionNotification();
                 return;
             }
 
             if (player.isGagged)
             {
-                player.handle.SendNotification("~r~Jesteś zakneblowany, nie możesz mówić.");
+                player.SendGaggedNoPermissionNotification();
                 return;
             }
 
             if (!player.HasSpecialPermissionInGroup(GroupSpecialPermission.Megaphone))
             {
-                player.handle.SendNotification("~r~Nie masz uprawnień aby użyć megafonu!");
+                player.SendNotification("~r~Nie masz uprawnień aby użyć megafonu!");
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(50, player.handle.Position);
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(50, player.GetPosition());
 
             foreach (var nearPlayer in players)
             {
@@ -276,12 +276,12 @@ namespace roleplay.Scripts
 
             if (targetPlayer?.IsReady() == null)
             {
-                player.handle.SendNotification("~r~Podany gracz nie jest zalogowany!");
+                player.SendPlayerNotFoundNotification();
                 return;
             }
 
-            player.handle.SendChatMessage($"!{{#99FFAA}}(( << {targetPlayer.formattedName}({targetPlayer.handle.Handle}): {message}))");
-            targetPlayer.handle.SendChatMessage($"#78DEAA(( >> {player.formattedName}({player.handle.Handle}): {message}))");
+            player.SendChatMessage($"!{{#99FFAA}}(( << {targetPlayer.formattedName}({targetPlayer.GetGameID()}): {message}))");
+            targetPlayer.SendChatMessage($"#78DEAA(( >> {player.formattedName}({player.GetGameID()}): {message}))");
         }
     }
 }

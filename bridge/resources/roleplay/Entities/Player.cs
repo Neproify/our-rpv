@@ -7,19 +7,24 @@ namespace roleplay.Entities
 {
 	public class Player
 	{
-		private bool isLogged;
+        private bool isLogged = false;
 		public string formattedName => handle.Name.Replace("_", " ");
 
 		public bool isBrutallyWounded = false;
 		public int secondsToEndOfBrutallyWounded = 0;
 		public bool isGagged = false;
 
-		public Client handle;
+        private Client handle;
 		public GlobalInfo globalInfo;
 		public Character character;
 		public GroupDuty groupDuty;
 		public Offers.OfferInfo offerInfo;
 		public List<Penalties.Penalty> penalties = new List<Penalties.Penalty>();
+
+        public Player(Client handle)
+        {
+            this.handle = handle;
+        }
 
 		public int money
 		{
@@ -293,7 +298,87 @@ namespace roleplay.Entities
         public bool IsInBuildingOfHisGroup() => building?.ownerType == OwnerType.Group && building?.ownerID == groupDuty?.member.groupID;
 
         public bool IsAdminOfLevel(AdminLevel level) => globalInfo?.adminLevel >= (int)level;
-	}
+
+        public void SendNoPermissionsToCommandNotification() => SendNotification("~r~Nie masz uprawnień do użycia tej komendy!");
+
+        public void SendBrutallyWoundedNoPermissionNotification() => SendNotification("~r~Jesteś nieprzytomny, nie możesz tego zrobić!");
+
+        public void SendGaggedNoPermissionNotification() => SendNotification("~r~Jesteś zakneblowany, nie możesz krzyczeć.");
+
+        public void SendInvalidOwnerTypeNotification() => SendNotification("~r~Podałeś nieprawidłowy typ właściciela.");
+
+        public void SendItemNotFoundNotification() => SendNotification("~r~Nie znaleziono przedmiotu o podanym identyfikatorze.");
+
+        public void SendNotADriverNotification() => SendNotification("~r~Nie siedzisz w żadnym pojeździe lub nie jesteś kierowcą!");
+
+        public void SendPhoneIsNotRespondingNotification() => SendNotification("~r~Telefon nie odpowiada.");
+
+        public void SendPlayerNotFoundNotification() => SendNotification("~r~Nie znaleziono gracza o podanym identyfikatorze.");
+
+        public void SendVehicleNotFoundNotification() => SendNotification("~r~Nie znaleziono pojazdu o podanym identyfikatorze.");
+
+        public void SendGroupNotFoundNotification() => SendNotification("~r~Nie znaleziono grupy o podanym identyfikatorze!");
+        public void SendNotification(string message) => handle.SendNotification(message, true);
+
+        public void SendUsageNotification(string message) => SendNotification(message);
+
+        public void SendChatMessage(string message) => handle.SendChatMessage(message);
+
+        public Vector3 GetPosition() => handle.Position;
+
+        public void SetPosition(Vector3 position) => handle.Position = position;
+
+        public uint GetDimension() => handle.Dimension;
+
+        public void SetDimension(uint dimension) => handle.Dimension = dimension;
+
+        public void SetModel(uint model) => NAPI.Entity.SetEntityModel(GetGameID(), model);
+
+        public uint GetModel() => NAPI.Entity.GetEntityModel(GetGameID());
+
+        public void SetHealth(int health) => handle.Health = health;
+
+        public int GetHealth() => handle.Health;
+
+        public void SetFreezed(bool isFreezed) => handle.Freeze(isFreezed);
+
+        public void SetInvicible(bool isInvicible) => handle.Invincible = isInvicible;
+
+        public void SetTransparency(int transparency) => handle.Transparency = transparency;
+
+        public Entities.Vehicle GetVehicle() => Managers.VehicleManager.Instance().GetByHandle(handle.Vehicle);
+
+        public int GetVehicleSeat() => handle.VehicleSeat;
+
+        public void TriggerEvent(string eventName, params object[] args) => handle.TriggerEvent(eventName, args);
+
+        public void SetName(string name) => handle.Name = name;
+
+        public string GetName() => handle.Name;
+
+        public void GiveWeapon(WeaponHash weapon, int ammo) => handle.GiveWeapon(weapon, ammo);
+
+        public void RemoveWeapon(WeaponHash weapon) => handle.RemoveWeapon(weapon);
+
+        public void Kick(string reason, int penaltiedBy)
+        {
+            CreatePenalty(Penalties.PenaltyType.Kick, reason, penaltiedBy, DateTime.Now);
+            handle.Kick(reason);
+        }
+
+        public void SilentKick(string reason)
+        {
+            handle.Kick(reason);
+        }
+        
+        public void Ban(string reason, int penaltiedBy)
+        {
+            CreatePenalty(Penalties.PenaltyType.Ban, reason, penaltiedBy, DateTime.Now.AddYears(50));
+            handle.Kick(reason);
+        }
+
+        public NetHandle GetGameID() => handle.Handle;
+    }
 
 	public class GlobalInfo
 	{
