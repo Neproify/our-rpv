@@ -25,7 +25,7 @@ namespace roleplay.Auth
                 return;
             }
 
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Character>("characters");
+            var collection = Database.Instance().GetCharactersCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Character>();
             var filter = builder.Where(x => x.GID == player.globalInfo.UID);
             var cursor = collection.FindSync<Entities.Character>(filter);
@@ -64,7 +64,7 @@ namespace roleplay.Auth
                 return;
             }
 
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Character>("characters");
+            var collection = Database.Instance().GetCharactersCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Character>();
             var filter = builder.Where(x => x.UID == MongoDB.Bson.ObjectId.Parse(UID) && x.GID == player.globalInfo.UID);
             var cursor = collection.FindSync<Entities.Character>(filter);

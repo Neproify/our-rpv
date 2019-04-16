@@ -80,7 +80,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Item>("items");
+            var collection = Database.Instance().GetItemsCollection();
             var cursor = collection.FindSync<Entities.Item>(new BsonDocument());
             cursor.MoveNext();
 
@@ -99,7 +99,7 @@ namespace roleplay.Managers
 
         public Entities.Item Load(ObjectId UID)
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Item>("items");
+            var collection = Database.Instance().GetItemsCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Item>();
             var filter = builder.Where(x => x.UID == UID);
             var cursor = collection.FindSync<Entities.Item>(filter);
@@ -130,7 +130,7 @@ namespace roleplay.Managers
                 position = new Vector3()
             };
 
-            Database.Instance().GetGameDatabase().GetCollection<Entities.Item>("items").InsertOne(item);
+            Database.Instance().GetItemsCollection().InsertOne(item);
 
             var correctItem = CreateAndGetCorrectType(item);
 

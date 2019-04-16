@@ -28,5 +28,45 @@ namespace roleplay
         {
             return client.GetDatabase("game");
         }
+
+        public IMongoCollection<Entities.Character> GetCharactersCollection()
+        {
+            return GetGameDatabase().GetCollection<Entities.Character>("characters");
+        }
+
+        public IMongoCollection<Entities.Building> GetBuildingsCollection()
+        {
+            return GetGameDatabase().GetCollection<Entities.Building>("buildings");
+        }
+
+        public IMongoCollection<Penalties.Penalty> GetPenaltiesCollection()
+        {
+            return GetGameDatabase().GetCollection<Penalties.Penalty>("penalties");
+        }
+
+        public IMongoCollection<Entities.VehicleData> GetVehiclesCollection()
+        {
+            return GetGameDatabase().GetCollection<Entities.VehicleData>("vehicles");
+        }
+
+        public IMongoCollection<Entities.Item> GetItemsCollection()
+        {
+            return GetGameDatabase().GetCollection<Entities.Item>("items");
+        }
+
+        public IMongoCollection<Entities.Object> GetObjectsCollection()
+        {
+            return GetGameDatabase().GetCollection<Entities.Object>("objects");
+        }
+
+        public IMongoCollection<Entities.Group> GetGroupsCollection()
+        {
+            return GetGameDatabase().GetCollection<Entities.Group>("groups");
+        }
+
+        public IMongoCollection<GroupProduct> GetGroupProductsCollection()
+        {
+            return GetGameDatabase().GetCollection<GroupProduct>("groupproducts");
+        }
     }
 }

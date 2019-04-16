@@ -168,8 +168,7 @@ namespace roleplay.Entities
                 expireDate = expireDate
             };
 
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Penalties.Penalty>("penalties");
-            collection.InsertOne(penalty);
+            Database.Instance().GetPenaltiesCollection().InsertOne(penalty);
 
 			penalties.Add(penalty);
 
@@ -180,7 +179,7 @@ namespace roleplay.Entities
 		{
 			penalties.Clear();
 
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Penalties.Penalty>("penalties");
+            var collection = Database.Instance().GetPenaltiesCollection();
             var filter = new MongoDB.Driver.FilterDefinitionBuilder<Penalties.Penalty>().Where(x => x.globalID == globalInfo.UID && x.expireDate > DateTime.Now);
             var cursor = collection.FindSync<Penalties.Penalty>(filter);
             cursor.MoveNext();
@@ -418,7 +417,7 @@ namespace roleplay.Entities
 
 		public void Save()
 		{
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Character>("characters");
+            var collection = Database.Instance().GetCharactersCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Character>();
             var filter = builder.Where(x => x.UID == this.UID);
             collection.FindOneAndReplace<Character>(filter, this);

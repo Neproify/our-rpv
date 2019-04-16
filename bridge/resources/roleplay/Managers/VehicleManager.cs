@@ -67,7 +67,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.VehicleData>("vehicles");
+            var collection = Database.Instance().GetVehiclesCollection();
             var cursor = collection.FindSync<Entities.VehicleData>(new BsonDocument());
             cursor.MoveNext();
             
@@ -83,7 +83,7 @@ namespace roleplay.Managers
         {
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.VehicleData>();
             var filter = builder.Where(x => x.UID == UID);
-            var cursor = Database.Instance().GetGameDatabase().GetCollection<Entities.VehicleData>("vehicles").FindSync<Entities.VehicleData>(filter);
+            var cursor = Database.Instance().GetVehiclesCollection().FindSync<Entities.VehicleData>(filter);
             cursor.MoveNext();
 
             foreach(var vehicleData in cursor.Current)
@@ -111,7 +111,7 @@ namespace roleplay.Managers
                 spawnRotation = new Vector3()
             };
 
-            Database.Instance().GetGameDatabase().GetCollection<Entities.VehicleData>("vehicles").InsertOne(vehicleData);
+            Database.Instance().GetVehiclesCollection().InsertOne(vehicleData);
 
             var vehicle = new Entities.Vehicle { vehicleData = vehicleData };
             Add(vehicle);

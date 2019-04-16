@@ -46,7 +46,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<GroupProduct>("groupproducts");
+            var collection = Database.Instance().GetGroupProductsCollection();
             var cursor = collection.FindSync<GroupProduct>(new BsonDocument());
             cursor.MoveNext();
 
@@ -58,7 +58,7 @@ namespace roleplay.Managers
 
         public GroupProduct Load(ObjectId UID)
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<GroupProduct>("groupproducts");
+            var collection = Database.Instance().GetGroupProductsCollection();
             var filter = new MongoDB.Driver.FilterDefinitionBuilder<GroupProduct>().Where(x => x.UID == UID);
             var cursor = collection.FindSync<GroupProduct>(filter);
             cursor.MoveNext();

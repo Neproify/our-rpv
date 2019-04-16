@@ -52,7 +52,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Building>("buildings");
+            var collection = Database.Instance().GetBuildingsCollection();
             var cursor = collection.FindSync<Entities.Building>(new BsonDocument());
             cursor.MoveNext();
             foreach(var building in cursor.Current)
@@ -64,7 +64,7 @@ namespace roleplay.Managers
 
         public Entities.Building Load(ObjectId UID)
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Building>("buildings");
+            var collection = Database.Instance().GetBuildingsCollection();
             var filter = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Building>().Where(x => x.UID == UID);
             var cursor = collection.FindSync<Entities.Building>(filter);
             cursor.MoveNext();
@@ -98,8 +98,7 @@ namespace roleplay.Managers
                 ownerID = ObjectId.Empty
             };
 
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Building>("buildings");
-            collection.InsertOne(building);
+            Database.Instance().GetBuildingsCollection().InsertOne(building);
 
             Add(building);
 

@@ -56,7 +56,7 @@ namespace roleplay.Entities
 
         public void Save()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Object>("objects");
+            var collection = Database.Instance().GetObjectsCollection();
             var filter = new MongoDB.Driver.FilterDefinitionBuilder<Object>().Where(x => x.UID == UID);
             collection.FindOneAndReplace<Building>(filter, this);
         }

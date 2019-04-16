@@ -102,7 +102,7 @@ namespace roleplay.Entities
 
         public virtual void Save()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Item>("items");
+            var collection = Database.Instance().GetItemsCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Item>();
             var filter = builder.Where(x => x.UID == this.UID);
             collection.FindOneAndReplace<Item>(filter, this);

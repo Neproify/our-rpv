@@ -35,7 +35,7 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Group>("groups");
+            var collection = Database.Instance().GetGroupsCollection();
             var cursor = collection.FindSync<Entities.Group>(new BsonDocument());
             cursor.MoveNext();
 
@@ -47,7 +47,7 @@ namespace roleplay.Managers
 
 		public Entities.Group Load(ObjectId UID)
 		{
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Group>("groups");
+            var collection = Database.Instance().GetGroupsCollection();
             var filter = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Group>().Where(x => x.UID == UID);
             var cursor = collection.FindSync<Entities.Group>(filter);
             cursor.MoveNext();
@@ -86,7 +86,7 @@ namespace roleplay.Managers
             group.ranks.Add(leaderRank);
             leaderRank.group = group;
 
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Group>("groups");
+            var collection = Database.Instance().GetGroupsCollection();
             collection.InsertOne(group);
 
             Add(group);

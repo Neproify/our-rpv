@@ -39,7 +39,7 @@ namespace roleplay.Penalties
 
         public void Save()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<Penalty>("penalties");
+            var collection = Database.Instance().GetPenaltiesCollection();
             var filter = new MongoDB.Driver.FilterDefinitionBuilder<Penalty>().Where(x => x.UID == UID);
             collection.FindOneAndReplace<Penalty>(filter, this);
         }

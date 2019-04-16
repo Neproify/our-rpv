@@ -41,7 +41,7 @@ namespace roleplay
 
         public void Save()
         {
-            var collection = Database.Instance().GetGameDatabase().GetCollection<GroupProduct>("groupproducts");
+            var collection = Database.Instance().GetGroupProductsCollection();
             var filter = new MongoDB.Driver.FilterDefinitionBuilder<GroupProduct>().Where(x => x.UID == UID);
             collection.FindOneAndReplace<GroupProduct>(filter, this);
         }
