@@ -1,10 +1,47 @@
 ﻿using roleplay.Entities;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Items.ItemType
 {
     public class Weapon : Item
     {
+        public uint weaponHash
+        {
+            get
+            {
+                return (uint)properties["weaponhash"];
+            }
+            set
+            {
+                properties["weaponhash"] = value;
+            }
+        }
+
+        public int ammo
+        {
+            get
+            {
+                return (int)properties["ammo"];
+            }
+            set
+            {
+                properties["ammo"] = value;
+            }
+        }
+
+        public ObjectId flaggedGroupId
+        {
+            get
+            {
+                return ObjectId.Parse((string)properties["flaggedgroupid"]);
+            }
+            set
+            {
+                properties["flaggedgroupid"] = value;
+            }
+        }
+
         public override bool Use(Player player)
         {
             if (!base.Use(player))
@@ -12,41 +49,40 @@ namespace roleplay.Items.ItemType
 
             if (!isUsed)
             {
-                if(player.GetItems().Find(x => x.properties[0] == properties[0] && x.isUsed) != null)
+                if (player.GetWeapons().Find(x => x.weaponHash == weaponHash && x.isUsed) != null)
                 {
                     player.SendNotification("~r~Posiadasz już wyjętą broń tego typu.");
                     return false;
                 }
 
-                if(properties[1] <= 0)
+                if (ammo <= 0)
                 {
                     player.SendNotification("~r~Wybrana broń nie posiada amunicji.");
                     return false;
                 }
 
-                if(properties[2] != 0)
+                if (flaggedGroupId != null && flaggedGroupId != ObjectId.Empty)
                 {
-#warning MONGO TODO
-                    //if(!player.IsOnDutyOfGroupID(properties[2]))
-                    //{
-                    //    player.SendNotification("~r~Nie masz uprawnień do użycia tej broni. Jest ona podpisana pod grupę.");
-                    //    return false;
-                    //}
+                    if (!player.IsOnDutyOfGroupID(flaggedGroupId))
+                    {
+                        player.SendNotification("~r~Nie masz uprawnień do użycia tej broni. Jest ona podpisana pod grupę.");
+                        return false;
+                    }
                 }
 
-                player.GiveWeapon((WeaponHash)properties[0], properties[1]);
+                player.GiveWeapon((WeaponHash)weaponHash, ammo);
                 isUsed = true;
                 player.OutputMe($"wyciąga {name}.");
             }
             else
             {
-                player.RemoveWeapon((WeaponHash)properties[0]);
+                player.RemoveWeapon((WeaponHash)weaponHash);
                 isUsed = false;
                 player.OutputMe($"chowa {name}.");
                 Save();
             }
 
-           player.TriggerEvent("HidePlayerItems");
+            player.TriggerEvent("HidePlayerItems");
 
             return true;
         }

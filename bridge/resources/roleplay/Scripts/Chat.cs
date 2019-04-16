@@ -49,7 +49,7 @@ namespace roleplay.Scripts
             AlarmPhone:
                 player.phoneCall = null;
                 var onDutyPlayers = Managers.PlayerManager.Instance().GetAll().FindAll(x => x.groupDuty?.member.group.type == GroupType.Police || x.groupDuty?.member.group.type == GroupType.Medical);
-                onDutyPlayers.ForEach(x => x.SendChatMessage($"[911]Zgłoszenie({player.activePhone.properties[0]}): {message}"));
+                onDutyPlayers.ForEach(x => x.SendChatMessage($"[911]Zgłoszenie({player.activePhone.phoneNumber}): {message}"));
                 return;
             }
         }

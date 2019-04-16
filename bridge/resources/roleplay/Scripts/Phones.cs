@@ -80,7 +80,7 @@ namespace roleplay.Scripts
             {
                 Items.ItemType.PhoneCall alarmCall = new Items.ItemType.PhoneCall
                 {
-                    senderPhone = player.activePhone.properties[0],
+                    senderPhone = player.activePhone.phoneNumber,
                     sender = player,
                     receiverPhone = 911,
                     active = true
@@ -90,7 +90,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            var phone = Managers.ItemManager.Instance().GetByTypeAndProperty(ItemType.Phone, 0, phoneNumber);
+            var phone = Managers.ItemManager.Instance().GetPhones().Find(x => x.phoneNumber == phoneNumber);
 
             if (phone?.ownerType != OwnerType.Character)
             {
@@ -115,9 +115,9 @@ namespace roleplay.Scripts
             Items.ItemType.PhoneCall phoneCall = new Items.ItemType.PhoneCall
             {
                 sender = player,
-                senderPhone = player.activePhone.properties[0],
+                senderPhone = player.activePhone.phoneNumber,
                 receiver = secondPlayer,
-                receiverPhone = secondPlayer.activePhone.properties[0],
+                receiverPhone = secondPlayer.activePhone.phoneNumber,
                 active = false
             };
 

@@ -16,8 +16,8 @@ namespace roleplay
         [BsonElement("type")]
         public ItemType type;
 
-        [BsonElement("propertiesstring")]
-        public string propertiesString;
+        [BsonElement("properties")]
+        public Dictionary<string, object> properties;
 
         [BsonElement("price")]
         public int price;

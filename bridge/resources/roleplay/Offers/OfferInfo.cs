@@ -90,11 +90,10 @@ namespace roleplay.Offers
 
             if(type == OfferType.PersonalDocument)
             {
-                var item = Managers.ItemManager.Instance().CreateItem();
-                item.name = "Dowód osobisty";
-                item.type = ItemType.Document;
-                item.propertiesString = $"{DocumentType.Personal}|{receiver.character.UID}";
+                var item = Managers.ItemManager.Instance().CreateItem("Dowód osobisty", ItemType.Document) as Items.ItemType.Document;
                 item.ChangeOwner(OwnerType.Character, receiver.character.UID);
+                item.documentType = DocumentType.Personal;
+                item.personID = receiver.character.UID;
                 item.Save();
 
                 sender.SendNotification($"Wystawiłeś dowód osobisty dla {receiver.formattedName}.");
@@ -103,12 +102,10 @@ namespace roleplay.Offers
 
             if (type == OfferType.VehicleLicenseDocument)
             {
-                var item = Managers.ItemManager.Instance().CreateItem();
-                item.name = "Prawo jazdy";
-                item.type = ItemType.Document;
-                item.propertiesString = $"{DocumentType.VehicleLicense}|{receiver.character.UID}";
-
+                var item = Managers.ItemManager.Instance().CreateItem("Prawo jazdy", ItemType.Document) as Items.ItemType.Document;
                 item.ChangeOwner(OwnerType.Character, receiver.character.UID);
+                item.documentType = DocumentType.VehicleLicense;
+                item.personID = receiver.character.UID;
                 item.Save();
 
                 sender.SendNotification($"Wystawiłeś prawo jazdy dla {receiver.formattedName}.");

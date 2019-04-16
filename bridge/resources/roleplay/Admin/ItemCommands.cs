@@ -105,20 +105,6 @@ namespace roleplay.Admin
                 return;
             }
 
-            if(args[1] == "wlasciwosci" || args[1] == "właściwości")
-            {
-                if (args.Length != 3)
-                {
-                    goto PropertiesUsage;
-                }
-
-                item.propertiesString = args[2];
-
-                item.Save();
-
-                return;
-            }
-
             if(args[1] == "wlasciwosc" || args[1] == "właściwość")
             {
                 if(args.Length != 4)
@@ -126,12 +112,7 @@ namespace roleplay.Admin
                     goto PropertyUsage;
                 }
 
-                if(!Int32.TryParse(args[2], out var propertyNumber) || !Int32.TryParse(args[3], out var propertyValue))
-                {
-                    goto PropertyUsage;
-                }
-
-                item.properties[propertyNumber] = propertyValue;
+                item.properties[args[2]] = args[3];
 
                 item.Save();
 
@@ -159,7 +140,7 @@ namespace roleplay.Admin
             }
 
         Usage:
-            player.SendUsageNotification("Użycie komendy: /aprzedmiot [id przedmiotu/stwórz] [nazwa, typ, właściciel, właściwości, właściwość, tpto, tphere]");
+            player.SendUsageNotification("Użycie komendy: /aprzedmiot [id przedmiotu/stwórz] [nazwa, typ, właściciel, właściwość, tpto, tphere]");
             return;
         NameUsage:
             player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} nazwa [wartość].");
@@ -169,9 +150,6 @@ namespace roleplay.Admin
             return;
         OwnerUsage:
             player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator własciciela].");
-            return;
-        PropertiesUsage:
-            player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwości [lista oddzielona znakiem |].");
             return;
         PropertyUsage:
             player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwość [numer] [wartość].");

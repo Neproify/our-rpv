@@ -45,11 +45,6 @@ namespace roleplay.Managers
             return items.Find(x => x.UID == UID);
         }
 
-        public Entities.Item GetByTypeAndProperty(ItemType type, int propertyNumber, int propertyValue)
-        {
-            return items.Find(x => x.type == type && x.properties[propertyNumber] == propertyValue);
-        }
-
         public List<Entities.Item> GetItemsOf(OwnerType ownerType, ObjectId ownerID)
         {
             if (!itemsOfOwner[ownerType].ContainsKey(ownerID))
@@ -122,14 +117,14 @@ namespace roleplay.Managers
             return null;
         }
 
-        public Entities.Item CreateItem()
+        public Entities.Item CreateItem(string name = "", ItemType type = ItemType.None)
         {
             var item = new Entities.Item
             {
                 UID = ObjectId.GenerateNewId(),
-                name = "",
-                type = ItemType.None,
-                properties = new int[8],
+                name = name,
+                type = type,
+                properties = new Dictionary<string, object>(),
                 ownerType = OwnerType.None,
                 ownerID = ObjectId.Empty,
                 position = new Vector3()
@@ -137,11 +132,9 @@ namespace roleplay.Managers
 
             Database.Instance().GetGameDatabase().GetCollection<Entities.Item>("items").InsertOne(item);
 
-            item = CreateAndGetCorrectType(item);
+            var correctItem = CreateAndGetCorrectType(item);
 
-            Add(item);
-
-            return item;
+            return correctItem;
         }
 
         public Entities.Item ReloadItem(Entities.Item item)
@@ -149,6 +142,11 @@ namespace roleplay.Managers
             Remove(item);
 
             return Load(item.UID);
+        }
+
+        public List<Items.ItemType.Phone> GetPhones()
+        {
+            return items.FindAll(x => x.type == ItemType.Phone).ConvertAll(new Converter<Entities.Item, Items.ItemType.Phone>(x => x as Items.ItemType.Phone));
         }
 
         public Entities.Item CreateAndGetCorrectType(Entities.Item item)
@@ -181,7 +179,7 @@ namespace roleplay.Managers
             correct.UID = item.UID;
             correct.name = item.name;
             correct.type = item.type;
-            correct.propertiesString = item.propertiesString;
+            correct.properties = item.properties;
             correct.ownerType = item.ownerType;
             correct.ownerID = item.ownerID;
             correct.position = item.position;

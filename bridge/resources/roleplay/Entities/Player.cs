@@ -212,6 +212,13 @@ namespace roleplay.Entities
 
         public List<Item> GetItems() => isLogged ? Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID) : null;
 
+        public List<Items.ItemType.Weapon> GetWeapons()
+        {
+            var weapons = GetItems().FindAll(x => x.type == ItemType.Weapon);
+
+            return weapons.ConvertAll(new Converter<Item, Items.ItemType.Weapon>(x => x as Items.ItemType.Weapon));
+        }
+
         public bool CanUseItem(Item item) => item?.ownerType == OwnerType.Character && item?.ownerID == character.UID;
 
         public bool CanUseItem(ObjectId itemUID) => CanUseItem(Managers.ItemManager.Instance().GetByID(itemUID));

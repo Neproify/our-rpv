@@ -18,25 +18,8 @@ namespace roleplay.Entities
         [BsonElement("type")]
         public ItemType type;
 
-        [BsonIgnore]
-        public int[] properties = new int[8]; // Have no idea why 8, we should think about list maybe?
-
         [BsonElement("properties")]
-        public string propertiesString
-        {
-            set
-            {
-                if (value.Length > 0)
-                {
-                    var temp = value.Split("|");
-                    for (int i = 0; i < temp.Length; i++)
-                    {
-                        properties[i] = Convert.ToInt32(temp[i]);
-                    }
-                }
-            }
-            get => string.Join("|", properties);
-        }
+        public Dictionary<string, object> properties;
 
         [BsonElement("ownertype")]
         public OwnerType ownerType;

@@ -147,7 +147,7 @@ namespace roleplay
                     player.SendChatMessage($"====LISTA PRZEDMIOTÓW DO ZAMÓWIENIA W GRUPIE {selectedGroup.name}");
                     foreach (var productToList in products)
                     {
-                        player.SendChatMessage($"[{productToList.UID}] {productToList.name}, typ: {Utils.GetNameFromItemType(productToList.type)}, właściwości: {productToList.propertiesString}, cena: ${productToList.price}");
+                        player.SendChatMessage($"[{productToList.UID}] {productToList.name}, typ: {Utils.GetNameFromItemType(productToList.type)}, właściwości: {productToList.properties.ToString()}, cena: ${productToList.price}");
                     }
                     player.SendChatMessage("====KONIEC LISTY====");
                     return;
@@ -183,10 +183,20 @@ namespace roleplay
 
                 for (int i = 1; i <= quantity; i++)
                 {
-                    var createdItem = Managers.ItemManager.Instance().CreateItem();
-                    createdItem.name = product.name;
-                    createdItem.type = product.type;
-                    createdItem.propertiesString = product.propertiesString.Replace("*group*", selectedGroup.UID.ToString());
+                    var createdItem = Managers.ItemManager.Instance().CreateItem(product.name, product.type);
+
+                    createdItem.properties = new Dictionary<string, object>(product.properties);
+
+                    if(createdItem.properties.ContainsValue("*group*"))
+                    {
+                        foreach(var key in createdItem.properties.Keys)
+                        {
+                            if((string)createdItem.properties[key] == "*group*")
+                            {
+                                createdItem.properties[key] = selectedGroup.UID;
+                            }
+                        }
+                    }
 
                     createdItem.ChangeOwner(OwnerType.Group, selectedGroup.UID);
                     createdItem.Save();

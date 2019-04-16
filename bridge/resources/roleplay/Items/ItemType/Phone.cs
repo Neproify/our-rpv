@@ -4,6 +4,17 @@ namespace roleplay.Items.ItemType
 {
     public class Phone : Item
     {
+        public int phoneNumber
+        {
+            get
+            {
+                return (int)properties["phonenumber"];
+            }
+            set
+            {
+                properties["phonenumber"] = value;
+            }
+        }
         public override bool Use(Player player)
         {
             if (!base.Use(player))
