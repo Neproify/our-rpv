@@ -1,4 +1,6 @@
-﻿namespace roleplay
+﻿using MongoDB.Bson;
+
+namespace roleplay
 {
     public enum OwnerType
     {
@@ -82,7 +84,7 @@
     }
 	public class ItemInfo
 	{
-		public int UID;
+		public ObjectId UID;
 		public string name;
 	}
 }

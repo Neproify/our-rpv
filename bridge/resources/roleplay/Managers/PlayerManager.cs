@@ -49,7 +49,7 @@ namespace roleplay.Managers
             return players;
         }
 
-        public Entities.Player GetByCharacterID(int ID)
+        public Entities.Player GetByCharacterID(MongoDB.Bson.ObjectId ID)
         {
             return GetAll().Find(x => x.character?.UID == ID);
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GTANetworkAPI;
 using Newtonsoft.Json;
+using MongoDB.Bson;
 
 namespace roleplay.Auth
 {
@@ -10,7 +11,7 @@ namespace roleplay.Auth
     {
         public class CharacterInfo
         {
-            public int UID;
+            public ObjectId UID;
             public string name;
         }
 
@@ -24,24 +25,22 @@ namespace roleplay.Auth
                 return;
             }
 
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_characters` WHERE `GID`=@GID;";
-            command.Prepare();
-            command.Parameters.AddWithValue("@GID", player.globalInfo.UID);
-            var reader = command.ExecuteReader();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Character>("characters");
+            var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Character>();
+            var filter = builder.Where(x => x.GID == player.globalInfo.UID);
+            var cursor = collection.FindSync<Entities.Character>(filter);
+            cursor.MoveNext();
+
             var characters = new List<CharacterInfo>();
-            while (reader.Read())
+            foreach (var character in cursor.Current)
             {
                 var characterInfo = new CharacterInfo
                 {
-                    UID = reader.GetInt32("UID"),
-                    name = reader.GetString("name")
+                    UID = character.UID,
+                    name = character.name
                 };
-
                 characters.Add(characterInfo);
             }
-
-            reader.Close();
 
             var output = JsonConvert.SerializeObject(characters);
 
@@ -49,7 +48,7 @@ namespace roleplay.Auth
         }
 
         [RemoteEvent("SelectCharacter")]
-        public void SelectCharacter(Client client, int UID)
+        public void SelectCharacter(Client client, string UID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -65,39 +64,25 @@ namespace roleplay.Auth
                 return;
             }
 
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_characters` WHERE `GID`=@GID AND `UID`=@UID LIMIT 1;";
-            command.Prepare();
-            command.Parameters.AddWithValue("@GID", player.globalInfo.UID);
-            command.Parameters.AddWithValue("@UID", UID);
-            var reader = command.ExecuteReader();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Character>("characters");
+            var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Character>();
+            var filter = builder.Where(x => x.UID == MongoDB.Bson.ObjectId.Parse(UID) && x.GID == player.globalInfo.UID);
+            var cursor = collection.FindSync<Entities.Character>(filter);
 
-            if (!reader.Read())
+            cursor.MoveNext();
+
+            Entities.Character character = null;
+
+            foreach(var i in cursor.Current)
             {
-                reader.Close();
-                return;
+                character = i;
+                break;
             }
 
-            Vector3 jailPosition = new Vector3
+            if(character == null)
             {
-                X = reader.GetFloat("jailPositionX"),
-                Y = reader.GetFloat("jailPositionY"),
-                Z = reader.GetFloat("jailPositionZ")
-            };
-
-            var character = new Entities.Character
-            {
-                UID = reader.GetInt32("UID"),
-                GID = reader.GetInt32("GID"),
-                name = reader.GetString("name"),
-                model = reader.GetUInt32("model"),
-                money = reader.GetInt32("money"),
-                health = reader.GetInt32("health"),
-                jailBuildingID = reader.GetInt32("jailBuilding"),
-                jailPosition = jailPosition
-            };
-
-            reader.Close();
+                return;
+            }
 
             player.character = character;
 
@@ -119,7 +104,7 @@ namespace roleplay.Auth
             Vector3 spawnPosition = new Vector3(1398.96, 3591.61, 35);
             uint spawnDimension = 0;
 
-            if (character.jailBuildingID != -1)
+            if (character.jailBuildingID != MongoDB.Bson.ObjectId.Empty)
             {
                 var building = Managers.BuildingManager.Instance().GetByID(character.jailBuildingID);
                 if (building != null)

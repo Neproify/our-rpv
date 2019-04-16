@@ -1,15 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using GTANetworkAPI;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace roleplay.Entities
 {
     public class Item
     {
-        public int UID;
+        [BsonId]
+        [BsonElement("_id")]
+        public ObjectId UID;
+
+        [BsonElement("name")]
         public string name;
+
+        [BsonElement("type")]
         public ItemType type;
+
+        [BsonIgnore]
         public int[] properties = new int[8]; // Have no idea why 8, we should think about list maybe?
+
+        [BsonElement("properties")]
         public string propertiesString
         {
             set
@@ -25,12 +37,19 @@ namespace roleplay.Entities
             }
             get => string.Join("|", properties);
         }
-        public OwnerType ownerType;
-        public int ownerID;
 
+        [BsonElement("ownertype")]
+        public OwnerType ownerType;
+
+        [BsonElement("ownerid")]
+        public ObjectId ownerID;
+
+        [BsonElement("groundposition")]
         public Vector3 position;
 
+        [BsonIgnore]
         public bool isUsed;
+        [BsonIgnore]
         public GTANetworkAPI.Object objectHandle;
 
         public Item()
@@ -59,7 +78,7 @@ namespace roleplay.Entities
                 NAPI.Entity.DeleteEntity(objectHandle);
         }
 
-        public virtual void ChangeOwner(OwnerType newOwnerType, int newOwnerID)
+        public virtual void ChangeOwner(OwnerType newOwnerType, ObjectId newOwnerID)
         {
             Entities.Player playerWhosEquipmentShouldBeReloaded = null;
 
@@ -100,20 +119,10 @@ namespace roleplay.Entities
 
         public virtual void Save()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_items` SET `name`=@name, `type`=@type, `properties`=@properties, `ownerType`=@ownerType, `ownerID`=@ownerID, `positionX`=@positionX, `positionY`=@positionY, `positionZ`=@positionZ WHERE `UID`=@UID";
-            command.Prepare();
-
-            command.Parameters.AddWithValue("@name", name);
-            command.Parameters.AddWithValue("@type", type);
-            command.Parameters.AddWithValue("@properties", propertiesString);
-            command.Parameters.AddWithValue("@ownerType", ownerType);
-            command.Parameters.AddWithValue("@ownerID", ownerID);
-            command.Parameters.AddWithValue("@positionX", position.X);
-            command.Parameters.AddWithValue("@positionY", position.Y);
-            command.Parameters.AddWithValue("@positionZ", position.Z);
-            command.Parameters.AddWithValue("@UID", UID);
-            command.ExecuteNonQuery();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Item>("items");
+            var builder = new MongoDB.Driver.FilterDefinitionBuilder<Item>();
+            var filter = builder.Where(x => x.UID == this.UID);
+            collection.FindOneAndReplace<Item>(filter, this);
         }
     }
 }

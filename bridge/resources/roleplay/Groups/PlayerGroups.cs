@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay
 {
@@ -35,7 +36,7 @@ namespace roleplay
                 return;
             }
 
-            if (!Int32.TryParse(args[0], out var groupID))
+            if(!ObjectId.TryParse(args[0], out var groupID))
             {
                 player.SendUsageNotification("Użyj: /g [lista, identyfikator grupy]");
                 return;
@@ -155,7 +156,7 @@ namespace roleplay
                 if (args.Length < 4)
                     goto OrderUsage;
 
-                if (!Int32.TryParse(args[2], out var productID))
+                if (!ObjectId.TryParse(args[2], out var productID))
                     goto OrderUsage;
 
                 if (!Int32.TryParse(args[3], out var quantity))
@@ -186,6 +187,7 @@ namespace roleplay
                     createdItem.name = product.name;
                     createdItem.type = product.type;
                     createdItem.propertiesString = product.propertiesString.Replace("*group*", selectedGroup.UID.ToString());
+
                     createdItem.ChangeOwner(OwnerType.Group, selectedGroup.UID);
                     createdItem.Save();
                     Managers.ItemManager.Instance().ReloadItem(createdItem);
@@ -236,7 +238,7 @@ namespace roleplay
                     if (args.Length < 4)
                         goto StorageUsage;
 
-                    if (!Int32.TryParse(args[3], out var itemID))
+                    if (!ObjectId.TryParse(args[3], out var itemID))
                         goto StorageUsage;
 
                     var item = Managers.ItemManager.Instance().GetByID(itemID);
@@ -259,7 +261,7 @@ namespace roleplay
                     if (args.Length < 4)
                         goto StorageUsage;
 
-                    if (!Int32.TryParse(args[3], out var itemID))
+                    if (!ObjectId.TryParse(args[3], out var itemID))
                         goto StorageUsage;
 
                     var item = Managers.ItemManager.Instance().GetByID(itemID);

@@ -26,11 +26,12 @@ namespace roleplay.Items.ItemType
 
                 if(properties[2] != 0)
                 {
-                    if(!player.IsOnDutyOfGroupID(properties[2]))
-                    {
-                        player.SendNotification("~r~Nie masz uprawnień do użycia tej broni. Jest ona podpisana pod grupę.");
-                        return false;
-                    }
+#warning MONGO TODO
+                    //if(!player.IsOnDutyOfGroupID(properties[2]))
+                    //{
+                    //    player.SendNotification("~r~Nie masz uprawnień do użycia tej broni. Jest ona podpisana pod grupę.");
+                    //    return false;
+                    //}
                 }
 
                 player.GiveWeapon((WeaponHash)properties[0], properties[1]);

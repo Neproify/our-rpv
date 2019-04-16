@@ -1,18 +1,39 @@
-﻿namespace roleplay
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
+
+namespace roleplay
 {
     public class GroupProduct
     {
-        public int UID;
+        [BsonId]
+        [BsonElement("_id")]
+        public ObjectId UID;
+
+        [BsonElement("name")]
         public string name;
+
+        [BsonElement("type")]
         public ItemType type;
+
+        [BsonElement("propertiesstring")]
         public string propertiesString;
+
+        [BsonElement("price")]
         public int price;
+
+        [BsonElement("grouptypes")]
+        public List<GroupType> groupTypes;
+
+        [BsonElement("groupids")]
+        public List<ObjectId> groupIds;
 
         public bool CanBeBoughtByGroup(Entities.Group group)
         {
-            var products = Managers.GroupProductManager.Instance().GetProductsForGroup(group);
+            if (groupTypes.Contains(group.type))
+                return true;
 
-            if (products.Contains(this))
+            if (groupIds.Contains(group.UID))
                 return true;
 
             return false;
@@ -20,17 +41,9 @@
 
         public void Save()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_products` SET `name`=@name, `type`=@type, `properties`=@properties, `price`=@price WHERE `UID`=@UID;";
-            command.Prepare();
-
-            command.Parameters.AddWithValue("@name", name);
-            command.Parameters.AddWithValue("@type", type);
-            command.Parameters.AddWithValue("@properties", propertiesString);
-            command.Parameters.AddWithValue("@price", price);
-            command.Parameters.AddWithValue("@UID", UID);
-
-            command.ExecuteNonQuery();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<GroupProduct>("groupproducts");
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<GroupProduct>().Where(x => x.UID == UID);
+            collection.FindOneAndReplace<GroupProduct>(filter, this);
         }
     }
 }

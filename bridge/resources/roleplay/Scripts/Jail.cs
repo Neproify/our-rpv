@@ -39,7 +39,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            if(targetPlayer.character.jailBuildingID == -1)
+            if(targetPlayer.character.jailBuildingID == MongoDB.Bson.ObjectId.Empty)
             {
                 targetPlayer.character.jailBuildingID = player.building.UID;
                 targetPlayer.character.jailPosition = targetPlayer.GetPosition();
@@ -48,7 +48,7 @@ namespace roleplay.Scripts
             }
             else
             {
-                targetPlayer.character.jailBuildingID = -1;
+                targetPlayer.character.jailBuildingID = MongoDB.Bson.ObjectId.Empty;
                 targetPlayer.character.Save();
                 player.OutputMe($" uwalnia {targetPlayer.formattedName}.");
             }

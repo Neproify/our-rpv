@@ -1,14 +1,27 @@
-﻿namespace roleplay
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace roleplay
 {
     public class GroupRank
     {
-        public int UID;
-        public int groupID;
+        [BsonId]
+        [BsonElement("_id")]
+        public ObjectId UID;
+
+        [BsonElement("name")]
         public string name;
+
+        [BsonElement("salary")]
         public int salary;
-        public uint skin; // it should be uint probably
+
+        [BsonElement("skin")]
+        public uint skin;
+
+        [BsonElement("permissions")]
         public int permissions;
 
+        [BsonIgnore]
         public Entities.Group group;
 
         public void Save()

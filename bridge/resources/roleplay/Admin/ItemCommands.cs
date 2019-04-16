@@ -1,5 +1,6 @@
 ﻿using System;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Admin
 {
@@ -31,7 +32,7 @@ namespace roleplay.Admin
             if (args.Length < 2)
                 goto Usage;
 
-            if (!Int32.TryParse(args[0], out var itemID))
+            if (!ObjectId.TryParse(args[0], out var itemID))
                 goto Usage;
 
             Entities.Item item = Managers.ItemManager.Instance().GetByID(itemID);
@@ -94,7 +95,7 @@ namespace roleplay.Admin
                     return;
                 }
 
-                if(!Int32.TryParse(args[3], out var ownerID))
+                if(!ObjectId.TryParse(args[3], out var ownerID))
                 {
                     goto OwnerUsage;
                 }

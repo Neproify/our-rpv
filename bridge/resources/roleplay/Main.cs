@@ -9,12 +9,9 @@ namespace roleplay
         {
             NAPI.Util.ConsoleOutput("Trwa nawi¹zywanie po³¹czenia z baz¹ danych...");
 
-            Database database = Database.Instance();
-            database.adress = "127.0.0.1";
-            database.login = "vrp";
-            database.password = "STdyt125";
-            database.databaseName = "vrp";
-            if(!database.Connect())
+            Database database2 = Database.Instance();
+
+            if(!database2.Connect())
             {
                 NAPI.Util.ConsoleOutput("B³¹d podczas ³¹czenia z baz¹ danych.");
                 NAPI.Server.SetServerPassword("niewiadomoco");

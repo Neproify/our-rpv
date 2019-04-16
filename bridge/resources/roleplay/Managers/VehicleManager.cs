@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Managers
 {
@@ -51,7 +52,7 @@ namespace roleplay.Managers
             return vehiclesDictionary[vehicle];
         }
 
-        public Entities.Vehicle GetByID(int UID)
+        public Entities.Vehicle GetByID(ObjectId UID)
         {
             return vehicles.Find(x => x.vehicleData.UID == UID);
         }
@@ -66,73 +67,57 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_vehicles`;";
-            var reader = command.ExecuteReader();
-
-            while(reader.Read())
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.VehicleData>("vehicles");
+            var cursor = collection.FindSync<Entities.VehicleData>(new BsonDocument());
+            cursor.MoveNext();
+            
+            foreach(var vehicleData in cursor.Current)
             {
-                Load(reader);
+                var vehicle = new Entities.Vehicle { vehicleData = vehicleData };
+                Add(vehicle);
+                vehicle.Spawn();
             }
-
-            reader.Close();
-        }
-
-        public Entities.Vehicle Load(MySql.Data.MySqlClient.MySqlDataReader reader)
-        {
-            var position = new Vector3();
-            var rotation = new Vector3();
-            position.X = reader.GetFloat("spawnPosX");
-            position.Y = reader.GetFloat("spawnPosY");
-            position.Z = reader.GetFloat("spawnPosZ");
-            rotation.X = reader.GetFloat("spawnRotX");
-            rotation.Y = reader.GetFloat("spawnRotY");
-            rotation.Z = reader.GetFloat("spawnRotZ");
-
-            var vehicleData = new Entities.VehicleData
-            {
-                UID = reader.GetInt32("UID"),
-                model = reader.GetUInt32("model"),
-                ownerType = (OwnerType)reader.GetInt32("ownerType"),
-                ownerID = reader.GetInt32("ownerID"),
-                color1 = reader.GetInt32("color1"),
-                color2 = reader.GetInt32("color2"),
-                spawnPosition = position,
-                spawnRotation = rotation
-            };
-
-            var vehicle = new Entities.Vehicle {vehicleData = vehicleData};
-            Add(vehicle);
-            vehicle.Spawn();
-
-            return vehicle;
         }
         
-        public Entities.Vehicle Load(int UID)
+        public Entities.Vehicle Load(ObjectId UID)
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_vehicles` WHERE `UID`=@UID;";
-            command.Prepare();
+            var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.VehicleData>();
+            var filter = builder.Where(x => x.UID == UID);
+            var cursor = Database.Instance().GetGameDatabase().GetCollection<Entities.VehicleData>("vehicles").FindSync<Entities.VehicleData>(filter);
+            cursor.MoveNext();
 
-            command.Parameters.AddWithValue("@UID", UID);
+            foreach(var vehicleData in cursor.Current)
+            {
+                var vehicle = new Entities.Vehicle { vehicleData = vehicleData };
+                Add(vehicle);
+                vehicle.Spawn();
+                return vehicle;
+            }
 
-            var reader = command.ExecuteReader();
-            reader.Read();
-
-            var vehicle = Load(reader);
-
-            reader.Close();
-
-            return vehicle;
+            return null;
         }
 
         public Entities.Vehicle CreateVehicle()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "INSERT INTO `rp_vehicles` SET `model`=1119641113, `ownerType`=0, `ownerID`=-1, `color1`=1, `color2`=1, `spawnPosX`=0, `spawnPosY`=0, `spawnPosZ`=0, `spawnRotX`=0, `spawnRotY`=0, `spawnRotZ`=0";
-            command.ExecuteNonQuery();
+            var vehicleData = new Entities.VehicleData
+            {
+                UID = ObjectId.GenerateNewId(),
+                model = 1119641113,
+                ownerType = OwnerType.None,
+                ownerID = ObjectId.Empty,
+                primaryColor = 1,
+                secondaryColor = 1,
+                spawnPosition = new Vector3(),
+                spawnRotation = new Vector3()
+            };
 
-            return Load((int)command.LastInsertedId);
+            Database.Instance().GetGameDatabase().GetCollection<Entities.VehicleData>("vehicles").InsertOne(vehicleData);
+
+            var vehicle = new Entities.Vehicle { vehicleData = vehicleData };
+            Add(vehicle);
+            vehicle.Spawn();
+
+            return vehicle;
         }
     }
 }

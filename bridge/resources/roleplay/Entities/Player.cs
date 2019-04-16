@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using GTANetworkAPI;
 using Newtonsoft.Json;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace roleplay.Entities
 {
@@ -149,28 +151,26 @@ namespace roleplay.Entities
 
 		public void KillCharacter(string reason)
 		{
-			CreatePenalty(Penalties.PenaltyType.CharacterKill, reason, -1, DateTime.Now.AddYears(50));
+			CreatePenalty(Penalties.PenaltyType.CharacterKill, reason, ObjectId.Empty, DateTime.Now.AddYears(50));
 			handle.Kick("Character Kill");
 		}
 
-		public Penalties.Penalty CreatePenalty(Penalties.PenaltyType type, string reason, int penaltiedBy, DateTime expireDate)
+		public Penalties.Penalty CreatePenalty(Penalties.PenaltyType type, string reason, ObjectId penaltiedBy, DateTime expireDate)
 		{
-			var command = Database.Instance().connection.CreateCommand();
-			command.CommandText = "INSERT INTO `rp_penalties` SET `globalID`=@globalID, `characterID`=@characterID, `type`=@type, `reason`=@reason, `penaltiedBy`=@penaltiedBy, `expireDate`=@expireDate";
-			command.Prepare();
+            var penalty = new Penalties.Penalty
+            {
+                UID = ObjectId.GenerateNewId(),
+                globalID = globalInfo.UID,
+                characterID = character.UID,
+                type = type,
+                reason = reason,
+                penaltiedBy = penaltiedBy,
+                expireDate = expireDate
+            };
 
-			command.Parameters.AddWithValue("@globalID", globalInfo.UID);
-			command.Parameters.AddWithValue("@characterID", character.UID);
-			command.Parameters.AddWithValue("@type", type);
-			command.Parameters.AddWithValue("@reason", reason);
-			command.Parameters.AddWithValue("@penaltiedBy", penaltiedBy);
-			command.Parameters.AddWithValue("@expireDate", expireDate);
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Penalties.Penalty>("penalties");
+            collection.InsertOne(penalty);
 
-			command.ExecuteNonQuery();
-
-			int UID = (int)command.LastInsertedId;
-			Penalties.Penalty penalty = new Penalties.Penalty();
-			penalty.Load(UID);
 			penalties.Add(penalty);
 
 			return penalty;
@@ -180,23 +180,15 @@ namespace roleplay.Entities
 		{
 			penalties.Clear();
 
-			var command = Database.Instance().connection.CreateCommand();
-			command.CommandText = "SELECT * FROM `rp_penalties` WHERE `globalID`=@globalID AND `expireDate` > @currentDate;";
-			command.Prepare();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Penalties.Penalty>("penalties");
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<Penalties.Penalty>().Where(x => x.globalID == globalInfo.UID && x.expireDate > DateTime.Now);
+            var cursor = collection.FindSync<Penalties.Penalty>(filter);
+            cursor.MoveNext();
 
-			command.Parameters.AddWithValue("@globalID", globalInfo.UID);
-			command.Parameters.AddWithValue("@currentDate", DateTime.Now);
-
-			var reader = command.ExecuteReader();
-
-			while (reader.Read())
-			{
-				var penalty = new Penalties.Penalty();
-				penalty.Load(reader);
-				penalties.Add(penalty);
-			}
-
-			reader.Close();
+            foreach(var penalty in cursor.Current)
+            {
+                penalties.Add(penalty);
+            }
 		}
 
 		public bool HaveActivePenaltyOfType(Penalties.PenaltyType type)
@@ -218,11 +210,11 @@ namespace roleplay.Entities
 			return false;
 		}
 
-		public List<Item> GetItems() => isLogged ? Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID) : null;
+        public List<Item> GetItems() => isLogged ? Managers.ItemManager.Instance().GetItemsOf(OwnerType.Character, character.UID) : null;
 
-		public bool CanUseItem(Item item) => item?.ownerType == OwnerType.Character && item?.ownerID == character.UID;
+        public bool CanUseItem(Item item) => item?.ownerType == OwnerType.Character && item?.ownerID == character.UID;
 
-        public bool CanUseItem(int itemUID) => CanUseItem(Managers.ItemManager.Instance().GetByID(itemUID));
+        public bool CanUseItem(ObjectId itemUID) => CanUseItem(Managers.ItemManager.Instance().GetByID(itemUID));
 
         public bool IsUsingItemOfType(ItemType type) => GetItems().Find(x => x.type == type && x.isUsed == true) != null;
 
@@ -293,9 +285,9 @@ namespace roleplay.Entities
 
         public bool IsOnDutyOfGroupType(GroupType type) => groupDuty?.member.group.type == type;
 
-        public bool IsOnDutyOfGroupID(int UID) => groupDuty?.member.groupID == UID;
+        public bool IsOnDutyOfGroupID(ObjectId UID) => groupDuty?.member.group.UID == UID;
 
-        public bool IsInBuildingOfHisGroup() => building?.ownerType == OwnerType.Group && building?.ownerID == groupDuty?.member.groupID;
+        public bool IsInBuildingOfHisGroup() => building?.ownerType == OwnerType.Group && building?.ownerID == groupDuty?.member.group.UID;
 
         public bool IsAdminOfLevel(AdminLevel level) => globalInfo?.adminLevel >= (int)level;
 
@@ -360,7 +352,7 @@ namespace roleplay.Entities
 
         public void RemoveWeapon(WeaponHash weapon) => handle.RemoveWeapon(weapon);
 
-        public void Kick(string reason, int penaltiedBy)
+        public void Kick(string reason, ObjectId penaltiedBy)
         {
             CreatePenalty(Penalties.PenaltyType.Kick, reason, penaltiedBy, DateTime.Now);
             handle.Kick(reason);
@@ -371,7 +363,7 @@ namespace roleplay.Entities
             handle.Kick(reason);
         }
         
-        public void Ban(string reason, int penaltiedBy)
+        public void Ban(string reason, ObjectId penaltiedBy)
         {
             CreatePenalty(Penalties.PenaltyType.Ban, reason, penaltiedBy, DateTime.Now.AddYears(50));
             handle.Kick(reason);
@@ -382,7 +374,7 @@ namespace roleplay.Entities
 
 	public class GlobalInfo
 	{
-		public int UID;
+		public ObjectId UID;
 		public string name;
 		public int score;
 		public int adminLevel;
@@ -391,32 +383,38 @@ namespace roleplay.Entities
 
 	public class Character
 	{
-		public int UID;
-		public int GID;
+        [BsonId]
+        [BsonElement("_id")]
+		public ObjectId UID;
+
+        [BsonElement("globalid")]
+		public ObjectId GID;
+
+        [BsonElement("name")]
 		public string name;
+
+        [BsonElement("model")]
 		public uint model;
+
+        [BsonElement("money")]
 		public int money;
+
+        [BsonElement("health")]
 		public int health;
 
-		public int jailBuildingID;
-		public Vector3 jailPosition;
+        [BsonElement("jailbuildingid")]
+		public ObjectId jailBuildingID;
+
+        [BsonElement("jailposition")]
+        public Vector3 jailPosition;
+
 
 		public void Save()
 		{
-			var command = Database.Instance().connection.CreateCommand();
-			command.CommandText = "UPDATE `rp_characters` SET `model`=@model, `money`=@money, `health`=@health, `jailBuilding`=@jailBuildingID, " +
-				"`jailPositionX`=@jailPositionX, `jailPositionY`=@jailPositionY, `jailPositionZ`=@jailPositionZ WHERE `UID`=@UID";
-			command.Prepare();
-
-			command.Parameters.AddWithValue("@model", model);
-			command.Parameters.AddWithValue("@UID", UID);
-			command.Parameters.AddWithValue("@money", money);
-			command.Parameters.AddWithValue("@health", health);
-			command.Parameters.AddWithValue("jailBuildingID", jailBuildingID);
-			command.Parameters.AddWithValue("jailPositionX", jailPosition.X);
-			command.Parameters.AddWithValue("jailPositionY", jailPosition.Y);
-			command.Parameters.AddWithValue("jailPositionZ", jailPosition.Z);
-			command.ExecuteNonQuery();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Character>("characters");
+            var builder = new MongoDB.Driver.FilterDefinitionBuilder<Character>();
+            var filter = builder.Where(x => x.UID == this.UID);
+            collection.FindOneAndReplace<Character>(filter, this);
 		}
 	}
 }

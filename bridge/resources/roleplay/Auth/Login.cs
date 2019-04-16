@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Auth
 {
@@ -30,38 +31,54 @@ namespace roleplay.Auth
                 return;
             }
 
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `ipb_core_members` WHERE `name`=@name LIMIT 1;";
-            command.Prepare();
+            var collection = Database.Instance().GetForumDatabase().GetCollection<BsonDocument>("objects");
 
-            command.Parameters.AddWithValue("@name", login);
-            var reader = command.ExecuteReader();
-            if (!reader.HasRows)
+            MongoDB.Driver.FilterDefinition<BsonDocument> filter = new BsonDocument
             {
-                reader.Close();
+                {"_key", new BsonRegularExpression("/user/")},
+                {"userslug", login}
+            };
+            long count = collection.CountDocuments(filter);
+
+            if (count == 0)
+            {
                 player.SendNotification("~r~Nie znaleźliśmy konta o podanej nazwie.");
                 return;
             }
-            reader.Read();
 
-            var passwordToCheck = reader.GetString("members_pass_hash");
-            if (!BCrypt.BCryptHelper.CheckPassword(password, passwordToCheck))
+            var cursor = collection.FindSync<BsonDocument>(filter);
+            cursor.MoveNext();
+            BsonDocument document = null;
+            foreach (var i in cursor.Current)
             {
-                reader.Close();
+                document = i;
+                break;
+            }
+
+            if (!BCrypt.BCryptHelper.CheckPassword(password, document.GetValue("password").AsString))
+            {
                 player.SendNotification("~r~Wpisałeś błędne hasło!");
                 return;
             }
 
+            // Make sure we have all fields in database. :)
+            BsonValue tempValue;
+            if(!document.TryGetValue("gamescore", out tempValue))
+            {
+                document.Set("gamescore", 0);
+                document.Set("gameadminlevel", 0);
+                document.Set("gameadminpermissions", 0);
+                collection.FindOneAndUpdate<BsonDocument>(filter, document);
+            }
+
             var globalInfo = new Entities.GlobalInfo
             {
-                UID = reader.GetInt32("member_id"),
-                name = reader.GetString("name"),
-                score = reader.GetInt32("game_score"),
-                adminLevel = reader.GetInt32("game_admin_level"),
-                adminPermissions = reader.GetInt32("game_admin_permissions")
+                UID = document.GetValue("_id").AsObjectId,
+                name = document.GetValue("username").AsString,
+                score = document.GetValue("gamescore").AsInt32,
+                adminLevel = document.GetValue("gameadminlevel").AsInt32,
+                adminPermissions = document.GetValue("gameadminpermissions").AsInt32
             };
-
-            reader.Close();
 
             if (Managers.PlayerManager.Instance().GetAll().Exists(x => x.globalInfo?.UID == globalInfo.UID))
             {
@@ -73,7 +90,7 @@ namespace roleplay.Auth
             player.globalInfo = globalInfo;
             player.LoadPenalties();
 
-            if(player.HaveActivePenaltyOfType(Penalties.PenaltyType.Ban))
+            if (player.HaveActivePenaltyOfType(Penalties.PenaltyType.Ban))
             {
                 player.SilentKick("Posiadasz aktywną karę administracyjną.");
                 return;

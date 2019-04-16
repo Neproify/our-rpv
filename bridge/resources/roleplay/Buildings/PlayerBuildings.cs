@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Buildings
 {
@@ -32,7 +33,7 @@ namespace roleplay.Buildings
                 {
                     if (player.GetPosition().DistanceTo(building.exitPosition) <= 3f)
                     {
-                        if (player.character.jailBuildingID != -1)
+                        if (player.character.jailBuildingID != ObjectId.Empty)
                         {
                             player.SendNotification("~r~Jesteś uwięziony. Nie możesz wyjść.");
                             return;

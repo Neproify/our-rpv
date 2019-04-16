@@ -1,5 +1,6 @@
 ﻿using System;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Admin
 {
@@ -31,10 +32,11 @@ namespace roleplay.Admin
             if (args.Length < 2)
                 goto Usage;
 
-            if (!Int32.TryParse(args[0], out var vehicleID))
+            if (!ObjectId.TryParse(args[0], out var vehicleID))
                 goto Usage;
 
             Entities.Vehicle vehicle = Managers.VehicleManager.Instance().GetByID(vehicleID);
+
             if (vehicle == null)
             {
                 player.SendVehicleNotFoundNotification();
@@ -56,8 +58,8 @@ namespace roleplay.Admin
                 if (!Int32.TryParse(args[2], out var color1) || !Int32.TryParse(args[3], out var color2))
                     goto ColorUsage;
 
-                vehicle.vehicleData.color1 = color1;
-                vehicle.vehicleData.color2 = color2;
+                vehicle.vehicleData.primaryColor = color1;
+                vehicle.vehicleData.secondaryColor = color2;
                 vehicle.handle.PrimaryColor = color1;
                 vehicle.handle.SecondaryColor = color2;
 
@@ -96,7 +98,7 @@ namespace roleplay.Admin
                     return;
                 }
 
-                if (!Int32.TryParse(args[3], out var ownerID))
+                if (ObjectId.TryParse(args[3], out var ownerID))
                 {
                     goto OwnerUsage;
                 }

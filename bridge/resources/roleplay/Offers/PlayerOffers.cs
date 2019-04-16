@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using roleplay.Offers;
+using MongoDB.Bson;
 
 namespace roleplay
 {
@@ -93,7 +94,7 @@ namespace roleplay
                     return;
                 }
 
-                if(!int.TryParse(args[3], out var itemID))
+                if(!ObjectId.TryParse(args[3], out var itemID))
                 {
                     player.SendUsageNotification($"Użycie komendy: /o {playerID} {price} przedmiot [identyfikator przedmiotu.");
                     return;

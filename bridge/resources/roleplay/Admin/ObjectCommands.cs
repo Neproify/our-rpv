@@ -1,5 +1,6 @@
 ﻿using System;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Admin
 {
@@ -31,10 +32,11 @@ namespace roleplay.Admin
             if (args.Length < 2)
                 goto Usage;
 
-            if (!Int32.TryParse(args[0], out var objectID))
+            if (!ObjectId.TryParse(args[0], out var objectID))
                 goto Usage;
 
             Entities.Object @object = Managers.ObjectManager.Instance().GetByID(objectID);
+
             if (@object == null)
             {
                 player.SendNotification("~r~Nie znaleziono obiektu o podanym identyfikatorze.");
@@ -56,12 +58,13 @@ namespace roleplay.Admin
                     return;
                 }
 
-                if (!Int32.TryParse(args[3], out var ownerID))
+                if (!ObjectId.TryParse(args[3], out var ownerID))
                 {
                     goto OwnerUsage;
                 }
 
                 @object.ownerType = type;
+
                 @object.ownerID = ownerID;
 
                 @object.Save();

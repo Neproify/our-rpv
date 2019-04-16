@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Managers
 {
@@ -23,7 +24,7 @@ namespace roleplay.Managers
             objects.Remove(@object);
         }
 
-        public Entities.Object GetByID(int ID)
+        public Entities.Object GetByID(ObjectId ID)
         {
             return objects.Find(x => x.UID == ID);
         }
@@ -35,73 +36,53 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_objects`";
-            command.Prepare();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Object>("objects");
+            var cursor = collection.FindSync<Entities.Object>(new BsonDocument());
+            cursor.MoveNext();
 
-            var reader = command.ExecuteReader();
-
-            while (reader.Read())
+            foreach(var @object in cursor.Current)
             {
-                Load(reader);
+                Add(@object);
+                @object.Spawn();
+            }
+        }
+
+        public Entities.Object Load(ObjectId UID)
+        {
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Object>("objects");
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Object>().Where(x => x.UID == UID);
+            var cursor = collection.FindSync<Entities.Object>(filter);
+            cursor.MoveNext();
+
+            foreach(var @object in cursor.Current)
+            {
+                Add(@object);
+                @object.Spawn();
+                return @object;
             }
 
-            reader.Close();
-        }
-
-        public Entities.Object Load(MySql.Data.MySqlClient.MySqlDataReader reader)
-        {
-            var position = new Vector3();
-            var rotation = new Vector3();
-            position.X = reader.GetFloat("positionX");
-            position.Y = reader.GetFloat("positionY");
-            position.Z = reader.GetFloat("positionZ");
-            rotation.X = reader.GetFloat("rotationX");
-            rotation.Y = reader.GetFloat("rotationY");
-            rotation.Z = reader.GetFloat("rotationZ");
-
-            var @object = new Entities.Object
-            {
-                UID = reader.GetInt32("UID"),
-                model = reader.GetUInt32("model"),
-                position = position,
-                rotation = rotation,
-                ownerType = (OwnerType)reader.GetInt32("ownerType"),
-                ownerID = reader.GetInt32("ownerID")
-            };
-
-            Add(@object);
-
-            @object.Spawn();
-
-            return @object;
-        }
-
-        public Entities.Object Load(int UID)
-        {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_objects` WHERE `UID`=@UID;";
-            command.Prepare();
-
-            command.Parameters.AddWithValue("@UID", UID);
-
-            var reader = command.ExecuteReader();
-            reader.Read();
-
-            var @object = Load(reader);
-
-            reader.Close();
-
-            return @object;
+            return null;
         }
 
         public Entities.Object CreateObject()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "INSERT INTO `rp_objects` SET `model`=579156093, `ownerType`=0, `ownerID`=-1, `postionX`=0, `positionY`=0, `positionZ`=0, `rotationX`=0, `rotationY`=0, `rotationZ`=0";
-            command.ExecuteNonQuery();
+            var @object = new Entities.Object
+            {
+                UID = ObjectId.GenerateNewId(),
+                model = 579156093,
+                ownerType = OwnerType.None,
+                ownerID = ObjectId.Empty,
+                position = new Vector3(),
+                rotation = new Vector3()
+            };
 
-            return Load((int)command.LastInsertedId);
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Object>("objects");
+            collection.InsertOne(@object);
+
+            Add(@object);
+            @object.Spawn();
+
+            return @object;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Items
 {
@@ -39,34 +40,34 @@ namespace roleplay.Items
         }
 
         [RemoteEvent("UsePlayerItem")]
-        public void UsePlayerItem(Client client, int itemUID)
+        public void UsePlayerItem(Client client, string itemUID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
             if (!player.IsReady())
                 return;
 
-            var item = Managers.ItemManager.Instance().GetByID(itemUID);
+            var item = Managers.ItemManager.Instance().GetByID(ObjectId.Parse(itemUID));
 
             item?.Use(player);
         }
 
         [RemoteEvent("DropPlayerItem")]
-        public void DropPlayerItem(Client client, int itemUID)
+        public void DropPlayerItem(Client client, string itemUID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
             if (!player.IsReady())
                 return;
 
-            var item = Managers.ItemManager.Instance().GetByID(itemUID);
+            var item = Managers.ItemManager.Instance().GetByID(ObjectId.Parse(itemUID));
 
             if (!player.CanUseItem(item))
                 return;
 
             item.position = player.GetPosition();
             item.position.Z -= 0.5f;
-            item.ChangeOwner(OwnerType.World, 0);
+            item.ChangeOwner(OwnerType.World, ObjectId.Empty);
             item.Save();
 
             player.SendNotification($"~g~Wyrzuciłeś przedmiot {item.name}");

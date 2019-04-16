@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MongoDB.Bson;
 
 namespace roleplay.Managers
 {
@@ -22,7 +23,7 @@ namespace roleplay.Managers
             groups.ForEach(x => x.Save());
         }
 
-        public Entities.Group GetByID(int ID)
+        public Entities.Group GetByID(ObjectId ID)
         {
             return groups.Find(x => x.UID == ID);
         }
@@ -34,84 +35,63 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_groups`";
-            var reader = command.ExecuteReader();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Group>("groups");
+            var cursor = collection.FindSync<Entities.Group>(new BsonDocument());
+            cursor.MoveNext();
 
-            while(reader.Read())
+            foreach(var group in cursor.Current)
             {
-                Load(reader);
+                Add(group);
+            }
+        }
+
+		public Entities.Group Load(ObjectId UID)
+		{
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Group>("groups");
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Group>().Where(x => x.UID == UID);
+            var cursor = collection.FindSync<Entities.Group>(filter);
+            cursor.MoveNext();
+
+            foreach(var group in cursor.Current)
+            {
+                Add(group);
+                return group;
             }
 
-            reader.Close();
-
-            groups.ForEach(x => x.LoadRanks());
-            groups.ForEach(x => x.LoadMembers());
-        }
-
-        public Entities.Group Load(MySql.Data.MySqlClient.MySqlDataReader reader)
-        {
-            var group = new Entities.Group
-            {
-                UID = reader.GetInt32("UID"),
-                name = reader.GetString("name"),
-                bank = reader.GetInt32("bank"),
-                leaderRank = reader.GetInt32("leaderRank"),
-                leaderID = reader.GetInt32("leaderID"),
-                type = (GroupType)reader.GetInt32("type"),
-                specialPermissions = reader.GetInt32("specialPermissions")
-            };
-
-            Add(group);
-
-            return group;
-        }
-
-		public Entities.Group Load(int UID)
-		{
-			var command = Database.Instance().connection.CreateCommand();
-			command.CommandText = "SELECT * FROM `rp_groups` WHERE `UID` = @UID";
-
-			var reader = command.ExecuteReader();
-
-			reader.Read();
-
-			var group = Load(reader);
-
-			reader.Close();
-
-			return group;
+            return null;
 		}
 
         public Entities.Group CreateGroup()
         {
-			var command = Database.Instance().connection.CreateCommand();
+            var group = new Entities.Group
+            {
+                UID = MongoDB.Bson.ObjectId.GenerateNewId(),
+                name = "Nowa groupa",
+                bank = 0,
+                leaderRank = MongoDB.Bson.ObjectId.GenerateNewId(),
+                leaderID = MongoDB.Bson.ObjectId.Empty,
+                type = GroupType.None,
+                specialPermissions = 0
+            };
 
-			command.CommandText = "INSERT INTO `rp_groups` SET `name` = 'Nowa grupa', `bank` = 0, `leaderRank` = -1, `leaderID` = -1, `type` = 0, `specialPermissions` = 0";
+            var leaderRank = new GroupRank
+            {
+                UID = group.leaderRank,
+                name = "Lider",
+                salary = 0,
+                skin = 0,
+                permissions = 0
+            };
 
-			command.ExecuteNonQuery();
+            group.ranks.Add(leaderRank);
+            leaderRank.group = group;
 
-			int createdGroupID = (int)command.LastInsertedId;
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Group>("groups");
+            collection.InsertOne(group);
 
-			command.CommandText = "INSERT INTO `rp_groups_ranks` SET `groupID` = @groupID, `name` = 'Lider', `salary` = 0, `skin` = 0, `permissions` = @permissions";
-			command.Prepare();
+            Add(group);
 
-			command.Parameters.AddWithValue("@groupID", createdGroupID);
-			command.Parameters.AddWithValue("@permissions", GroupMemberPermission.All);
-
-			command.ExecuteNonQuery();
-
-			int createdRankID = (int)command.LastInsertedId;
-
-			command.CommandText = "UPDATE `rp_groups` SET `leaderRank` = @rankID WHERE `UID` = @UID";
-			command.Prepare();
-
-			command.Parameters.AddWithValue("@rankID", createdRankID);
-			command.Parameters.AddWithValue("@UID", createdGroupID);
-
-			command.ExecuteNonQuery();
-
-			return Load(createdGroupID);
+            return group;
         }
     }
 }

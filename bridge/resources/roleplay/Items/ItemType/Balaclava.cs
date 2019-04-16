@@ -27,7 +27,7 @@ namespace roleplay.Items.ItemType
             }
             else
             {
-                player.SetName($"Nieznajomy_{Convert.ToString(player.character.UID, 16)}");
+                player.SetName($"Nieznajomy_{player.character.UID}");
                 isUsed = true;
             }
 

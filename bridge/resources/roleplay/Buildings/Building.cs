@@ -1,24 +1,45 @@
 ﻿using GTANetworkAPI;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace roleplay.Entities
 {
     public class Building
     {
-        public int UID;
+        [BsonId]
+        [BsonElement("_id")]
+        public ObjectId UID;
+
+        [BsonElement("name")]
         public string name;
+        
+        [BsonElement("description")]
         public string description;
+
+        [BsonElement("enterposition")]
         public Vector3 enterPosition;
+
+        [BsonElement("enterdimension")]
         public uint enterDimension;
+
+        [BsonElement("exitposition")]
         public Vector3 exitPosition;
 
+        [BsonIgnore]
         public bool isLocked = false;
 
+        [BsonIgnore]
         public uint exitDimension => enterDimension + 10000;
 
+        [BsonElement("ownertype")]
         public OwnerType ownerType;
-        public int ownerID;
 
+        [BsonElement("ownerid")]
+        public ObjectId ownerID;
+
+        [BsonIgnore]
         public Marker enterMarker;
+        [BsonIgnore]
         public Marker exitMarker;
 
         public Building()
@@ -44,27 +65,9 @@ namespace roleplay.Entities
 
         public void Save()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_buildings` SET `name`=@name, `description`=@description, `enterPosX`=@enterPosX, " +
-                "`enterPosY`=@enterPosY, `enterPosZ`=@enterPosZ, `enterDimension`=@enterDimension, " +
-                "`exitPosX`=@exitPosX, `exitPosY`=@exitPosY, `exitPosZ`=@exitPosZ, `ownerType`=@ownerType, `ownerID`=@ownerID " +
-                "WHERE `UID`=@UID;";
-            command.Prepare();
-
-            command.Parameters.AddWithValue("@name", name);
-            command.Parameters.AddWithValue("@description", description);
-            command.Parameters.AddWithValue("@enterPosX", enterPosition.X);
-            command.Parameters.AddWithValue("@enterPosY", enterPosition.Y);
-            command.Parameters.AddWithValue("@enterPosZ", enterPosition.Z);
-            command.Parameters.AddWithValue("@enterDimension", enterDimension);
-            command.Parameters.AddWithValue("@exitPosX", exitPosition.X);
-            command.Parameters.AddWithValue("@exitPosY", exitPosition.Y);
-            command.Parameters.AddWithValue("@exitPosZ", exitPosition.Z);
-            command.Parameters.AddWithValue("@ownerType", ownerType);
-            command.Parameters.AddWithValue("@ownerID", ownerID);
-            command.Parameters.AddWithValue("@UID", UID);
-
-            command.ExecuteNonQuery();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Building>("buildings");
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<Building>().Where(x => x.UID == UID);
+            collection.FindOneAndReplace<Building>(filter, this);
         }
 
         public bool CanBeAccessedBy(Entities.Player player)

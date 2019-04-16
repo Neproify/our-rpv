@@ -1,26 +1,27 @@
-﻿namespace roleplay
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
+namespace roleplay
 {
     public class GroupMember
     {
-        public int UID;
-        public int charID;
-        public int groupID;
-        public int rankID;
+        [BsonId]
+        [BsonElement("_id")]
+        public ObjectId UID;
+
+        [BsonElement("characterid")]
+        public ObjectId charID;
+
+        [BsonElement("dutytime")]
         public int dutyTime;
 
+        [BsonIgnore]
         public Entities.Group group;
+        [BsonIgnore]
         public GroupRank rank;
 
         public void Save()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_groups_members` SET `dutyTime`=@dutyTime WHERE `UID`=@UID;";
-            command.Prepare();
-
-            command.Parameters.AddWithValue("@dutyTime", dutyTime);
-            command.Parameters.AddWithValue("@UID", UID);
-
-            command.ExecuteNonQuery();
         }
     }
 }

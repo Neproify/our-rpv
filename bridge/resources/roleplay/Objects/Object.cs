@@ -1,16 +1,31 @@
 ﻿using GTANetworkAPI;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace roleplay.Entities
 {
     public class Object
     {
-        public int UID;
-        public uint model;
-        public Vector3 position;
-        public Vector3 rotation;
-        public OwnerType ownerType;
-        public int ownerID;
+        [BsonId]
+        [BsonElement("_id")]
+        public ObjectId UID;
 
+        [BsonElement("model")]
+        public uint model;
+
+        [BsonElement("position")]
+        public Vector3 position;
+
+        [BsonElement("rotation")]
+        public Vector3 rotation;
+
+        [BsonElement("ownertype")]
+        public OwnerType ownerType;
+
+        [BsonElement("ownerid")]
+        public ObjectId ownerID;
+
+        [BsonIgnore]
         public GTANetworkAPI.Object handle;
 
         public Object()
@@ -41,24 +56,9 @@ namespace roleplay.Entities
 
         public void Save()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_objects` SET `model`=@model, `positionX`=@positionX, `positionY`=@positionY, `positionZ`=@positionZ, " +
-                "`rotationX`=@rotationX, `rotationY`=@rotationY, `rotationZ`=@rotationZ, " +
-                "`ownerType`=@ownerType, `ownerID`=@ownerID WHERE `UID`=@UID;";
-            command.Prepare();
-
-            command.Parameters.AddWithValue("@model", model);
-            command.Parameters.AddWithValue("positionX", position.X);
-            command.Parameters.AddWithValue("positionY", position.Y);
-            command.Parameters.AddWithValue("positionZ", position.Z);
-            command.Parameters.AddWithValue("rotationX", rotation.X);
-            command.Parameters.AddWithValue("rotationY", rotation.Y);
-            command.Parameters.AddWithValue("rotationZ", rotation.Z);
-            command.Parameters.AddWithValue("ownerType", ownerType);
-            command.Parameters.AddWithValue("ownerID", ownerID);
-            command.Parameters.AddWithValue("UID", UID);
-
-            command.ExecuteNonQuery();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Object>("objects");
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<Object>().Where(x => x.UID == UID);
+            collection.FindOneAndReplace<Building>(filter, this);
         }
 
         public uint GetDimension()

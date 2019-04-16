@@ -1,4 +1,6 @@
 ﻿using GTANetworkAPI;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace roleplay.Entities
 {
@@ -42,7 +44,7 @@ namespace roleplay.Entities
                 return;
 
 #warning Use vector for rotation in future. Crashes in current(0.3.7.2) release
-            var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, vehicleData.spawnPosition, 0f, vehicleData.color1, vehicleData.color2, "SA " + vehicleData.UID, 255, true, false);
+            var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, vehicleData.spawnPosition, 0f, vehicleData.primaryColor, vehicleData.secondaryColor, "SA " + vehicleData.UID, 255, true, false);
             handle = vehicle;
             Managers.VehicleManager.Instance().LinkWithHandle(this);
             engineStatus = false;
@@ -80,33 +82,37 @@ namespace roleplay.Entities
 
     public class VehicleData
     {
-        public int UID;
+        [BsonId]
+        [BsonElement("_id")]
+        public ObjectId UID;
+
+        [BsonElement("model")]
         public uint model;
+
+        [BsonElement("ownertype")]
         public OwnerType ownerType;
-        public int ownerID;
-        public int color1;
-        public int color2;
+
+        [BsonElement("ownerid")]
+        public ObjectId ownerID;
+
+        [BsonElement("primarycolor")]
+        public int primaryColor;
+
+        [BsonElement("secondarycolor")]
+        public int secondaryColor;
+
+        [BsonElement("spawnposition")]
         public Vector3 spawnPosition;
+
+        [BsonElement("spawnrotation")]
         public Vector3 spawnRotation;
 
         public void Save()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "UPDATE `rp_vehicles` SET `model`=@model, `ownerType`=@ownerType, `ownerID`=@ownerID, `color1`=@color1, `color2`=@color2, `spawnPosX`=@spawnPosX, `spawnPosY`=@spawnPosY, `spawnPosZ`=@spawnPosZ, `spawnRotX`=@spawnRotX, `spawnRotY`=@spawnRotY, `spawnRotZ`=@spawnRotZ WHERE `UID`=@UID";
-            command.Prepare();
-            command.Parameters.AddWithValue("@model", model);
-            command.Parameters.AddWithValue("@ownerType", ownerType);
-            command.Parameters.AddWithValue("@ownerID", ownerID);
-            command.Parameters.AddWithValue("@color1", color1);
-            command.Parameters.AddWithValue("@color2", color2);
-            command.Parameters.AddWithValue("@spawnPosX", spawnPosition.X);
-            command.Parameters.AddWithValue("@spawnPosY", spawnPosition.Y);
-            command.Parameters.AddWithValue("@spawnPosZ", spawnPosition.Z);
-            command.Parameters.AddWithValue("@spawnRotX", spawnRotation.X);
-            command.Parameters.AddWithValue("@spawnRotY", spawnRotation.Y);
-            command.Parameters.AddWithValue("@spawnRotZ", spawnRotation.Z);
-            command.Parameters.AddWithValue("@UID", UID);
-            command.ExecuteNonQuery();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<VehicleData>("vehicles");
+            var builder = new MongoDB.Driver.FilterDefinitionBuilder<VehicleData>();
+            var filter = builder.Where(x => x.UID == this.UID);
+            collection.FindOneAndReplace<VehicleData>(filter, this);
         }
     }
 }

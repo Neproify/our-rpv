@@ -1,4 +1,6 @@
-﻿namespace roleplay.Offers
+﻿using MongoDB.Bson;
+
+namespace roleplay.Offers
 {
     public class OfferInfo
     {
@@ -41,7 +43,7 @@
 
             if(type == OfferType.Item)
             {
-                var item = Managers.ItemManager.Instance().GetByID((int)args[0]);
+                var item = Managers.ItemManager.Instance().GetByID(ObjectId.Parse(args[1].ToString()));
 
                 if(!sender.CanUseItem(item))
                 {
@@ -105,6 +107,7 @@
                 item.name = "Prawo jazdy";
                 item.type = ItemType.Document;
                 item.propertiesString = $"{DocumentType.VehicleLicense}|{receiver.character.UID}";
+
                 item.ChangeOwner(OwnerType.Character, receiver.character.UID);
                 item.Save();
 

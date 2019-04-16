@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Managers
 {
     public class ItemManager
     {
         private readonly List<Entities.Item> items;
-        private readonly Dictionary<OwnerType, Dictionary<int, List<Entities.Item>>> itemsOfOwner;
+        private readonly Dictionary<OwnerType, Dictionary<ObjectId, List<Entities.Item>>> itemsOfOwner;
 
         public ItemManager()
         {
             items = new List<Entities.Item>();
-            itemsOfOwner = new Dictionary<OwnerType, Dictionary<int, List<Entities.Item>>>();
+            itemsOfOwner = new Dictionary<OwnerType, Dictionary<ObjectId, List<Entities.Item>>>();
             foreach (var i in Enum.GetValues(typeof(OwnerType)))
             {
-                itemsOfOwner[(OwnerType)i] = new Dictionary<int, List<Entities.Item>>();
+                itemsOfOwner[(OwnerType)i] = new Dictionary<ObjectId, List<Entities.Item>>();
             }
-            itemsOfOwner[OwnerType.None][0] = new List<Entities.Item>();
-            itemsOfOwner[OwnerType.World][0] = new List<Entities.Item>();
+            itemsOfOwner[OwnerType.None][ObjectId.Empty] = new List<Entities.Item>();
+            itemsOfOwner[OwnerType.World][ObjectId.Empty] = new List<Entities.Item>();
         }
 
         private static ItemManager _instance;
@@ -31,7 +32,7 @@ namespace roleplay.Managers
         {
             items.Add(item);
 
-            if(!itemsOfOwner[item.ownerType].ContainsKey(item.ownerID))
+            if (!itemsOfOwner[item.ownerType].ContainsKey(item.ownerID))
             {
                 itemsOfOwner[item.ownerType].Add(item.ownerID, new List<Entities.Item>());
             }
@@ -39,7 +40,7 @@ namespace roleplay.Managers
             itemsOfOwner[item.ownerType][item.ownerID].Add(item);
         }
 
-        public Entities.Item GetByID(int UID)
+        public Entities.Item GetByID(ObjectId UID)
         {
             return items.Find(x => x.UID == UID);
         }
@@ -49,7 +50,7 @@ namespace roleplay.Managers
             return items.Find(x => x.type == type && x.properties[propertyNumber] == propertyValue);
         }
 
-        public List<Entities.Item> GetItemsOf(OwnerType ownerType, int ownerID)
+        public List<Entities.Item> GetItemsOf(OwnerType ownerType, ObjectId ownerID)
         {
             if (!itemsOfOwner[ownerType].ContainsKey(ownerID))
                 return null;
@@ -59,10 +60,10 @@ namespace roleplay.Managers
 
         public Entities.Item GetClosestItem(Vector3 position, float maxDistance = 5f)
         {
-            var worldItems = itemsOfOwner[OwnerType.World][0];
+            var worldItems = itemsOfOwner[OwnerType.World][ObjectId.Empty];
             Entities.Item closestItem = null;
             float distance = maxDistance;
-            foreach(var item in worldItems)
+            foreach (var item in worldItems)
             {
                 var distanceFromPosition = item.position.DistanceTo(position);
                 if (distanceFromPosition <= distance)
@@ -84,16 +85,16 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_items`;";
-            var reader = command.ExecuteReader();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Item>("items");
+            var cursor = collection.FindSync<Entities.Item>(new BsonDocument());
+            cursor.MoveNext();
 
-            while(reader.Read())
+            foreach(var item in cursor.Current)
             {
-                var item = Load(reader);
-            }
+                var itemTemp = CreateAndGetCorrectType(item);
 
-            reader.Close();
+                Add(itemTemp);
+            }
         }
 
         public void SaveAll()
@@ -101,80 +102,46 @@ namespace roleplay.Managers
             items.ForEach(x => x.Save());
         }
 
-        public dynamic Load(MySql.Data.MySqlClient.MySqlDataReader reader)
+        public Entities.Item Load(ObjectId UID)
         {
-            dynamic item;
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Item>("items");
+            var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Item>();
+            var filter = builder.Where(x => x.UID == UID);
+            var cursor = collection.FindSync<Entities.Item>(filter);
+            cursor.MoveNext();
 
-            var UID = reader.GetInt32("UID");
-            var name = reader.GetString("name");
-            var type = reader.GetInt32("type");
-            var properties = reader.GetString("properties");
-            var ownerType = (OwnerType)reader.GetInt32("ownerType");
-            var ownerID = reader.GetInt32("ownerID");
-            var position = new Vector3
+            foreach (var item in cursor.Current)
             {
-                X = reader.GetFloat("positionX"), Y = reader.GetFloat("positionY"), Z = reader.GetFloat("positionZ")
-            };
+                var itemTemp = CreateAndGetCorrectType(item);
 
-            switch (type)
-            {
-                case (int)ItemType.None:
-                    item = new Entities.Item();
-                    break;
-                case (int)ItemType.Weapon:
-                    item = new Items.ItemType.Weapon();
-                    break;
-                case (int)ItemType.Document:
-                    item = new Items.ItemType.Document();
-                    break;
-                case (int)ItemType.Phone:
-                    item = new Items.ItemType.Phone();
-                    break;
-                case (int)ItemType.Balaclava:
-                    item = new Items.ItemType.Balaclava();
-                    break;
-                default:
-                    NAPI.Util.ConsoleOutput("[WARNING]Used default on creating item, type: " + type);
-                    item = new Entities.Item();
-                    break;
+                Add(itemTemp);
+
+                return itemTemp;
             }
 
-            item.UID = UID;
-            item.name = name;
-            item.type = (ItemType)type;
-            item.propertiesString = properties;
-            item.ownerType = ownerType;
-            item.ownerID = ownerID;
-            item.position = position;
-
-            Add(item);
-
-            return item;
-        }
-
-        public Entities.Item Load(int UID)
-        {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_items` WHERE `UID`=@UID";
-            command.Prepare();
-
-            command.Parameters.AddWithValue("@UID", UID);
-            var reader = command.ExecuteReader();
-            reader.Read();
-
-            var item = Load(reader);
-
-            reader.Close();
-            return item;
+            return null;
         }
 
         public Entities.Item CreateItem()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "INSERT INTO `rp_items` SET `name`='', `type`=0, `properties`='', `ownerType`=0, `ownerID`=0, `positionX`=0, `positionY`=0, `positionZ`=0;";
-            command.ExecuteNonQuery();
+            var item = new Entities.Item
+            {
+                UID = ObjectId.GenerateNewId(),
+                name = "",
+                type = ItemType.None,
+                properties = new int[8],
+                ownerType = OwnerType.None,
+                ownerID = ObjectId.Empty,
+                position = new Vector3()
+            };
 
-            return Load((int)command.LastInsertedId);
+            Database.Instance().GetGameDatabase().GetCollection<Entities.Item>("items").InsertOne(item);
+
+            item = CreateAndGetCorrectType(item);
+
+            Add(item);
+
+            return item;
         }
 
         public Entities.Item ReloadItem(Entities.Item item)
@@ -182,6 +149,44 @@ namespace roleplay.Managers
             Remove(item);
 
             return Load(item.UID);
+        }
+
+        public Entities.Item CreateAndGetCorrectType(Entities.Item item)
+        {
+            Entities.Item correct = null;
+
+            switch (item.type)
+            {
+                case ItemType.None:
+                    correct = new Entities.Item();
+                    break;
+                case ItemType.Weapon:
+                    correct = new Items.ItemType.Weapon();
+                    break;
+                case ItemType.Document:
+                    correct = new Items.ItemType.Document();
+                    break;
+                case ItemType.Phone:
+                    correct = new Items.ItemType.Phone();
+                    break;
+                case ItemType.Balaclava:
+                    correct = new Items.ItemType.Balaclava();
+                    break;
+                default:
+                    NAPI.Util.ConsoleOutput("[WARNING]Used default on creating item, type: " + item.type);
+                    correct = new Entities.Item();
+                    break;
+            }
+
+            correct.UID = item.UID;
+            correct.name = item.name;
+            correct.type = item.type;
+            correct.propertiesString = item.propertiesString;
+            correct.ownerType = item.ownerType;
+            correct.ownerID = item.ownerID;
+            correct.position = item.position;
+
+            return correct;
         }
     }
 }

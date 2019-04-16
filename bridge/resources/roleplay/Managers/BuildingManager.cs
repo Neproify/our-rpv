@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GTANetworkAPI;
+using MongoDB.Bson;
 
 namespace roleplay.Managers
 {
@@ -28,7 +29,7 @@ namespace roleplay.Managers
             return buildings;
         }
 
-        public Entities.Building GetByID(int ID)
+        public Entities.Building GetByID(ObjectId ID)
         {
             return buildings.Find(x => x.UID == ID);
         }
@@ -51,66 +52,31 @@ namespace roleplay.Managers
 
         public void LoadFromDatabase()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_buildings`";
-            command.Prepare();
-
-            var reader = command.ExecuteReader();
-
-            while(reader.Read())
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Building>("buildings");
+            var cursor = collection.FindSync<Entities.Building>(new BsonDocument());
+            cursor.MoveNext();
+            foreach(var building in cursor.Current)
             {
-                Load(reader);
+                Add(building);
+                building.Spawn();
+            }
+        }
+
+        public Entities.Building Load(ObjectId UID)
+        {
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Building>("buildings");
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Building>().Where(x => x.UID == UID);
+            var cursor = collection.FindSync<Entities.Building>(filter);
+            cursor.MoveNext();
+
+            foreach(var building in cursor.Current)
+            {
+                Add(building);
+                building.Spawn();
+                return building;
             }
 
-            reader.Close();
-        }
-
-        public Entities.Building Load(MySql.Data.MySqlClient.MySqlDataReader reader)
-        {
-            Vector3 enterPosition = new Vector3
-            {
-                X = reader.GetFloat("enterPosX"), Y = reader.GetFloat("enterPosY"), Z = reader.GetFloat("enterPosZ")
-            };
-            Vector3 exitPosition = new Vector3
-            {
-                X = reader.GetFloat("exitPosX"), Y = reader.GetFloat("exitPosY"), Z = reader.GetFloat("exitPosZ")
-            };
-
-            var building = new Entities.Building
-            {
-                UID = reader.GetInt32("UID"),
-                name = reader.GetString("name"),
-                description = reader.GetString("description"),
-                enterPosition = enterPosition,
-                enterDimension = reader.GetUInt32("enterDimension"),
-                exitPosition = exitPosition,
-                ownerType = (OwnerType)reader.GetInt32("ownerType"),
-                ownerID = reader.GetInt32("ownerID")
-            };
-
-            Add(building);
-
-            building.Spawn();
-
-            return building;
-        }
-
-        public Entities.Building Load(int UID)
-        {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "SELECT * FROM `rp_buildings` WHERE `UID`=@UID";
-            command.Prepare();
-
-            command.Parameters.AddWithValue("@UID", UID);
-
-            var reader = command.ExecuteReader();
-            reader.Read();
-
-            var building = Load(reader);
-
-            reader.Close();
-
-            return building;
+            return null;
         }
 
         public void SaveAll()
@@ -120,13 +86,24 @@ namespace roleplay.Managers
 
         public Entities.Building CreateBuilding()
         {
-            var command = Database.Instance().connection.CreateCommand();
-            command.CommandText = "INSERT INTO `rp_buildings` SET `name`='', `description`='', `enterPosX`=0, `enterPosY`=0, `enterPosZ`=0, " +
-                "`enterDimension`=0, `exitPosX`=0, `exitPosY`=0, `exitPosZ`=0, `ownerType`=0, `ownerID`=-1";
+            var building = new Entities.Building
+            {
+                UID = ObjectId.GenerateNewId(),
+                name = "Nowy budynek",
+                description = "",
+                enterPosition = new Vector3(),
+                enterDimension = 0,
+                exitPosition = new Vector3(),
+                ownerType = OwnerType.None,
+                ownerID = ObjectId.Empty
+            };
 
-            command.ExecuteNonQuery();
+            var collection = Database.Instance().GetGameDatabase().GetCollection<Entities.Building>("buildings");
+            collection.InsertOne(building);
 
-            return Load((int)command.LastInsertedId);
+            Add(building);
+
+            return building;
         }
     }
 }
