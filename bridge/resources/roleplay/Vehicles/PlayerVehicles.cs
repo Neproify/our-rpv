@@ -29,17 +29,17 @@ namespace roleplay.Vehicles
                     return;
                 }
 
-                if (vehicle.handle.Locked)
+                if (vehicle.locked)
                 {
                     player.SendNotification("~g~Otworzyłeś pojazd.");
-                    vehicle.handle.Locked = false;
-                    player.OutputMe($"otwiera pojazd {vehicle.handle.DisplayName}.");
+                    vehicle.locked = false;
+                    player.OutputMe($"otwiera pojazd {vehicle.displayName}.");
                 }
                 else
                 {
                     player.SendNotification("~g~Zamknąłeś pojazd.");
-                    vehicle.handle.Locked = true;
-                    player.OutputMe($"zamyka pojazd {vehicle.handle.DisplayName}.");
+                    vehicle.locked = true;
+                    player.OutputMe($"zamyka pojazd {vehicle.displayName}.");
                 }
 
                 return;
@@ -65,13 +65,13 @@ namespace roleplay.Vehicles
                 {
                     player.SendNotification("~g~Uruchomiłeś silnik.");
                     vehicle.engineStatus = true;
-                    player.OutputMe($"odpalił silnik w pojeździe {vehicle.handle.DisplayName}.");
+                    player.OutputMe($"odpalił silnik w pojeździe {vehicle.displayName}.");
                 }
                 else
                 {
                     player.SendNotification("~g~Zgasiłeś silnik.");
                     vehicle.engineStatus = false;
-                    player.OutputMe($"zgasił silnik w pojeździe {vehicle.handle.DisplayName}.");
+                    player.OutputMe($"zgasił silnik w pojeździe {vehicle.displayName}.");
                 }
 
                 return;
@@ -93,8 +93,8 @@ namespace roleplay.Vehicles
                     return;
                 }
 
-                vehicle.vehicleData.spawnPosition = vehicle.handle.Position;
-                vehicle.vehicleData.spawnRotation = vehicle.handle.Rotation;
+                vehicle.vehicleData.spawnPosition = vehicle.position;
+                vehicle.vehicleData.spawnRotation = vehicle.rotation;
 
                 vehicle.Save();
 

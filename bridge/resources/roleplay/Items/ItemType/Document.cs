@@ -1,9 +1,11 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace roleplay.Items.ItemType
 {
     public class Document : Entities.Item
     {
+        [BsonIgnore]
         public DocumentType documentType
         {
             get
@@ -16,6 +18,7 @@ namespace roleplay.Items.ItemType
             }
         }
 
+        [BsonIgnore]
         public ObjectId personID
         {
             get

@@ -6,7 +6,7 @@ namespace roleplay.Entities
 {
     public class Vehicle
     {
-        public GTANetworkAPI.Vehicle handle;
+        private GTANetworkAPI.Vehicle handle;
 
         public VehicleData vehicleData;
 
@@ -21,6 +21,62 @@ namespace roleplay.Entities
                 handle.SetSharedData("engineStatus", value);
             }
         }
+
+        public float health
+        {
+            set => handle.Health = value;
+            get => handle.Health;
+        }
+
+        public Vector3 position
+        {
+            set => handle.Position = value;
+            get => handle.Position;
+        }
+
+        public Vector3 rotation
+        {
+            set => handle.Rotation = value;
+            get => handle.Rotation;
+        }
+
+        public bool locked
+        {
+            set => handle.Locked = value;
+            get => handle.Locked;
+        }
+
+        public int primaryColor
+        {
+            set
+            {
+                vehicleData.primaryColor = value;
+                handle.PrimaryColor = value;
+            }
+            get => handle.PrimaryColor;
+        }
+
+        public int secondaryColor
+        {
+            set
+            {
+                vehicleData.secondaryColor = value;
+                handle.SecondaryColor = value;
+            }
+            get => handle.SecondaryColor;
+        }
+
+        public uint model
+        {
+            set
+            {
+                NAPI.Entity.SetEntityModel(handle, value);
+                vehicleData.model = value;
+            }
+            get => NAPI.Entity.GetEntityModel(handle);
+        }
+
+        public string displayName => handle.DisplayName;
 
         public Vehicle()
         {
@@ -78,6 +134,10 @@ namespace roleplay.Entities
 
             return false;
         }
+
+        public void Repair() => handle.Repair();
+
+        public NetHandle GetNetHandle() => handle;
     }
 
     public class VehicleData

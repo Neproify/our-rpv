@@ -45,7 +45,7 @@ namespace roleplay.Admin
 
             if (args[1] == "nazwa")
             {
-                if(args.Length < 3)
+                if (args.Length < 3)
                 {
                     goto NameUsage;
                 }
@@ -59,14 +59,14 @@ namespace roleplay.Admin
 
             if (args[1] == "typ")
             {
-                if(args.Length != 3)
+                if (args.Length != 3)
                 {
                     goto TypeUsage;
                 }
 
                 ItemType type = Utils.GetItemTypeByName(args[2]);
 
-                if(type == ItemType.Invalid)
+                if (type == ItemType.Invalid)
                 {
                     player.SendNotification("~r~Podałeś nieprawidłowy typ przedmiotu.");
                     return;
@@ -82,7 +82,7 @@ namespace roleplay.Admin
 
             if (args[1] == "wlasciciel" || args[1] == "właściciel")
             {
-                if (args.Length != 4)
+                if (args.Length < 3)
                 {
                     goto OwnerUsage;
                 }
@@ -95,9 +95,17 @@ namespace roleplay.Admin
                     return;
                 }
 
-                if(!ObjectId.TryParse(args[3], out var ownerID))
+                ObjectId ownerID = ObjectId.Empty;
+
+                if (type != OwnerType.None && type != OwnerType.World)
                 {
-                    goto OwnerUsage;
+                    if (args.Length != 4)
+                        goto OwnerUsage;
+
+                    if (!ObjectId.TryParse(args[3], out ownerID))
+                    {
+                        goto OwnerUsage;
+                    }
                 }
 
                 item.ChangeOwner(type, ownerID);
@@ -105,9 +113,9 @@ namespace roleplay.Admin
                 return;
             }
 
-            if(args[1] == "wlasciwosc" || args[1] == "właściwość")
+            if (args[1] == "wlasciwosc" || args[1] == "właściwość")
             {
-                if(args.Length != 4)
+                if (args.Length != 4)
                 {
                     goto PropertyUsage;
                 }
@@ -119,18 +127,18 @@ namespace roleplay.Admin
                 return;
             }
 
-            if(args[1] == "tpto")
+            if (args[1] == "tpto")
             {
-                if(item.objectHandle != null)
+                if (item.objectHandle != null)
                 {
                     player.SetPosition(item.objectHandle.Position);
                 }
                 return;
             }
 
-            if(args[1] == "tphere")
+            if (args[1] == "tphere")
             {
-                if(item.objectHandle != null)
+                if (item.objectHandle != null)
                 {
                     item.position = player.GetPosition();
                     item.objectHandle.Position = item.position;

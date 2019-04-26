@@ -125,5 +125,46 @@ namespace roleplay.Auth
         {
             client.TriggerEvent("ShowCharacterCustomization");
         }
+
+        [RemoteEvent("CreateCharacter")]
+        public void CreateCharacter(Client client, string name, string surname)
+        {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
+            if (!player.IsLoggedIn())
+            {
+                player.SendNotification("~r~Nie możesz stworzyć postaci, nie jesteś zalogowany!");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(surname))
+            {
+                player.SendNotification("~r~Musisz podać imię i nazwisko aby stworzyć postać!");
+                return;
+            }
+
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Character>().Where(x => x.name == name + "_" + surname);
+            if(Database.Instance().GetCharactersCollection().CountDocuments(filter) != 0)
+            {
+                player.SendNotification("~r~Na serwerze jest już postać która się tak nazywa!");
+                return;
+            }
+
+            var character = new Entities.Character
+            {
+                UID = ObjectId.GenerateNewId(),
+                GID = player.globalInfo.UID,
+                name = name + "_" + surname,
+                model = 0x705E61F2,
+                money = 1000,
+                health = 100,
+                jailBuildingID = ObjectId.Empty,
+                jailPosition = new Vector3()
+            };
+
+            Database.Instance().GetCharactersCollection().InsertOne(character);
+
+            SelectCharacter(client, character.UID.ToString());
+        }
     }
 }

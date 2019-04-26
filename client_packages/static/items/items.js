@@ -7,10 +7,10 @@ var vm = new Vue({
     },
     methods: {
         useItem: function (UID) {
-            mp.trigger("UseItem", parseInt(UID));
+            mp.trigger("UseItem", UID);
         },
         dropItem: function(UID) {
-            mp.trigger("DropItem", parseInt(UID));
+            mp.trigger("DropItem", UID);
         }
     }
 });

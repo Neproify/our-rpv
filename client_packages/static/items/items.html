@@ -103,7 +103,6 @@
                     <th>Opcje</th>
                 </tr>
                 <tr v-for="item in items">
-                    <td>{{item.UID}}</td>
                     <td v-on:click="useItem(item.UID)">{{item.name}}</td>
                     <td v-on:click="dropItem(item.UID)">Wyrzuć</td>
                 </tr>

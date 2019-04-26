@@ -27,12 +27,12 @@ namespace roleplay.Managers
 
         public void LinkWithHandle(Entities.Vehicle vehicle)
         {
-            vehiclesDictionary.Add(vehicle.handle, vehicle);
+            vehiclesDictionary.Add(vehicle.GetNetHandle(), vehicle);
         }
 
         public void UnlinkWithHandle(Entities.Vehicle vehicle)
         {
-            vehiclesDictionary.Remove(vehicle.handle);
+            vehiclesDictionary.Remove(vehicle.GetNetHandle());
         }
 
         public Entities.Vehicle CreateFromHandle(Vehicle vehicle)
@@ -55,6 +55,11 @@ namespace roleplay.Managers
         public Entities.Vehicle GetByID(ObjectId UID)
         {
             return vehicles.Find(x => x.vehicleData.UID == UID);
+        }
+
+        public List<Entities.Vehicle> GetAll()
+        {
+            return vehicles;
         }
 
         public void SaveAll()

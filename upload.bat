@@ -1,3 +1,3 @@
 @echo off
-scp roleplay.zip root@51.15.119.59:/home/neproify/ragemp-srv/roleplay.zip
-ssh root@51.15.119.59 '/home/neproify/ragemp-srv/unpack.sh'
+scp roleplay.zip server@51.158.125.63:/home/server/ragemp-srv/roleplay.zip
+ssh server@51.158.125.63 '/home/server/ragemp-srv/unpack.sh'

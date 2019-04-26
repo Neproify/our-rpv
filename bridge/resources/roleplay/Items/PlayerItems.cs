@@ -16,6 +16,12 @@ namespace roleplay.Items
 
             var item = player.GetClosestItem();
 
+            if(item == null)
+            {
+                player.SendItemNotFoundNotification();
+                return;
+            }
+
             item.ChangeOwner(OwnerType.Character, player.character.UID);
             item.Save();
 

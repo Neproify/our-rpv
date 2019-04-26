@@ -1,9 +1,11 @@
-﻿using roleplay.Entities;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using roleplay.Entities;
 
 namespace roleplay.Items.ItemType
 {
     public class Phone : Item
     {
+        [BsonIgnore]
         public int phoneNumber
         {
             get
@@ -15,6 +17,7 @@ namespace roleplay.Items.ItemType
                 properties["phonenumber"] = value;
             }
         }
+
         public override bool Use(Player player)
         {
             if (!base.Use(player))

@@ -45,7 +45,7 @@ namespace roleplay.Admin
 
             if (args[1] == "napraw")
             {
-                vehicle.handle.Repair();
+                vehicle.Repair();
                 vehicle.Save();
                 return;
             }
@@ -58,10 +58,8 @@ namespace roleplay.Admin
                 if (!Int32.TryParse(args[2], out var color1) || !Int32.TryParse(args[3], out var color2))
                     goto ColorUsage;
 
-                vehicle.vehicleData.primaryColor = color1;
-                vehicle.vehicleData.secondaryColor = color2;
-                vehicle.handle.PrimaryColor = color1;
-                vehicle.handle.SecondaryColor = color2;
+                vehicle.primaryColor = color1;
+                vehicle.secondaryColor = color2;
 
                 vehicle.Save();
 
@@ -76,7 +74,7 @@ namespace roleplay.Admin
                 if (!Int32.TryParse(args[2], out var healthValue))
                     goto HealthUsage;
 
-                vehicle.handle.Health = healthValue;
+                vehicle.health = healthValue;
 
                 vehicle.Save();
 
@@ -112,8 +110,8 @@ namespace roleplay.Admin
 
             if (args[1] == "parkuj")
             {
-                vehicle.vehicleData.spawnPosition = vehicle.handle.Position;
-                vehicle.vehicleData.spawnRotation = vehicle.handle.Rotation;
+                vehicle.vehicleData.spawnPosition = vehicle.position;
+                vehicle.vehicleData.spawnRotation = vehicle.rotation;
 
                 vehicle.Save();
 
@@ -139,7 +137,7 @@ namespace roleplay.Admin
                 if (!vehicle.IsSpawned())
                     return;
 
-                player.SetPosition(vehicle.handle.Position);
+                player.SetPosition(vehicle.position);
 
                 return;
             }
@@ -149,7 +147,7 @@ namespace roleplay.Admin
                 if (!vehicle.IsSpawned())
                     return;
 
-                vehicle.handle.Position = player.GetPosition();
+                vehicle.position = player.GetPosition();
 
                 return;
             }
@@ -159,7 +157,7 @@ namespace roleplay.Admin
                 if (!vehicle.IsSpawned())
                     return;
 
-                vehicle.handle.Locked = false;
+                vehicle.locked = false;
                 return;
             }
 
@@ -168,7 +166,7 @@ namespace roleplay.Admin
                 if (!vehicle.IsSpawned())
                     return;
 
-                vehicle.handle.Locked = true;
+                vehicle.locked = true;
                 return;
             }
 
@@ -180,8 +178,7 @@ namespace roleplay.Admin
                 if (!UInt32.TryParse(args[2], out var modelHash))
                     goto ModelUsage;
 
-                vehicle.vehicleData.model = modelHash;
-                NAPI.Entity.SetEntityModel(vehicle.handle, modelHash);
+                vehicle.model = modelHash;
 
                 vehicle.Save();
                 return;

@@ -4,6 +4,7 @@ using GTANetworkAPI;
 using Newtonsoft.Json;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.Linq;
 
 namespace roleplay.Entities
 {
@@ -246,39 +247,17 @@ namespace roleplay.Entities
         public void ReloadItems() => ShowItems();
 
         public Vehicle GetClosestVehicle()
-		{
-			var vehicles = NAPI.Pools.GetAllVehicles();
+        {
+            var vehicles = Managers.VehicleManager.Instance().GetAll();
 
-			GTANetworkAPI.Vehicle returnedVehicle = null;
-			float distance = 99999;
-
-			foreach (var loopVehicle in vehicles)
-			{
-				var tempDistance = handle.Position.DistanceTo(loopVehicle.Position);
-				if (tempDistance < distance)
-				{
-					distance = tempDistance;
-					returnedVehicle = loopVehicle;
-				}
-			}
-
-			if (returnedVehicle == null)
-				return null;
-
-			return Managers.VehicleManager.Instance().GetByHandle(returnedVehicle);
-		}
+            return (from veh in vehicles orderby veh.position.DistanceTo(GetPosition()) ascending select veh).First();
+        }
 
 		public Vehicle GetClosestVehicle(float maxDistance)
 		{
-			var closestVehicle = GetClosestVehicle();
+            var vehicles = Managers.VehicleManager.Instance().GetAll();
 
-			if (closestVehicle == null)
-				return null;
-
-			if (handle.Position.DistanceTo(closestVehicle.handle.Position) >= maxDistance)
-				return null;
-
-			return closestVehicle;
+            return (from veh in vehicles where veh.position.DistanceTo(GetPosition()) <= maxDistance orderby veh.position.DistanceTo(GetPosition()) ascending select veh).First();
 		}
 
         public Building GetClosestBuilding(float maxDistance = 3f) => Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);

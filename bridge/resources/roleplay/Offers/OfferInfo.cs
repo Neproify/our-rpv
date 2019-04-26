@@ -73,7 +73,7 @@ namespace roleplay.Offers
             {
                 Entities.Vehicle vehicle = (Entities.Vehicle)args[0];
 
-                if (sender.GetPosition().DistanceTo(vehicle.handle.Position) > 5)
+                if (sender.GetPosition().DistanceTo(vehicle.position) > 5)
                 {
                     sender.SendNotification("Jesteś za daleko od pojazdu który próbujesz naprawić.");
                     return;
@@ -82,7 +82,7 @@ namespace roleplay.Offers
                 if (!receiver.SendMoneyTo((Entities.Group)args[1], price))
                     return;
 
-                vehicle.handle.Repair();
+                vehicle.Repair();
 
                 sender.SendNotification($"Naprawiłeś pojazd gracza {receiver.formattedName}.");
                 receiver.SendNotification($"Gracz {sender.formattedName} naprawił twój pojazd.");

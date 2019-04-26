@@ -1,11 +1,13 @@
 ﻿using roleplay.Entities;
 using GTANetworkAPI;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace roleplay.Items.ItemType
 {
     public class Weapon : Item
     {
+        [BsonIgnore]
         public uint weaponHash
         {
             get
@@ -18,6 +20,7 @@ namespace roleplay.Items.ItemType
             }
         }
 
+        [BsonIgnore]
         public int ammo
         {
             get
@@ -30,6 +33,7 @@ namespace roleplay.Items.ItemType
             }
         }
 
+        [BsonIgnore]
         public ObjectId flaggedGroupId
         {
             get

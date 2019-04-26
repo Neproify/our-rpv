@@ -3,6 +3,10 @@ function SendCharacterSelectionRequest(UID)
     mp.trigger("SelectCharacter", UID);
 }
 
+function ShowCharacterCreator() {
+    mp.trigger('ShowCharacterCreator');
+}
+
 function LoadCharacters(input)
 {
 	var characters = input;

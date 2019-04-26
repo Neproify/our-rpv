@@ -36,23 +36,16 @@
             left: -10px;
             text-align: center;
             line-height: 50px;
-            overflow: hidden;
-            position: fixed;
         }
 
-        select {
+        input {
             margin-left: 10px;
             width: 280px;
             height: 40px;
             margin-top: 20px;
-            font-size: 30px;
         }
 
-        option {
-            font-size: 20px;
-        }
-
-        button {
+        #button {
             width: 240px;
             height: 40px;
             margin-left: 30px;
@@ -60,32 +53,28 @@
             background-color: orange;
             box-shadow: none;
             border-width: 0px;
-            margin-top: 5px;
+            margin-top: 20px;
         }
 
-        #characters::-webkit-scrollbar {
-            display: none;
-        }
-
-        #characters {
+        #inputs {
             margin-top: 80px;
-            height: 140px;
-            overflow: auto;
         }
     </style>
 
-    <script type="text/javascript" src="characterSelection.js"></script>
+    <script type="text/javascript" src="characterCreation.js"></script>
 </head>
 
 <body>
     <div id="window">
         <h1>
-            Wybieranie postaci
+            Tworzenie postaci
         </h1>
-        <div id="characters">
+        <div id="inputs">
+            <input placeholder="Imię" id="nameInput" />
+            <input placeholder="Nazwisko" id="surnameInput" />
         </div>
-        <button onclick="ShowCharacterCreator();">
-            Dodaj nową postać
+        <button id="button" onclick="CreateCharacter();">
+            Stwórz postać
         </button>
     </div>
 </body>
