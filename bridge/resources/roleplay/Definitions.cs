@@ -80,7 +80,8 @@ namespace roleplay
         Ticket,
         VehicleRepair,
         PersonalDocument,
-        VehicleLicenseDocument
+        VehicleLicenseDocument,
+        VehicleSell
     }
 	public class ItemInfo
 	{

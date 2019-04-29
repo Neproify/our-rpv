@@ -56,7 +56,9 @@ namespace roleplay.Entities
 			}
 		}
 
-		public Building building;
+        public bool isInAnyVehicle => handle.IsInVehicle;
+
+        public Building building;
 		public Items.ItemType.Phone activePhone = null;
 		public Items.ItemType.PhoneCall phoneCall = null;
 
@@ -355,6 +357,8 @@ namespace roleplay.Entities
         }
 
         public NetHandle GetGameID() => handle.Handle;
+
+        public bool IsOwnerOfVehicle(Entities.Vehicle vehicle) => vehicle.vehicleData.ownerType == OwnerType.Character && vehicle.vehicleData.ownerID == character?.UID;
     }
 
 	public class GlobalInfo

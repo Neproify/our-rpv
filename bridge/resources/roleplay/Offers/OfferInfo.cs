@@ -112,6 +112,20 @@ namespace roleplay.Offers
                 receiver.SendNotification($"Gracz {sender.formattedName} wyrobił ci prawo jazdy.");
             }
 
+            if (type == OfferType.VehicleSell)
+            {
+                var vehicle = (Entities.Vehicle)args[0];
+
+                if (!receiver.SendMoneyTo(sender, price))
+                    return;
+
+                vehicle.vehicleData.ownerType = OwnerType.Character;
+                vehicle.vehicleData.ownerID = receiver.character.UID;
+
+                sender.SendNotification($"Sprzedałeś pojazd za ~g~${price} graczu {receiver.formattedName}.");
+                receiver.SendNotification($"Kupiłeś pojazd za ~g~${price} od gracza {sender.formattedName}.");
+            }
+
             sender.offerInfo = null;
             receiver.offerInfo = null;
         }

@@ -202,6 +202,31 @@ namespace roleplay
                 secondPlayer.offerInfo = offerInfo;
             }
 
+            if(args[2] == "pojazd")
+            {
+                if(!player.isInAnyVehicle)
+                {
+                    player.SendNotADriverNotification();
+                    return;
+                }
+
+                var vehicle = player.vehicle;
+
+                if(!player.IsOwnerOfVehicle(vehicle))
+                {
+                    player.SendNotification("~r~Nie znajdujesz się w swoim pojeździe!");
+                    return; 
+                }
+
+                OfferInfo offerInfo = new OfferInfo
+                {
+                    sender = player, receiver = secondPlayer, type = OfferType.VehicleSell, price = price, args = { [0] = vehicle }
+                };
+
+                player.offerInfo = offerInfo;
+                secondPlayer.offerInfo = offerInfo;
+            }
+
 
             if (player.offerInfo != null)
             {
@@ -212,7 +237,7 @@ namespace roleplay
 
             goto Usage;
         Usage:
-            player.SendUsageNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat, napraw, dowód, prawko]");
+            player.SendUsageNotification("Użycie komendy: /o [id gracza] [cena] [ulecz, przedmiot, mandat, napraw, dowód, prawko, pojazd]");
             return;
 
         InfoAndManagement:
