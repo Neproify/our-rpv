@@ -25,7 +25,7 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Group createdGroup = Managers.GroupManager.Instance().CreateGroup();
-                player.SendNotification($"ID stworzonej grupy: {createdGroup.UID}.");
+                player.SendChatMessage($"ID stworzonej grupy: {createdGroup.UID}.");
                 return;
             }
 

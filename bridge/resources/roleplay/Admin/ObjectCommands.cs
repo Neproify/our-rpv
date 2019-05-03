@@ -25,7 +25,7 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Object createdObject = Managers.ObjectManager.Instance().CreateObject();
-                player.SendNotification($"ID stworzonego pojazdu: {createdObject.UID}.");
+                player.SendChatMessage($"ID stworzonego pojazdu: {createdObject.UID}.");
                 return;
             }
 

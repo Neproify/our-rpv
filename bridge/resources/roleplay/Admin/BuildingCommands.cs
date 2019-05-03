@@ -25,7 +25,7 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Building createdBuilding = Managers.BuildingManager.Instance().CreateBuilding();
-                player.SendNotification($"ID stworzonego budynku: {createdBuilding.UID}.");
+                player.SendChatMessage($"ID stworzonego budynku: {createdBuilding.UID}.");
                 return;
             }
 
