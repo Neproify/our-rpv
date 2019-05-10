@@ -382,6 +382,7 @@ namespace roleplay.Entities
         [BsonElement("name")]
 		public string name;
 
+        [BsonRepresentation(BsonType.Int64)]
         [BsonElement("model")]
 		public uint model;
 

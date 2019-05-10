@@ -146,6 +146,7 @@ namespace roleplay.Entities
         [BsonElement("_id")]
         public ObjectId UID;
 
+        [BsonRepresentation(BsonType.Int64)]
         [BsonElement("model")]
         public uint model;
 

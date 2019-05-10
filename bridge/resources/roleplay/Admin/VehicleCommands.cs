@@ -96,7 +96,7 @@ namespace roleplay.Admin
                     return;
                 }
 
-                if (ObjectId.TryParse(args[3], out var ownerID))
+                if (!ObjectId.TryParse(args[3], out var ownerID))
                 {
                     goto OwnerUsage;
                 }

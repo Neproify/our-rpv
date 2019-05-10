@@ -40,7 +40,11 @@ namespace roleplay.Entities
         [BsonIgnore]
         public Marker enterMarker;
         [BsonIgnore]
+        public ColShape enterColShape;
+        [BsonIgnore]
         public Marker exitMarker;
+        [BsonIgnore]
+        public ColShape exitColShape;
 
         public Building()
         {
@@ -48,10 +52,17 @@ namespace roleplay.Entities
 
         public void Spawn()
         {
-            if (enterMarker != null || exitMarker != null)
-                Unspawn();
+            Unspawn();
+
             enterMarker = NAPI.Marker.CreateMarker((uint)MarkerType.UpsideDownCone, enterPosition, new Vector3(), new Vector3(), 1f, new Color(0, 0, 0, 120), true, enterDimension);
+            enterColShape = NAPI.ColShape.CreateCylinderColShape(enterPosition, 2f, 3f, enterDimension);
             exitMarker = NAPI.Marker.CreateMarker((uint)MarkerType.UpsideDownCone, exitPosition, new Vector3(), new Vector3(), 1f, new Color(0, 0, 0, 120), true, exitDimension);
+            exitColShape = NAPI.ColShape.CreateCylinderColShape(exitPosition, 2f, 3f, exitDimension);
+
+            enterColShape.OnEntityEnterColShape += OnEntityEnterColShape;
+            enterColShape.OnEntityExitColShape += OnEntityExitColShape;
+            exitColShape.OnEntityEnterColShape += OnEntityEnterColShape;
+            exitColShape.OnEntityExitColShape += OnEntityExitColShape;
         }
 
         public void Unspawn()
@@ -59,8 +70,14 @@ namespace roleplay.Entities
             if (enterMarker != null)
                 enterMarker.Delete();
 
+            if (enterColShape != null)
+                enterColShape.Delete();
+
             if (exitMarker != null)
                 exitMarker.Delete();
+
+            if (exitColShape != null)
+                exitColShape.Delete();
         }
 
         public void Save()
@@ -81,5 +98,15 @@ namespace roleplay.Entities
                     return false;
             }
         }
+
+        private void OnEntityEnterColShape(ColShape colShape, Client client)
+        {
+            client.SendNotification($"{(isLocked == true ? "~r~" : "~g~")}Drzwi: {name}{(isLocked == false ? ", naciśnij ~b~E ~g~ aby wejść do środka." : "")}");
+        }
+
+        private void OnEntityExitColShape(ColShape colShape, Client client)
+        {
+        }
+
     }
 }

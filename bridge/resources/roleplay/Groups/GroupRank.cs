@@ -15,6 +15,7 @@ namespace roleplay
         [BsonElement("salary")]
         public int salary;
 
+        [BsonRepresentation(BsonType.Int64)]
         [BsonElement("skin")]
         public uint skin;
 
