@@ -10,7 +10,7 @@ namespace roleplay.Items.ItemType
         {
             get
             {
-                return (int)properties["phonenumber"];
+                return int.Parse((string)properties["phonenumber"]);
             }
             set
             {

@@ -359,6 +359,29 @@ namespace roleplay.Entities
         public NetHandle GetGameID() => handle.Handle;
 
         public bool IsOwnerOfVehicle(Entities.Vehicle vehicle) => vehicle.vehicleData.ownerType == OwnerType.Character && vehicle.vehicleData.ownerID == character?.UID;
+
+        public void LoadLook()
+        {
+            if (character == null)
+                return;
+
+            switch(character.gender)
+            {
+                case "male":
+                    SetModel(0x705E61F2);
+                    break;
+                case "female":
+                    SetModel(0x9C9EFFD8);
+                    break;
+                default:
+                    SetModel(0x705E61F2);
+                    break;
+            }
+
+            character.faceFeatures.ForEach(x => handle.SetFaceFeature(x.index, x.value));
+            character.clothOptions.ForEach(x => handle.SetClothes(x.index, x.value, 0));
+            character.propOptions.ForEach(x => handle.SetAccessories(x.index, x.value, 0));
+        }
     }
 
 	public class GlobalInfo
@@ -398,6 +421,17 @@ namespace roleplay.Entities
         [BsonElement("jailposition")]
         public Vector3 jailPosition;
 
+        [BsonElement("gender")]
+        public string gender;
+
+        [BsonElement("facefeatures")]
+        public List<FaceCustomizationPacket> faceFeatures;
+
+        [BsonElement("clothoptions")]
+        public List<ClothCustomizationPacket> clothOptions;
+
+        [BsonElement("propoptions")]
+        public List<PropCustomizationPacket> propOptions;
 
 		public void Save()
 		{

@@ -7,50 +7,130 @@
     <!--<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">-->
 
     <style>
-        @font-face {
-            font-family: 'Lato', sans-serif;
-            src: url('package://static/fonts/Lato-Regular.ttf');
-        }
+    @font-face {
+        font-family: 'Lato', sans-serif;
+        src: url('package://static/fonts/Lato-Regular.ttf');
+    }
 
-        body {
-            background-color: rgba(0, 0, 0, 0);
-            font-family: 'Lato', sans-serif;
-        }
+    body {
+        background-color: rgba(0, 0, 0, 0);
+        font-family: 'Lato', sans-serif;
+    }
 
-        #window {
-            width: 300px;
-            height: 300px;
-            position: fixed;
-            background-color: hsla(0, 100%, 0%, 0.85);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+    #window {
+        width: 300px;
+        height: 300px;
+        position: fixed;
+        background-color: hsla(0, 100%, 0%, 0.85);
+        top: 50%;
+        left: 0%;
+        transform: translate(0%, -50%);
+    }
 
-        h1 {
-            width: 310px;
-            height: 50px;
-            background-color: orange;
+    h1 {
+        width: 310px;
+        height: 50px;
+        background-color: orange;
+        color: white;
+        position: fixed;
+        left: 0px;
+        text-align: center;
+        line-height: 50px;
+        overflow: hidden;
+        position: fixed;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .column {
+        flex: 50%;
+        color: white;
+    }
+
+    #inputs {
+        margin-top: 80px;
+        overflow: auto;
+        flex-wrap: wrap;
+        max-height: 220px;
+    }
+
+    #button {
+            width: 240px;
+            height: 40px;
+            margin-left: 30px;
             color: white;
-            position: fixed;
-            left: 0px;
-            text-align: center;
-            line-height: 50px;
-            overflow: hidden;
-            position: fixed;
+            background-color: orange;
+            box-shadow: none;
+            border-width: 0px;
         }
-    </style>
 
-    <script type="text/javascript" src="charactercustomization.js"></script>
+    </style>
 </head>
 
 <body>
     <div id="window">
         <h1>
-            Tworzenie postaci
+            Modyfikacja postaci
         </h1>
 
+        <div id="inputs">
+            <div class="row">
+                <div class="column">
+                    <div v-if="gender == '0'">
+                        Mężczyzna
+                    </div>
+                    <div v-else>
+                        Kobieta
+                    </div>
+                </div>
+                <div class="column">
+                    <input type="range" min="0" max="1" v-model="gender" v-on:change="updateGender($event)" />
+                </div>
+            </div>
+
+            <div v-for="faceOption in faceOptions" class="row">
+                <div class="column">{{faceOption.name}}</div>
+                <div class="column">
+                    <input type="range" :min="faceOption.min" :max="faceOption.max" step="0.01" v-model="faceOption.value" v-on:input="updateFaceOption(faceOption.index, $event)" />
+                </div>
+            </div>
+
+            <div v-for="clothOption in clothOptions" class="row">
+                <div class="column">{{clothOption.name}}</div>
+                <div class="column">
+                    <div v-if="gender == '0'">
+                        <input type="range" :min="clothOption.maleMin" :max="clothOption.maleMax" step="1" v-model="clothOption.value" v-on:input="updateClothOption(clothOption.index, $event)" />
+                    </div>
+                    <div v-else>
+                        <input type="range" :min="clothOption.femaleMin" :max="clothOption.femaleMax" step="1" v-model="clothOption.value" v-on:input="updateClothOption(clothOption.index, $event)" />
+                    </div>
+                </div>
+            </div>
+
+            <div v-for="propOption in propOptions" class="row">
+                <div class="column">{{propOption.name}}</div>
+                <div class="column">
+                    <div v-if="gender == '0'">
+                        <input type="range" :min="propOption.maleMin" :max="propOption.maleMax" step="1" v-model="propOption.value" v-on:input="updatePropOption(propOption.index, $event)" />
+                    </div>
+                    <div v-else>
+                        <input type="range" :min="propOption.femaleMin" :max="propOption.femaleMax" step="1" v-model="propOption.value" v-on:input="updatePropOption(propOption.index, $event)" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button id="button" v-on:click="saveCustomization();">
+                    Zapisz
+                </button>
+            </div>
+        </div>
     </div>
+
+    <script type="text/javascript" src="package://static/libs/vue.min.js"></script>
+    <script type="text/javascript" src="charactercustomization.js"></script>
 </body>
 
 </html>

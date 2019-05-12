@@ -88,4 +88,22 @@ namespace roleplay
 		public ObjectId UID;
 		public string name;
 	}
+
+    public class FaceCustomizationPacket
+    {
+        public int index;
+        public float value;
+    }
+
+    public class ClothCustomizationPacket
+    {
+        public int index;
+        public int value;
+    }
+
+    public class PropCustomizationPacket
+    {
+        public int index;
+        public int value;
+    }
 }

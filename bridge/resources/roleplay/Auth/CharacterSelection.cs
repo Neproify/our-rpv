@@ -121,11 +121,6 @@ namespace roleplay.Auth
             return;
         }
 
-        public void CustomizationCommand(Client client)
-        {
-            client.TriggerEvent("ShowCharacterCustomization");
-        }
-
         [RemoteEvent("CreateCharacter")]
         public void CreateCharacter(Client client, string name, string surname)
         {

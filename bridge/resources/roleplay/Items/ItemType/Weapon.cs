@@ -12,7 +12,7 @@ namespace roleplay.Items.ItemType
         {
             get
             {
-                return (uint)properties["weaponhash"];
+                return uint.Parse((string)properties["weaponhash"]);
             }
             set
             {
@@ -38,6 +38,9 @@ namespace roleplay.Items.ItemType
         {
             get
             {
+                if (!properties.ContainsKey("flaggedgroupid"))
+                    return ObjectId.Empty;
+
                 return ObjectId.Parse((string)properties["flaggedgroupid"]);
             }
             set
