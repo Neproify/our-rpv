@@ -211,13 +211,16 @@ namespace roleplay_client.CharacterCustomization
 
             var currentFaceOptions = JsonConvert.DeserializeObject<List<FaceCustomizationPacket>>((string)args[0]);
 
-            foreach(var faceOption in faceOptionInfos)
+            if (currentFaceOptions != null)
             {
-                var currentFaceOption = currentFaceOptions.Find(x => x.index == faceOption.index);
-
-                if(currentFaceOption != null)
+                foreach (var faceOption in faceOptionInfos)
                 {
-                    faceOption.value = currentFaceOption.value;
+                    var currentFaceOption = currentFaceOptions.Find(x => x.index == faceOption.index);
+
+                    if (currentFaceOption != null)
+                    {
+                        faceOption.value = currentFaceOption.value;
+                    }
                 }
             }
 
@@ -238,13 +241,16 @@ namespace roleplay_client.CharacterCustomization
 
             var currentClothOptions = JsonConvert.DeserializeObject<List<ClothCustomizationPacket>>((string)args[1]);
 
-            foreach (var clothOption in clothOptionInfos)
+            if (currentClothOptions != null)
             {
-                var currentClothOption = currentClothOptions.Find(x => x.index == clothOption.index);
-
-                if (currentClothOption != null)
+                foreach (var clothOption in clothOptionInfos)
                 {
-                    clothOption.value = currentClothOption.value;
+                    var currentClothOption = currentClothOptions.Find(x => x.index == clothOption.index);
+
+                    if (currentClothOption != null)
+                    {
+                        clothOption.value = currentClothOption.value;
+                    }
                 }
             }
 
@@ -261,13 +267,16 @@ namespace roleplay_client.CharacterCustomization
 
             var currentPropOptions = JsonConvert.DeserializeObject<List<PropCustomizationPacket>>((string)args[2]);
 
-            foreach (var propOption in propOptionInfos)
+            if (currentPropOptions != null)
             {
-                var currentPropOption = currentPropOptions.Find(x => x.index == propOption.index);
-
-                if (currentPropOption != null)
+                foreach (var propOption in propOptionInfos)
                 {
-                    propOption.value = currentPropOption.value;
+                    var currentPropOption = currentPropOptions.Find(x => x.index == propOption.index);
+
+                    if (currentPropOption != null)
+                    {
+                        propOption.value = currentPropOption.value;
+                    }
                 }
             }
 

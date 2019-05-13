@@ -8,12 +8,12 @@ namespace roleplay_client
         public NameTags()
         {
             Events.Tick += Tick;
-            Nametags.Enabled = false;
+            //Nametags.Enabled = true;
         }
 
         private void Tick(List<Events.TickNametagData> nametags)
         {
-            if (nametags == null)
+            /*if (nametags == null)
                 return;
 
             float maxDistance = 25f;
@@ -32,7 +32,7 @@ namespace roleplay_client
                 RAGE.Game.Graphics.GetScreenCoordFromWorldCoord(nametag.Player.Position.X, nametag.Player.Position.Y, nametag.Player.Position.Z, ref positionX, ref positionZ);
 
                 RAGE.Game.UIText.Draw(output, new System.Drawing.Point((int)positionX, (int)positionZ), scale, System.Drawing.Color.White, RAGE.Game.Font.ChaletLondon, true);
-            }
+            }*/
         }
     }
 }

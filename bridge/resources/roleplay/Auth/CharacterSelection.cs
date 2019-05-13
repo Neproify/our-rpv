@@ -117,6 +117,7 @@ namespace roleplay.Auth
 
             NAPI.Player.SpawnPlayer(client, spawnPosition, 180);
             player.SetDimension(spawnDimension);
+            player.LoadLook();
             player.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
             return;
         }

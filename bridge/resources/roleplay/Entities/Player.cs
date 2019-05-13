@@ -217,9 +217,9 @@ namespace roleplay.Entities
 
         public List<Items.ItemType.Weapon> GetWeapons()
         {
-            var weapons = GetItems().FindAll(x => x.type == ItemType.Weapon);
+            var weapons = GetItems()?.FindAll(x => x.type == ItemType.Weapon);
 
-            return weapons.ConvertAll(new Converter<Item, Items.ItemType.Weapon>(x => x as Items.ItemType.Weapon));
+            return weapons?.ConvertAll(new Converter<Item, Items.ItemType.Weapon>(x => x as Items.ItemType.Weapon));
         }
 
         public bool CanUseItem(Item item) => item?.ownerType == OwnerType.Character && item?.ownerID == character.UID;
@@ -260,7 +260,7 @@ namespace roleplay.Entities
 		{
             var vehicles = Managers.VehicleManager.Instance().GetAll();
 
-            return (from veh in vehicles where veh.position.DistanceTo(GetPosition()) <= maxDistance orderby veh.position.DistanceTo(GetPosition()) ascending select veh).First();
+            return (from veh in vehicles where veh.position.DistanceTo(GetPosition()) <= maxDistance orderby veh.position.DistanceTo(GetPosition()) ascending select veh).FirstOrDefault();
 		}
 
         public Building GetClosestBuilding(float maxDistance = 3f) => Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);
