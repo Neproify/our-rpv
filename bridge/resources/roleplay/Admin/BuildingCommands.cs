@@ -50,7 +50,7 @@ namespace roleplay.Admin
                     goto NameUsage;
                 }
 
-                string name = string.Join(" ", args, 2, args.Length);
+                string name = string.Join(" ", args, 2, args.Length - 2);
 
                 building.name = name;
 

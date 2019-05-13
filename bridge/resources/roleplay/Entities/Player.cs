@@ -379,9 +379,9 @@ namespace roleplay.Entities
                     break;
             }
 
-            character.faceFeatures.ForEach(x => handle.SetFaceFeature(x.index, x.value));
-            character.clothOptions.ForEach(x => handle.SetClothes(x.index, x.value, 0));
-            character.propOptions.ForEach(x => handle.SetAccessories(x.index, x.value, 0));
+            character.faceFeatures?.ForEach(x => handle.SetFaceFeature(x.index, x.value));
+            character.clothOptions?.ForEach(x => handle.SetClothes(x.index, x.value, 0));
+            character.propOptions?.ForEach(x => handle.SetAccessories(x.index, x.value, 0));
         }
     }
 
