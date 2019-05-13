@@ -25,6 +25,9 @@ namespace roleplay.Entities
         [BsonElement("exitposition")]
         public Vector3 exitPosition;
 
+        [BsonElement("canbeaccessedbyvehicle")]
+        public bool canBeEnteredByVehicle => false;
+
         [BsonIgnore]
         public bool isLocked = false;
 

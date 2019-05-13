@@ -57,6 +57,7 @@ namespace roleplay.Entities
 		}
 
         public bool isInAnyVehicle => handle.IsInVehicle;
+        public bool isDriver => handle.VehicleSeat == (int)VehicleSeat.Driver;
 
         public Building building;
 		public Items.ItemType.Phone activePhone = null;

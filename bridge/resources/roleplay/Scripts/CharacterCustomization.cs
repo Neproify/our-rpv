@@ -11,8 +11,12 @@ namespace roleplay.Scripts
         [Command("customization")]
         public void CustomizationCommand(Client client)
         {
+            var player = Managers.PlayerManager.Instance().GetByHandle(client);
+
 #warning DELETE THIS AFTER WORK
-            client.TriggerEvent("ShowCharacterCustomization");
+            player.TriggerEvent("ShowCharacterCustomization", JsonConvert.SerializeObject(player.character.faceFeatures), 
+                JsonConvert.SerializeObject(player.character.clothOptions), 
+                JsonConvert.SerializeObject(player.character.propOptions));
         }
 
         [RemoteEvent("SaveCustomization")]

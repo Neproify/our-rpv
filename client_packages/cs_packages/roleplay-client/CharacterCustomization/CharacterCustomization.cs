@@ -110,7 +110,6 @@ namespace roleplay_client.CharacterCustomization
     public class CharacterCustomization : Events.Script
     {
         private HtmlWindow window;
-        public RAGE.Elements.Ped ped;
 
         public CharacterCustomization()
         {
@@ -124,22 +123,22 @@ namespace roleplay_client.CharacterCustomization
 
         private void UpdateGender(object[] args)
         {
-            ped.Model = (string)args[0] == "male" ? 0x705E61F2 : 0x9C9EFFD8;
+            RAGE.Elements.Player.LocalPlayer.Model = (string)args[0] == "male" ? 0x705E61F2 : 0x9C9EFFD8;
         }
 
         private void UpdateFaceOption(object[] args)
         {
-            ped.SetFaceFeature((int)args[0], (float)args[1]);
+            RAGE.Elements.Player.LocalPlayer.SetFaceFeature((int)args[0], (float)args[1]);
         }
 
         private void UpdateClothOption(object[] args)
         {
-            ped.SetComponentVariation((int)args[0], (int)args[1], 0, 2);
+            RAGE.Elements.Player.LocalPlayer.SetComponentVariation((int)args[0], (int)args[1], 0, 2);
         }
 
         private void UpdatePropOption(object[] args)
         {
-            ped.SetPropIndex((int)args[0], (int)args[1], 0, true);
+            RAGE.Elements.Player.LocalPlayer.SetPropIndex((int)args[0], (int)args[1], 0, true);
         }
 
         private void SaveCustomization(object[] args)
@@ -178,9 +177,8 @@ namespace roleplay_client.CharacterCustomization
                 JsonConvert.SerializeObject(clothOptionsPacket), 
                 JsonConvert.SerializeObject(propOptionsPacket));
 
-            ped.Destroy();
-            ped = null;
             RAGE.Elements.Player.LocalPlayer.ClearTasksImmediately();
+            Events.Tick -= Tick;
         }
 
         private void ShowCharacterCustomization(object[] args)
@@ -211,6 +209,18 @@ namespace roleplay_client.CharacterCustomization
             faceOptionInfos.Add(new FaceOptionInfo(18, "Kształt podbródka", -1, 1));
             faceOptionInfos.Add(new FaceOptionInfo(19, "Szerokość szyi", -1, 1));
 
+            var currentFaceOptions = JsonConvert.DeserializeObject<List<FaceCustomizationPacket>>((string)args[0]);
+
+            foreach(var faceOption in faceOptionInfos)
+            {
+                var currentFaceOption = currentFaceOptions.Find(x => x.index == faceOption.index);
+
+                if(currentFaceOption != null)
+                {
+                    faceOption.value = currentFaceOption.value;
+                }
+            }
+
             string faceOptions = JsonConvert.SerializeObject(faceOptionInfos);
 
             window.ExecuteJs($"vm.faceOptions = {faceOptions};");
@@ -226,6 +236,18 @@ namespace roleplay_client.CharacterCustomization
             //clothOptionInfos.Add(new ClothOptionInfo(11, "Góra", 0, 289, 0, 302));
             clothOptionInfos.Add(new ClothOptionInfo(11, "Góra", 0, 255, 0, 255));
 
+            var currentClothOptions = JsonConvert.DeserializeObject<List<ClothCustomizationPacket>>((string)args[1]);
+
+            foreach (var clothOption in clothOptionInfos)
+            {
+                var currentClothOption = currentClothOptions.Find(x => x.index == clothOption.index);
+
+                if (currentClothOption != null)
+                {
+                    clothOption.value = currentClothOption.value;
+                }
+            }
+
             string clothOptions = JsonConvert.SerializeObject(clothOptionInfos);
 
             window.ExecuteJs($"vm.clothOptions = {clothOptions}");
@@ -237,18 +259,29 @@ namespace roleplay_client.CharacterCustomization
             propOptionInfos.Add(new PropOptionInfo(6, "Zegarek", 0, 29, 0, 18));
             propOptionInfos.Add(new PropOptionInfo(7, "Nadgarstek", 0, 7, 0, 14));
 
+            var currentPropOptions = JsonConvert.DeserializeObject<List<PropCustomizationPacket>>((string)args[2]);
+
+            foreach (var propOption in propOptionInfos)
+            {
+                var currentPropOption = currentPropOptions.Find(x => x.index == propOption.index);
+
+                if (currentPropOption != null)
+                {
+                    propOption.value = currentPropOption.value;
+                }
+            }
+
             string propOptions = JsonConvert.SerializeObject(propOptionInfos);
 
             window.ExecuteJs($"vm.propOptions = {propOptions};");
 
             Cursor.Visible = true;
+            Events.Tick += Tick;
+        }
 
-            var position = RAGE.Elements.Player.LocalPlayer.Position;
-            position.X += 5;
-
-            ped = new RAGE.Elements.Ped(0x705E61F2, position);
-            ped.FreezePosition(true);
-            RAGE.Elements.Player.LocalPlayer.TaskLookAtEntity(ped.Handle, 9999, 0, 0);
+        private void Tick(List<Events.TickNametagData> nametags)
+        {
+            RAGE.Elements.Player.LocalPlayer.SetHeading(RAGE.Elements.Player.LocalPlayer.GetHeading() + 0.5f);
         }
     }
 }

@@ -47,6 +47,15 @@ namespace roleplay.Buildings
                     }
                 }
 
+                if (player.isInAnyVehicle)
+                {
+                    if (building.canBeEnteredByVehicle == false || !player.isDriver)
+                    {
+                        player.SendNotification("~r~Nie możesz wjechać do tego budynku pojazdem.");
+                        return;
+                    }
+                }
+
                 player.SetPosition(building.exitPosition);
                 player.SetDimension(building.exitDimension);
                 player.building = building;
