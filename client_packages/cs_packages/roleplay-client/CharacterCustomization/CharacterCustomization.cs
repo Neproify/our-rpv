@@ -138,6 +138,12 @@ namespace roleplay_client.CharacterCustomization
 
         private void UpdatePropOption(object[] args)
         {
+            if((int)args[1] == -1)
+            {
+                RAGE.Elements.Player.LocalPlayer.ClearProp((int)args[0]);
+                return;
+            }
+
             RAGE.Elements.Player.LocalPlayer.SetPropIndex((int)args[0], (int)args[1], 0, true);
         }
 
@@ -259,11 +265,11 @@ namespace roleplay_client.CharacterCustomization
             window.ExecuteJs($"vm.clothOptions = {clothOptions}");
 
             List<PropOptionInfo> propOptionInfos = new List<PropOptionInfo>();
-            propOptionInfos.Add(new PropOptionInfo(0, "Czapka", 0, 134, 0, 133));
-            propOptionInfos.Add(new PropOptionInfo(1, "Okulary", 0, 27, 0, 29));
-            propOptionInfos.Add(new PropOptionInfo(2, "Uszy", 0, 36, 0, 17));
-            propOptionInfos.Add(new PropOptionInfo(6, "Zegarek", 0, 29, 0, 18));
-            propOptionInfos.Add(new PropOptionInfo(7, "Nadgarstek", 0, 7, 0, 14));
+            propOptionInfos.Add(new PropOptionInfo(0, "Czapka", -1, 134, -1, 133));
+            propOptionInfos.Add(new PropOptionInfo(1, "Okulary", -1, 27, -1, 29));
+            propOptionInfos.Add(new PropOptionInfo(2, "Uszy", -1, 36, -1, 17));
+            propOptionInfos.Add(new PropOptionInfo(6, "Zegarek", -1, 29, -1, 18));
+            propOptionInfos.Add(new PropOptionInfo(7, "Nadgarstek", -1, 7, -1, 14));
 
             var currentPropOptions = JsonConvert.DeserializeObject<List<PropCustomizationPacket>>((string)args[2]);
 

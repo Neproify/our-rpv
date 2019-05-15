@@ -18,8 +18,8 @@
     }
 
     #window {
-        width: 300px;
-        height: 300px;
+        width: 350px;
+        height: 500px;
         position: fixed;
         background-color: hsla(0, 100%, 0%, 0.85);
         top: 50%;
@@ -28,7 +28,7 @@
     }
 
     h1 {
-        width: 310px;
+        width: 360px;
         height: 50px;
         background-color: orange;
         color: white;
@@ -53,18 +53,19 @@
         margin-top: 80px;
         overflow: auto;
         flex-wrap: wrap;
-        max-height: 220px;
+        max-height: 420px;
+        margin-left: 10px;
     }
 
     #button {
-            width: 240px;
-            height: 40px;
-            margin-left: 30px;
-            color: white;
-            background-color: orange;
-            box-shadow: none;
-            border-width: 0px;
-        }
+        width: 290px;
+        height: 40px;
+        margin-left: 30px;
+        color: white;
+        background-color: orange;
+        box-shadow: none;
+        border-width: 0px;
+    }
 
     </style>
 </head>
@@ -91,14 +92,14 @@
             </div>
 
             <div v-for="faceOption in faceOptions" class="row">
-                <div class="column">{{faceOption.name}}</div>
+                <div class="column">{{faceOption.name}}({{faceOption.value}})</div>
                 <div class="column">
                     <input type="range" :min="faceOption.min" :max="faceOption.max" step="0.01" v-model="faceOption.value" v-on:input="updateFaceOption(faceOption.index, $event)" />
                 </div>
             </div>
 
             <div v-for="clothOption in clothOptions" class="row">
-                <div class="column">{{clothOption.name}}</div>
+                <div class="column">{{clothOption.name}}({{clothOption.value}})</div>
                 <div class="column">
                     <div v-if="gender == '0'">
                         <input type="range" :min="clothOption.maleMin" :max="clothOption.maleMax" step="1" v-model="clothOption.value" v-on:input="updateClothOption(clothOption.index, $event)" />
@@ -110,7 +111,7 @@
             </div>
 
             <div v-for="propOption in propOptions" class="row">
-                <div class="column">{{propOption.name}}</div>
+                <div class="column">{{propOption.name}}({{propOption.value}})</div>
                 <div class="column">
                     <div v-if="gender == '0'">
                         <input type="range" :min="propOption.maleMin" :max="propOption.maleMax" step="1" v-model="propOption.value" v-on:input="updatePropOption(propOption.index, $event)" />
