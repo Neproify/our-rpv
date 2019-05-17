@@ -25,14 +25,17 @@ namespace roleplay.Admin
             if (args[0] == "stworz" || args[0] == "stwórz")
             {
                 Entities.Object createdObject = Managers.ObjectManager.Instance().CreateObject();
-                player.SendChatMessage($"ID stworzonego pojazdu: {createdObject.UID}.");
+                player.SendChatMessage($"ID stworzonego obiektu: {createdObject.UID}.");
+                player.selectedEntities.selectedObject = createdObject;
                 return;
             }
 
             if (args.Length < 2)
                 goto Usage;
 
-            if (!ObjectId.TryParse(args[0], out var objectID))
+            var objectID = AdminHelpers.GetObjectId(args[0], EntityType.Object, player);
+
+            if (objectID == ObjectId.Empty)
                 goto Usage;
 
             Entities.Object @object = Managers.ObjectManager.Instance().GetByID(objectID);
@@ -58,10 +61,7 @@ namespace roleplay.Admin
                     return;
                 }
 
-                if (!ObjectId.TryParse(args[3], out var ownerID))
-                {
-                    goto OwnerUsage;
-                }
+                var ownerID = AdminHelpers.GetObjectId(args[3], Utils.GetEntityTypeFromOwnerType(type), player);
 
                 @object.ownerType = type;
 

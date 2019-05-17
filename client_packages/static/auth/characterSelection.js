@@ -16,6 +16,6 @@ function LoadCharacters(input)
 	    button.setAttribute("onclick", "SendCharacterSelectionRequest('"+characters[key]['UID']+"');");
 	    var name = document.createTextNode(characters[key]['name']);
 		button.appendChild(name);
-        document.getElementById("characters").appendChild(button);
+        document.getElementById("content").appendChild(button);
 	}
 }

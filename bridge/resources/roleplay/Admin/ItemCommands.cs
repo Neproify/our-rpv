@@ -26,13 +26,16 @@ namespace roleplay.Admin
             {
                 Entities.Item createdItem = Managers.ItemManager.Instance().CreateItem();
                 player.SendChatMessage($"ID stworzonego przedmiotu: {createdItem.UID}.");
+                player.selectedEntities.selectedItem = createdItem;
                 return;
             }
 
             if (args.Length < 2)
                 goto Usage;
 
-            if (!ObjectId.TryParse(args[0], out var itemID))
+            var itemID = AdminHelpers.GetObjectId(args[0], EntityType.Item, player);
+
+            if (itemID == ObjectId.Empty)
                 goto Usage;
 
             Entities.Item item = Managers.ItemManager.Instance().GetByID(itemID);
@@ -102,10 +105,7 @@ namespace roleplay.Admin
                     if (args.Length != 4)
                         goto OwnerUsage;
 
-                    if (!ObjectId.TryParse(args[3], out ownerID))
-                    {
-                        goto OwnerUsage;
-                    }
+                    ownerID = AdminHelpers.GetObjectId(args[3], Utils.GetEntityTypeFromOwnerType(type), player);
                 }
 
                 item.ChangeOwner(type, ownerID);

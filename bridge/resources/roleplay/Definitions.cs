@@ -12,6 +12,17 @@ namespace roleplay
         Group
     }
 
+    public enum EntityType
+    {
+        None,
+        Character,
+        Vehicle,
+        Building,
+        Group,
+        Item,
+        Object
+    }
+
     public enum ItemType
     {
         Invalid = -1,

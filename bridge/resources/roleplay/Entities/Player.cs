@@ -24,6 +24,10 @@ namespace roleplay.Entities
 		public Offers.OfferInfo offerInfo;
 		public List<Penalties.Penalty> penalties = new List<Penalties.Penalty>();
 
+        //Admin only
+
+        public Admin.SelectedEntities selectedEntities = new Admin.SelectedEntities();
+
         public Player(Client handle)
         {
             this.handle = handle;
@@ -253,7 +257,7 @@ namespace roleplay.Entities
         {
             var vehicles = Managers.VehicleManager.Instance().GetAll();
 
-            return (from veh in vehicles orderby veh.position.DistanceTo(GetPosition()) ascending select veh).First();
+            return (from veh in vehicles orderby veh.position.DistanceTo(GetPosition()) ascending select veh).FirstOrDefault();
         }
 
 		public Vehicle GetClosestVehicle(float maxDistance)
@@ -265,7 +269,21 @@ namespace roleplay.Entities
 
         public Building GetClosestBuilding(float maxDistance = 3f) => Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);
 
+        public Player GetClosestPlayer(float maxDistance = 10f)
+        {
+            var players = Managers.PlayerManager.Instance().GetAll();
+
+            return (from player in players where player.IsReady() && player.GetPosition().DistanceTo(GetPosition()) <= maxDistance orderby player.GetPosition().DistanceTo(GetPosition()) ascending select player).FirstOrDefault();
+        }
+
         public Item GetClosestItem(float maxDistance = 5f) => Managers.ItemManager.Instance().GetClosestItem(handle.Position, maxDistance);
+
+        public Object GetClosestObject(float maxDistance = 10f)
+        {
+            var objects = Managers.ObjectManager.Instance().GetAll();
+
+            return (from @object in objects where @object.position.DistanceTo(GetPosition()) <= maxDistance orderby @object.position.DistanceTo(GetPosition()) ascending select @object).FirstOrDefault();
+        }
 
         public List<Group> GetGroups() => Managers.GroupManager.Instance().GetPlayerGroups(this);
 

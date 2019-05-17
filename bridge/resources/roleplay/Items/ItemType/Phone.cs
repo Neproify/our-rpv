@@ -10,6 +10,12 @@ namespace roleplay.Items.ItemType
         {
             get
             {
+                if (!properties.ContainsKey("phonenumber"))
+                    return 0;
+
+                if (properties["phonenumber"] is int)
+                    return (int)properties["phonenumber"];
+
                 return int.Parse((string)properties["phonenumber"]);
             }
             set

@@ -40,6 +40,11 @@ namespace roleplay.Managers
             itemsOfOwner[item.ownerType][item.ownerID].Add(item);
         }
 
+        public List<Entities.Item> GetAll()
+        {
+            return items;
+        }
+
         public Entities.Item GetByID(ObjectId UID)
         {
             return items.Find(x => x.UID == UID);

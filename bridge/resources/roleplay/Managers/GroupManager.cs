@@ -28,6 +28,11 @@ namespace roleplay.Managers
             return groups.Find(x => x.UID == ID);
         }
 
+        public List<Entities.Group> GetAll()
+        {
+            return groups;
+        }
+
         public List<Entities.Group> GetPlayerGroups(Entities.Player player)
         {
             return groups.FindAll(x => x.members.Find(y => y.charID == player.character.UID) != null);

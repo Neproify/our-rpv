@@ -26,13 +26,16 @@ namespace roleplay.Admin
             {
                 Entities.Building createdBuilding = Managers.BuildingManager.Instance().CreateBuilding();
                 player.SendChatMessage($"ID stworzonego budynku: {createdBuilding.UID}.");
+                player.selectedEntities.selectedBuilding = createdBuilding;
                 return;
             }
 
             if (args.Length < 2)
                 goto Usage;
 
-            if (!ObjectId.TryParse(args[0], out var buildingID))
+            var buildingID = AdminHelpers.GetObjectId(args[0], EntityType.Building, player);
+
+            if (buildingID == ObjectId.Empty)
                 goto Usage;
 
             Entities.Building building = Managers.BuildingManager.Instance().GetByID(buildingID);
@@ -114,10 +117,7 @@ namespace roleplay.Admin
                     return;
                 }
 
-                if (!ObjectId.TryParse(args[3], out var ownerID))
-                {
-                    goto OwnerUsage;
-                }
+                var ownerID = AdminHelpers.GetObjectId(args[3], Utils.GetEntityTypeFromOwnerType(type), player);
 
                 building.ownerType = type;
                 building.ownerID = ownerID;

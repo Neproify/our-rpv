@@ -24,6 +24,11 @@ namespace roleplay.Managers
             objects.Remove(@object);
         }
 
+        public List<Entities.Object> GetAll()
+        {
+            return objects;
+        }
+
         public Entities.Object GetByID(ObjectId ID)
         {
             return objects.Find(x => x.UID == ID);

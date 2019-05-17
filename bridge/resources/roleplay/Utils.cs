@@ -168,5 +168,77 @@ namespace roleplay
 
             return string.Join(",", types);
         }
+
+        public static EntityType GetEntityTypeByName(string name)
+        {
+            if (name == "gracz" || name == "postac" || name == "postać")
+                return EntityType.Character;
+
+            if (name == "pojazd")
+                return EntityType.Vehicle;
+
+            if (name == "budynek")
+                return EntityType.Building;
+
+            if (name == "grupa")
+                return EntityType.Group;
+
+            if (name == "przedmiot")
+                return EntityType.Item;
+
+            if (name == "obiekt")
+                return EntityType.Object;
+
+            return EntityType.None;
+        }
+
+        public static string GetNameFromEntityType(EntityType type)
+        {
+            switch (type)
+            {
+                case EntityType.None:
+                    return "Brak";
+                case EntityType.Character:
+                    return "Postać";
+                case EntityType.Vehicle:
+                    return "Pojazd";
+                case EntityType.Building:
+                    return "Budynek";
+                case EntityType.Group:
+                    return "Grupa";
+                case EntityType.Item:
+                    return "Przedmiot";
+                case EntityType.Object:
+                    return "Obiekt";
+                default:
+                    return "Brak";
+            }
+        }
+
+        public static EntityType GetEntityTypeFromOwnerType(OwnerType type)
+        {
+            switch(type)
+            {
+                case OwnerType.Character:
+                    return EntityType.Character;
+                case OwnerType.Building:
+                    return EntityType.Building;
+                case OwnerType.Group:
+                    return EntityType.Group;
+                default:
+                    return EntityType.None;
+            }
+        }
+
+        public static string GetEntityTypes()
+        {
+            string[] types = new string[sizeof(EntityType)];
+            for (int i = 0; i < sizeof(EntityType); i++)
+            {
+                types[i] = GetNameFromEntityType((EntityType)i);
+            }
+
+            return string.Join(",", types);
+        }
     }
 }

@@ -10,7 +10,13 @@ namespace roleplay.Items.ItemType
         {
             get
             {
-                return (DocumentType)properties["documenttype"];
+                if (!properties.ContainsKey("documenttype"))
+                    return DocumentType.None;
+
+                if (properties["documenttype"] is int)
+                    return (DocumentType)properties["documenttype"];
+
+                return DocumentType.None;
             }
             set
             {
@@ -23,7 +29,13 @@ namespace roleplay.Items.ItemType
         {
             get
             {
-                return (ObjectId)properties["personid"];
+                if (!properties.ContainsKey("personid"))
+                    return ObjectId.Empty;
+
+                if (properties["personid"] is ObjectId)
+                    return (ObjectId)properties["personid"];
+
+                return ObjectId.Parse((string)properties["personid"]);
             }
             set
             {

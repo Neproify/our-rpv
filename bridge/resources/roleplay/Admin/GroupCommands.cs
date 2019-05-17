@@ -26,13 +26,16 @@ namespace roleplay.Admin
             {
                 Entities.Group createdGroup = Managers.GroupManager.Instance().CreateGroup();
                 player.SendChatMessage($"ID stworzonej grupy: {createdGroup.UID}.");
+                player.selectedEntities.selectedGroup = createdGroup;
                 return;
             }
 
             if (args.Length < 2)
                 goto Usage;
 
-            if (!ObjectId.TryParse(args[0], out var groupID))
+            var groupID = AdminHelpers.GetObjectId(args[0], EntityType.Group, player);
+
+            if (groupID == ObjectId.Empty)
                 goto Usage;
 
             Entities.Group group = Managers.GroupManager.Instance().GetByID(groupID);

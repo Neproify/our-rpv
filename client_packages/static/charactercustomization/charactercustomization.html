@@ -5,78 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">-->
-
-    <style>
-    @font-face {
-        font-family: 'Lato', sans-serif;
-        src: url('package://static/fonts/Lato-Regular.ttf');
-    }
-
-    body {
-        background-color: rgba(0, 0, 0, 0);
-        font-family: 'Lato', sans-serif;
-    }
-
-    #window {
-        width: 350px;
-        height: 500px;
-        position: fixed;
-        background-color: hsla(0, 100%, 0%, 0.85);
-        top: 50%;
-        left: 0%;
-        transform: translate(0%, -50%);
-    }
-
-    h1 {
-        width: 360px;
-        height: 50px;
-        background-color: orange;
-        color: white;
-        position: fixed;
-        left: 0px;
-        text-align: center;
-        line-height: 50px;
-        overflow: hidden;
-        position: fixed;
-    }
-
-    .row {
-        display: flex;
-    }
-
-    .column {
-        flex: 50%;
-        color: white;
-    }
-
-    #inputs {
-        margin-top: 80px;
-        overflow: auto;
-        flex-wrap: wrap;
-        max-height: 420px;
-        margin-left: 10px;
-    }
-
-    #button {
-        width: 290px;
-        height: 40px;
-        margin-left: 30px;
-        color: white;
-        background-color: orange;
-        box-shadow: none;
-        border-width: 0px;
-    }
-
-    </style>
+    <link rel="stylesheet" href="package://static/styles/style.css">
 </head>
 
 <body>
-    <div id="window">
-        <h1>
+    <div id="window" class="w-350 h-500">
+        <h1 class="right">
             Modyfikacja postaci
         </h1>
 
-        <div id="inputs">
+        <div id="content">
             <div class="row">
                 <div class="column">
                     <div v-if="gender == '0'">

@@ -26,13 +26,16 @@ namespace roleplay.Admin
             {
                 Entities.Vehicle createdVehicle = Managers.VehicleManager.Instance().CreateVehicle();
                 player.SendChatMessage($"ID stworzonego pojazdu: {createdVehicle.vehicleData.UID}.");
+                player.selectedEntities.selectedVehicle = createdVehicle;
                 return;
             }
 
             if (args.Length < 2)
                 goto Usage;
 
-            if (!ObjectId.TryParse(args[0], out var vehicleID))
+            var vehicleID = AdminHelpers.GetObjectId(args[0], EntityType.Vehicle, player);
+
+            if (vehicleID == ObjectId.Empty)
                 goto Usage;
 
             Entities.Vehicle vehicle = Managers.VehicleManager.Instance().GetByID(vehicleID);
@@ -96,10 +99,7 @@ namespace roleplay.Admin
                     return;
                 }
 
-                if (!ObjectId.TryParse(args[3], out var ownerID))
-                {
-                    goto OwnerUsage;
-                }
+                var ownerID = AdminHelpers.GetObjectId(args[3], Utils.GetEntityTypeFromOwnerType(type), player);
 
                 vehicle.vehicleData.ownerType = type;
                 vehicle.vehicleData.ownerID = ownerID;

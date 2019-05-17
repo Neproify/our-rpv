@@ -1,5 +1,5 @@
 ﻿var vm = new Vue({
-    el: "#inputs",
+    el: "#content",
     data: {
         gender: 0,
         faceOptions: null,

@@ -12,7 +12,10 @@ namespace roleplay.Items.ItemType
         {
             get
             {
-                return uint.Parse((string)properties["weaponhash"]);
+                if (!properties.ContainsKey("weaponhash"))
+                    return 0;
+
+                return uint.Parse(properties["weaponhash"].ToString());
             }
             set
             {
@@ -25,7 +28,15 @@ namespace roleplay.Items.ItemType
         {
             get
             {
-                return (int)properties["ammo"];
+                if (!properties.ContainsKey("ammo"))
+                    return 0;
+
+                if(properties["ammo"] is int)
+                {
+                    return (int)properties["ammo"];
+                }
+
+                return int.Parse((string)properties["ammo"]);
             }
             set
             {

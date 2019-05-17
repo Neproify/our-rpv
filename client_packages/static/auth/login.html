@@ -6,74 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">-->
 
-    <style>
-        @font-face {
-            font-family: 'Lato', sans-serif;
-            src: url('package://static/fonts/Lato-Regular.ttf');
-        }
-
-        body {
-            background-color: rgba(0, 0, 0, 0);
-            font-family: 'Lato', sans-serif;
-        }
-
-        #window {
-            width: 300px;
-            height: 300px;
-            position: fixed;
-            background-color: hsla(0, 100%, 0%, 0.85);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        h1 {
-            width: 320px;
-            height: 50px;
-            background-color: orange;
-            color: white;
-            position: fixed;
-            left: -10px;
-            text-align: center;
-            line-height: 50px;
-        }
-
-        input {
-            margin-left: 10px;
-            width: 280px;
-            height: 40px;
-            margin-top: 20px;
-        }
-
-        #button {
-            width: 240px;
-            height: 40px;
-            margin-left: 30px;
-            color: white;
-            background-color: orange;
-            box-shadow: none;
-            border-width: 0px;
-            margin-top: 20px;
-        }
-
-        #inputs {
-            margin-top: 80px;
-        }
-    </style>
+    <link rel="stylesheet" href="package://static/styles/style.css">
 
     <script type="text/javascript" src="login.js"></script>
 </head>
 
 <body>
-    <div id="window">
+    <div id="window" class="centered">
         <h1>
             Logowanie
         </h1>
-        <div id="inputs">
+        <div id="content">
             <input placeholder="Login" id="loginInput" />
             <input type="password" placeholder="Hasło" id="passwordInput" />
         </div>
-        <button id="button" onclick="SendLoginRequest();">
+        <button onclick="SendLoginRequest();">
             Zaloguj się
         </button>
     </div>
