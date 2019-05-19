@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System;
 
 namespace roleplay
 {
@@ -12,8 +13,12 @@ namespace roleplay
         [BsonElement("characterid")]
         public ObjectId charID;
 
+#warning TODO: Duty time counting.
         [BsonElement("dutytime")]
         public int dutyTime;
+
+        [BsonElement("lastpayment")]
+        public DateTime lastPayment;
 
         [BsonIgnore]
         public Entities.Group group;
@@ -22,6 +27,25 @@ namespace roleplay
 
         public void Save()
         {
+        }
+
+        public void PayForDuty()
+        {
+            var player = Managers.PlayerManager.Instance().GetByCharacterID(charID);
+
+            if (player == null)
+                return;
+
+            if (lastPayment.AddDays(1) < DateTime.Now)
+                return;
+
+            if (dutyTime < 60 * 30)
+                return;
+
+            lastPayment = DateTime.Now;
+            player.money += rank.salary;
+
+            player.SendNotification($"~g~Otrzymałeś wypłatę w wysokości ${rank.salary}.");
         }
     }
 }

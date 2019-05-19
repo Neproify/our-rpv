@@ -75,6 +75,7 @@ namespace roleplay
                 {
                     if (player.groupDuty.member.group == selectedGroup)
                     {
+                        player.groupDuty.member.PayForDuty();
                         player.groupDuty = null;
                         player.SendNotification($"~g~Skończyłeś pracę w grupie {selectedGroup.name}");
                     }
