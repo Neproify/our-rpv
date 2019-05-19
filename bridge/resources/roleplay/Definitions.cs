@@ -30,7 +30,8 @@ namespace roleplay
         Weapon,
         Document,
         Phone,
-        Balaclava
+        Balaclava,
+        Food
     }
 
     public enum DocumentType
@@ -49,7 +50,9 @@ namespace roleplay
         Radio,
         Workshop,
         Gang,
-        Mafia
+        Mafia,
+        Restaurant,
+        Club
     }
 
     public enum GroupSpecialPermission

@@ -137,7 +137,7 @@ namespace roleplay.Admin
                 if (!vehicle.IsSpawned())
                     return;
 
-                player.SetPosition(vehicle.position);
+                player.position = vehicle.position;
 
                 return;
             }
@@ -147,7 +147,7 @@ namespace roleplay.Admin
                 if (!vehicle.IsSpawned())
                     return;
 
-                vehicle.position = player.GetPosition();
+                vehicle.position = player.position;
 
                 return;
             }

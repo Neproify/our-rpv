@@ -60,6 +60,18 @@ namespace roleplay.Entities
 			}
 		}
 
+        public Vector3 position
+        {
+            get => handle.Position;
+            set => handle.Position = value;
+        }
+
+        public int health
+        {
+            get => handle.Health;
+            set => handle.Health = value;
+        }
+
         public bool isInAnyVehicle => handle.IsInVehicle;
         public bool isDriver => handle.VehicleSeat == (int)VehicleSeat.Driver;
 
@@ -257,14 +269,14 @@ namespace roleplay.Entities
         {
             var vehicles = Managers.VehicleManager.Instance().GetAll();
 
-            return (from veh in vehicles orderby veh.position.DistanceTo(GetPosition()) ascending select veh).FirstOrDefault();
+            return (from veh in vehicles orderby veh.position.DistanceTo(position) ascending select veh).FirstOrDefault();
         }
 
 		public Vehicle GetClosestVehicle(float maxDistance)
 		{
             var vehicles = Managers.VehicleManager.Instance().GetAll();
 
-            return (from veh in vehicles where veh.position.DistanceTo(GetPosition()) <= maxDistance orderby veh.position.DistanceTo(GetPosition()) ascending select veh).FirstOrDefault();
+            return (from veh in vehicles where veh.position.DistanceTo(position) <= maxDistance orderby veh.position.DistanceTo(position) ascending select veh).FirstOrDefault();
 		}
 
         public Building GetClosestBuilding(float maxDistance = 3f) => Managers.BuildingManager.Instance().GetClosestBuilding(handle.Position, maxDistance);
@@ -273,7 +285,7 @@ namespace roleplay.Entities
         {
             var players = Managers.PlayerManager.Instance().GetAll();
 
-            return (from player in players where player.IsReady() && player.GetPosition().DistanceTo(GetPosition()) <= maxDistance orderby player.GetPosition().DistanceTo(GetPosition()) ascending select player).FirstOrDefault();
+            return (from player in players where player.IsReady() && player.position.DistanceTo(position) <= maxDistance orderby player.position.DistanceTo(position) ascending select player).FirstOrDefault();
         }
 
         public Item GetClosestItem(float maxDistance = 5f) => Managers.ItemManager.Instance().GetClosestItem(handle.Position, maxDistance);
@@ -282,7 +294,7 @@ namespace roleplay.Entities
         {
             var objects = Managers.ObjectManager.Instance().GetAll();
 
-            return (from @object in objects where @object.position.DistanceTo(GetPosition()) <= maxDistance orderby @object.position.DistanceTo(GetPosition()) ascending select @object).FirstOrDefault();
+            return (from @object in objects where @object.position.DistanceTo(position) <= maxDistance orderby @object.position.DistanceTo(position) ascending select @object).FirstOrDefault();
         }
 
         public List<Group> GetGroups() => Managers.GroupManager.Instance().GetPlayerGroups(this);
@@ -322,10 +334,6 @@ namespace roleplay.Entities
 
         public void SendChatMessage(string message) => handle.SendChatMessage(message);
 
-        public Vector3 GetPosition() => handle.Position;
-
-        public void SetPosition(Vector3 position) => handle.Position = position;
-
         public uint GetDimension() => handle.Dimension;
 
         public void SetDimension(uint dimension) => handle.Dimension = dimension;
@@ -333,10 +341,6 @@ namespace roleplay.Entities
         public void SetModel(uint model) => NAPI.Entity.SetEntityModel(GetGameID(), model);
 
         public uint GetModel() => NAPI.Entity.GetEntityModel(GetGameID());
-
-        public void SetHealth(int health) => handle.Health = health;
-
-        public int GetHealth() => handle.Health;
 
         public void SetFreezed(bool isFreezed) => handle.Freeze(isFreezed);
 

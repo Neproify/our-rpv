@@ -31,7 +31,7 @@ namespace roleplay.Buildings
 
                 if (building != null)
                 {
-                    if (player.GetPosition().DistanceTo(building.exitPosition) <= 3f)
+                    if (player.position.DistanceTo(building.exitPosition) <= 3f)
                     {
                         if (player.character.jailBuildingID != ObjectId.Empty)
                         {
@@ -39,7 +39,7 @@ namespace roleplay.Buildings
                             return;
                         }
 
-                        player.SetPosition(building.enterPosition);
+                        player.position = building.enterPosition;
                         player.SetDimension(building.enterDimension);
                         player.building = null;
 
@@ -56,7 +56,7 @@ namespace roleplay.Buildings
                     }
                 }
 
-                player.SetPosition(building.exitPosition);
+                player.position = building.exitPosition;
                 player.SetDimension(building.exitDimension);
                 player.building = building;
 

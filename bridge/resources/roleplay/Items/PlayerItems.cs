@@ -71,7 +71,7 @@ namespace roleplay.Items
             if (!player.CanUseItem(item))
                 return;
 
-            item.position = player.GetPosition();
+            item.position = player.position;
             item.position.Z -= 0.5f;
             item.ChangeOwner(OwnerType.World, ObjectId.Empty);
             item.Save();
@@ -101,7 +101,7 @@ namespace roleplay.Items
                 return;
             }
 
-            if(player.GetPosition().DistanceTo(searchedPlayer.GetPosition()) > 5)
+            if(player.position.DistanceTo(searchedPlayer.position) > 5)
             {
                 player.SendNotification("~r~Znajdujesz się za daleko od tego gracza.");
                 return;

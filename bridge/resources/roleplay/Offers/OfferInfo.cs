@@ -24,7 +24,7 @@ namespace roleplay.Offers
             if (receiver != player)
                 return;
 
-            if(sender.GetPosition().DistanceTo(receiver.GetPosition()) > 10f)
+            if(sender.position.DistanceTo(receiver.position) > 10f)
             {
                 sender.SendNotification("~r~Oferta została zaakceptowana, ale znajdujecie się za daleko od siebie.");
                 receiver.SendNotification("~r~Oferta została zaakceptowana, ale znajdujecie się za daleko od siebie.");
@@ -36,7 +36,7 @@ namespace roleplay.Offers
                 if (!sender.SendMoneyTo(receiver, price))
                     return;
 
-                receiver.SetHealth(100);
+                receiver.health = 100;
                 sender.SendNotification($"Uleczyłeś {receiver.formattedName}.");
                 receiver.SendNotification($"Zostałeś uleczony przez {sender.formattedName}.");
             }
@@ -73,7 +73,7 @@ namespace roleplay.Offers
             {
                 Entities.Vehicle vehicle = (Entities.Vehicle)args[0];
 
-                if (sender.GetPosition().DistanceTo(vehicle.position) > 5)
+                if (sender.position.DistanceTo(vehicle.position) > 5)
                 {
                     sender.SendNotification("Jesteś za daleko od pojazdu który próbujesz naprawić.");
                     return;

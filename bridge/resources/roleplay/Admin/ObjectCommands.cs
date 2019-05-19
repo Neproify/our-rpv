@@ -76,7 +76,7 @@ namespace roleplay.Admin
                 if (!@object.IsSpawned())
                     return;
 
-                player.SetPosition(@object.handle.Position);
+                player.position = @object.handle.Position;
 
                 return;
             }
@@ -86,7 +86,7 @@ namespace roleplay.Admin
                 if (!@object.IsSpawned())
                     return;
 
-                @object.handle.Position = player.GetPosition();
+                @object.handle.Position = player.position;
 
                 return;
             }

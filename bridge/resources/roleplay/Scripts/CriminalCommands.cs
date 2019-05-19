@@ -26,7 +26,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            if(player.GetPosition().DistanceTo(targetPlayer.GetPosition()) > 5)
+            if(player.position.DistanceTo(targetPlayer.position) > 5)
             {
                 player.SendNotification("~r~Jesteś za daleko od gracza.");
                 return;

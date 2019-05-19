@@ -131,7 +131,7 @@ namespace roleplay.Admin
             {
                 if (item.objectHandle != null)
                 {
-                    player.SetPosition(item.objectHandle.Position);
+                    player.position = item.objectHandle.Position;
                 }
                 return;
             }
@@ -140,7 +140,7 @@ namespace roleplay.Admin
             {
                 if (item.objectHandle != null)
                 {
-                    item.position = player.GetPosition();
+                    item.position = player.position;
                     item.objectHandle.Position = item.position;
                     item.Save();
                 }

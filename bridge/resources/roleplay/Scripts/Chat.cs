@@ -26,7 +26,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.GetPosition());
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.position);
 
             message = message.Replace("<", "!{#C2A2DA}*");
             message = message.Replace(">", "*!{#FFFFFF}");
@@ -84,7 +84,7 @@ namespace roleplay.Scripts
             if (!player.IsReady())
                 return;
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.GetPosition());
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.position);
 
             foreach (var nearPlayer in players)
             {
@@ -106,7 +106,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.GetPosition());
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.position);
 
             var result = new Random().Next(9999);
 
@@ -138,7 +138,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(30, player.GetPosition());
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(30, player.position);
 
             foreach (var nearPlayer in players)
             {
@@ -174,7 +174,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(5, player.GetPosition());
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(5, player.position);
 
             foreach (var nearPlayer in players)
             {
@@ -216,7 +216,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.GetPosition());
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(20, player.position);
 
             foreach (var nearPlayer in players)
             {
@@ -256,7 +256,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            var players = NAPI.Player.GetPlayersInRadiusOfPosition(50, player.GetPosition());
+            var players = NAPI.Player.GetPlayersInRadiusOfPosition(50, player.position);
 
             foreach (var nearPlayer in players)
             {

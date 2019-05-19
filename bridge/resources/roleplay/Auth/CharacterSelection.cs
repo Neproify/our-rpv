@@ -97,7 +97,7 @@ namespace roleplay.Auth
             player.SetFreezed(false);
             player.SetInvicible(false);
             player.SetTransparency(255);
-            player.SetHealth(character.health);
+            player.health = character.health;
             player.SetModel(player.character.model);
             player.TriggerEvent("OnCharacterSelectionSuccessful");
 

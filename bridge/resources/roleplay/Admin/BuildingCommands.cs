@@ -77,13 +77,13 @@ namespace roleplay.Admin
 
             if (args[1] == "tpto")
             {
-                player.SetPosition(building.enterPosition);
+                player.position = building.enterPosition;
                 return;
             }
 
             if(args[1] == "tphere")
             {
-                building.enterPosition = player.GetPosition();
+                building.enterPosition = player.position;
                 building.Unspawn();
                 building.Save();
                 building.Spawn();

@@ -27,7 +27,7 @@ namespace roleplay.Scripts
                 return;
             }
 
-            if (player.GetPosition().DistanceTo(targetPlayer.GetPosition()) > 5 && player.GetDimension() == targetPlayer.GetDimension())
+            if (player.position.DistanceTo(targetPlayer.position) > 5 && player.GetDimension() == targetPlayer.GetDimension())
             {
                 player.SendNotification("~r~Jesteś za daleko od gracza.");
                 return;
@@ -42,7 +42,7 @@ namespace roleplay.Scripts
             if(targetPlayer.character.jailBuildingID == MongoDB.Bson.ObjectId.Empty)
             {
                 targetPlayer.character.jailBuildingID = player.building.UID;
-                targetPlayer.character.jailPosition = targetPlayer.GetPosition();
+                targetPlayer.character.jailPosition = targetPlayer.position;
                 targetPlayer.character.Save();
                 player.OutputMe($" więzi {targetPlayer.formattedName}.");
             }

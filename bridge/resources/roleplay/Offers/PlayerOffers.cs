@@ -50,7 +50,7 @@ namespace roleplay
                 return;
             }
 
-            if (player.GetPosition().DistanceTo(secondPlayer.GetPosition()) > 10f)
+            if (player.position.DistanceTo(secondPlayer.position) > 10f)
             {
                 player.SendNotification("~r~Gracz znajduje się za daleko!");
                 return;

@@ -175,6 +175,9 @@ namespace roleplay.Managers
                 case ItemType.Balaclava:
                     correct = new Items.ItemType.Balaclava();
                     break;
+                case ItemType.Food:
+                    correct = new Items.ItemType.Food();
+                    break;
                 default:
                     NAPI.Util.ConsoleOutput("[WARNING]Used default on creating item, type: " + item.type);
                     correct = new Entities.Item();

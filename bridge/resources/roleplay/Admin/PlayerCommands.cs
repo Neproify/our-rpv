@@ -47,7 +47,7 @@ namespace roleplay.Admin
                     goto HPUsage;
                 }
 
-                targetPlayer.SetHealth(healthValue);
+                targetPlayer.health = healthValue;
                 return;
             }
 
@@ -104,13 +104,13 @@ namespace roleplay.Admin
 
             if (args[1] == "tpto")
             {
-                player.SetPosition(targetPlayer.GetPosition());
+                player.position = targetPlayer.position;
                 return;
             }
 
             if (args[1] == "tphere")
             {
-                targetPlayer.SetPosition(player.GetPosition());
+                targetPlayer.position = player.position;
                 return;
             }
 
