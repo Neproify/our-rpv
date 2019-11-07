@@ -47,7 +47,7 @@ h1 {
 }
 
     h1.right {
-        width: calc(100% + 10 px);
+        width: calc(100% + 10px);
         left: 0px;
     }
 

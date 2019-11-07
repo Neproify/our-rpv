@@ -154,8 +154,8 @@ namespace roleplay.Entities
 				isBrutallyWounded = true;
 				secondsToEndOfBrutallyWounded = 60 * 5;
 
-				NAPI.Player.SpawnPlayer(handle, handle.Position, handle.Heading);
-				handle.Freeze(true);
+                NAPI.Player.SpawnPlayer(handle, handle.Position, handle.Heading);
+                SetFreezed(true);
 				handle.PlayAnimation("combat@death@from_writhe", "death_a", 9);
 				handle.SendNotification("~r~Straciłeś przytomność. Poczekaj aby ją odzyskać.");
 			}
@@ -163,7 +163,7 @@ namespace roleplay.Entities
 			{
 				isBrutallyWounded = false;
 				secondsToEndOfBrutallyWounded = 0;
-				handle.Freeze(false);
+				SetFreezed(false);
 				handle.StopAnimation();
 				handle.SendNotification("~g~Odzyskałeś przytomność. Pamiętaj o odegraniu obrażeń.");
 			}
@@ -342,9 +342,15 @@ namespace roleplay.Entities
 
         public uint GetModel() => NAPI.Entity.GetEntityModel(GetGameID());
 
-        public void SetFreezed(bool isFreezed) => handle.Freeze(isFreezed);
+        public void SetFreezed(bool isFreezed)
+        {
+#warning NOT IMPLEMENTED, FREEZED
+        }
 
-        public void SetInvicible(bool isInvicible) => handle.Invincible = isInvicible;
+        public void SetInvicible(bool isInvicible)
+        {
+#warning NOT IMPLEMENTED, INVICIBLE
+        }
 
         public void SetTransparency(int transparency) => handle.Transparency = transparency;
 

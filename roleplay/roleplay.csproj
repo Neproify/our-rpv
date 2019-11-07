@@ -1,9 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
-<TargetFramework>netcoreapp2.2</TargetFramework>
+<TargetFramework>netcoreapp3.0</TargetFramework>
 </PropertyGroup>
 <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
   <NoWarn>1701;1702</NoWarn>
+  <OutputPath>..\bin\roleplay\</OutputPath>
+  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+</PropertyGroup>
+<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <OutputPath>..\bin\roleplay\</OutputPath>
+  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 </PropertyGroup>
 <ItemGroup>
   <PackageReference Include="BCrypt-Core" Version="2.0.0" />
@@ -12,10 +18,10 @@
 </ItemGroup>
 <ItemGroup>
   <Reference Include="Bootstrapper">
-    <HintPath>..\..\runtime\Bootstrapper.dll</HintPath>
+    <HintPath>..\server-runtime\Bootstrapper.dll</HintPath>
   </Reference>
   <Reference Include="Newtonsoft.Json">
-    <HintPath>..\..\runtime\Newtonsoft.Json.dll</HintPath>
+    <HintPath>..\server-runtime\Newtonsoft.Json.dll</HintPath>
   </Reference>
 </ItemGroup>
 </Project>

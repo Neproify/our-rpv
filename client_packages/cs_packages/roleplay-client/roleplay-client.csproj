@@ -7,10 +7,10 @@
 
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\dotnet\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\client-runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="rage-sharp">
-      <HintPath>..\..\..\..\dotnet\rage-sharp.dll</HintPath>
+      <HintPath>..\..\..\client-runtime\rage-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
 

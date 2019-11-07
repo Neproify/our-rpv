@@ -9,8 +9,9 @@ namespace roleplay.Auth
         public void OnPlayerConnect(Client client)
         {
             NAPI.Util.ConsoleOutput("Player " + client.Name + " joined.");
-            client.Freeze(true);
-            client.Invincible = true;
+#warning FREEZE AND INVICIBLE NOT IMPLEMENTED
+            //client.Freeze(true);
+            //client.Invincible = true;
             client.Transparency = 0;
         }
 
