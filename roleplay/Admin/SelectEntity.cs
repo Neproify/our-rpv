@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
-using MongoDB.Bson;
+﻿using GTANetworkAPI;
 
 namespace roleplay.Admin
 {
@@ -89,7 +85,6 @@ namespace roleplay.Admin
 
         Usage:
             player.SendUsageNotification($"Użyj: /awybierz [{Utils.GetEntityTypes()}] [ID])");
-            return;
         }
     }
 }

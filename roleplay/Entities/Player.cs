@@ -9,12 +9,12 @@ using System.Linq;
 namespace roleplay.Entities
 {
 	public class Player
-	{
-        private bool isLogged = false;
+    {
+        private bool isLogged;
 		public string formattedName => handle.Name.Replace("_", " ");
 
-		public bool isBrutallyWounded = false;
-		public int secondsToEndOfBrutallyWounded = 0;
+        public bool isBrutallyWounded;
+        public int secondsToEndOfBrutallyWounded;
 		public bool isGagged = false;
 
         private Client handle;
@@ -235,14 +235,14 @@ namespace roleplay.Entities
         {
             var weapons = GetItems()?.FindAll(x => x.type == ItemType.Weapon);
 
-            return weapons?.ConvertAll(new Converter<Item, Items.ItemType.Weapon>(x => x as Items.ItemType.Weapon));
+            return weapons?.ConvertAll(x => x as Items.ItemType.Weapon);
         }
 
-        public bool CanUseItem(Item item) => item?.ownerType == OwnerType.Character && item?.ownerID == character.UID;
+        public bool CanUseItem(Item item) => item?.ownerType == OwnerType.Character && item.ownerID == character.UID;
 
         public bool CanUseItem(ObjectId itemUID) => CanUseItem(Managers.ItemManager.Instance().GetByID(itemUID));
 
-        public bool IsUsingItemOfType(ItemType type) => GetItems().Find(x => x.type == type && x.isUsed == true) != null;
+        public bool IsUsingItemOfType(ItemType type) => GetItems().Find(x => x.type == type && x.isUsed) != null;
 
         public void ShowItems()
 		{
@@ -328,7 +328,7 @@ namespace roleplay.Entities
         public void SendVehicleNotFoundNotification() => SendNotification("~r~Nie znaleziono pojazdu o podanym identyfikatorze.");
 
         public void SendGroupNotFoundNotification() => SendNotification("~r~Nie znaleziono grupy o podanym identyfikatorze!");
-        public void SendNotification(string message) => handle.SendNotification(message, true);
+        public void SendNotification(string message) => handle.SendNotification(message);
 
         public void SendUsageNotification(string message) => SendNotification(message);
 
@@ -354,7 +354,7 @@ namespace roleplay.Entities
 
         public void SetTransparency(int transparency) => handle.Transparency = transparency;
 
-        public Entities.Vehicle GetVehicle() => Managers.VehicleManager.Instance().GetByHandle(handle.Vehicle);
+        public Vehicle GetVehicle() => Managers.VehicleManager.Instance().GetByHandle(handle.Vehicle);
 
         public int GetVehicleSeat() => handle.VehicleSeat;
 
@@ -387,7 +387,7 @@ namespace roleplay.Entities
 
         public NetHandle GetGameID() => handle.Handle;
 
-        public bool IsOwnerOfVehicle(Entities.Vehicle vehicle) => vehicle.vehicleData.ownerType == OwnerType.Character && vehicle.vehicleData.ownerID == character?.UID;
+        public bool IsOwnerOfVehicle(Vehicle vehicle) => vehicle.vehicleData.ownerType == OwnerType.Character && vehicle.vehicleData.ownerID == character?.UID;
 
         public void LoadLook()
         {
@@ -466,7 +466,7 @@ namespace roleplay.Entities
 		{
             var collection = Database.Instance().GetCharactersCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Character>();
-            var filter = builder.Where(x => x.UID == this.UID);
+            var filter = builder.Where(x => x.UID == UID);
             collection.FindOneAndReplace<Character>(filter, this);
 		}
 	}

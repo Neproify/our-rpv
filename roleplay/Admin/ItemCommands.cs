@@ -1,5 +1,4 @@
-﻿using System;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 using MongoDB.Bson;
 
 namespace roleplay.Admin
@@ -161,7 +160,6 @@ namespace roleplay.Admin
             return;
         PropertyUsage:
             player.SendUsageNotification($"Użycie komendy: /aprzedmiot {item.UID} właściwość [numer] [wartość].");
-            return;
         }
     }
 }

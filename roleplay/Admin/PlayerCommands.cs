@@ -125,7 +125,6 @@ namespace roleplay.Admin
             return;
         MoneyUsage:
             player.SendUsageNotification($"Użycie komendy: /agracz {playerID} money [ilość].");
-            return;
         }
 
         [Command("ado", GreedyArg = true)]

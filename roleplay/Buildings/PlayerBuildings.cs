@@ -29,22 +29,19 @@ namespace roleplay.Buildings
                     return;
                 }
 
-                if (building != null)
+                if (player.position.DistanceTo(building.exitPosition) <= 3f)
                 {
-                    if (player.position.DistanceTo(building.exitPosition) <= 3f)
+                    if (player.character.jailBuildingID != ObjectId.Empty)
                     {
-                        if (player.character.jailBuildingID != ObjectId.Empty)
-                        {
-                            player.SendNotification("~r~Jesteś uwięziony. Nie możesz wyjść.");
-                            return;
-                        }
-
-                        player.position = building.enterPosition;
-                        player.SetDimension(building.enterDimension);
-                        player.building = null;
-
+                        player.SendNotification("~r~Jesteś uwięziony. Nie możesz wyjść.");
                         return;
                     }
+
+                    player.position = building.enterPosition;
+                    player.SetDimension(building.enterDimension);
+                    player.building = null;
+
+                    return;
                 }
 
                 if (player.isInAnyVehicle)

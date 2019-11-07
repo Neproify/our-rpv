@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 using MongoDB.Bson;
 
 namespace roleplay.Items

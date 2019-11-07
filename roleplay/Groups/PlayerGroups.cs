@@ -148,7 +148,7 @@ namespace roleplay
                     player.SendChatMessage($"====LISTA PRZEDMIOTÓW DO ZAMÓWIENIA W GRUPIE {selectedGroup.name}");
                     foreach (var productToList in products)
                     {
-                        player.SendChatMessage($"[{productToList.UID}] {productToList.name}, typ: {Utils.GetNameFromItemType(productToList.type)}, właściwości: {productToList.properties.ToString()}, cena: ${productToList.price}");
+                        player.SendChatMessage($"[{productToList.UID}] {productToList.name}, typ: {Utils.GetNameFromItemType(productToList.type)}, właściwości: {productToList.properties}, cena: ${productToList.price}");
                     }
                     player.SendChatMessage("====KONIEC LISTY====");
                     return;
@@ -277,7 +277,7 @@ namespace roleplay
 
                     var item = Managers.ItemManager.Instance().GetByID(itemID);
 
-                    if (item?.ownerType != OwnerType.Group || item?.ownerID != selectedGroup.UID)
+                    if (item?.ownerType != OwnerType.Group || item.ownerID != selectedGroup.UID)
                     {
                         player.SendNotification("~r~Podałeś nieprawidłowy identyfikator przedmiotu.");
                         return;
@@ -301,7 +301,6 @@ namespace roleplay
             return;
         StorageUsage:
             player.SendUsageNotification($"Użyj: /g {groupID} magazyn [lista/włóż/wyciągnij] [identyfikator przedmiotu]");
-            return;
         }
 
     }

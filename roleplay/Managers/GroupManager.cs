@@ -70,11 +70,11 @@ namespace roleplay.Managers
         {
             var group = new Entities.Group
             {
-                UID = MongoDB.Bson.ObjectId.GenerateNewId(),
+                UID = ObjectId.GenerateNewId(),
                 name = "Nowa groupa",
                 bank = 0,
-                leaderRank = MongoDB.Bson.ObjectId.GenerateNewId(),
-                leaderID = MongoDB.Bson.ObjectId.Empty,
+                leaderRank = ObjectId.GenerateNewId(),
+                leaderID = ObjectId.Empty,
                 type = GroupType.None,
                 specialPermissions = 0
             };

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GTANetworkAPI;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -48,7 +47,7 @@ namespace roleplay.Entities
             return player.CanUseItem(this);
         }
 
-        public virtual void Spawn()
+        public void Spawn()
         {
             Unspawn();
 
@@ -63,7 +62,7 @@ namespace roleplay.Entities
 
         public virtual void ChangeOwner(OwnerType newOwnerType, ObjectId newOwnerID)
         {
-            Entities.Player playerWhosEquipmentShouldBeReloaded = null;
+            Player playerWhosEquipmentShouldBeReloaded = null;
 
             if(ownerType == OwnerType.Character)
             {
@@ -104,7 +103,7 @@ namespace roleplay.Entities
         {
             var collection = Database.Instance().GetItemsCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Item>();
-            var filter = builder.Where(x => x.UID == this.UID);
+            var filter = builder.Where(x => x.UID == UID);
             collection.FindOneAndReplace<Item>(filter, this);
         }
     }

@@ -172,7 +172,7 @@ namespace roleplay.Entities
         {
             var collection = Database.Instance().GetVehiclesCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<VehicleData>();
-            var filter = builder.Where(x => x.UID == this.UID);
+            var filter = builder.Where(x => x.UID == UID);
             collection.FindOneAndReplace<VehicleData>(filter, this);
         }
     }

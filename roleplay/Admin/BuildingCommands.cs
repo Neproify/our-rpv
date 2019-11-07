@@ -1,5 +1,4 @@
-﻿using System;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 using MongoDB.Bson;
 
 namespace roleplay.Admin
@@ -137,7 +136,6 @@ namespace roleplay.Admin
             return;
         OwnerUsage:
             player.SendUsageNotification($"Użycie komendy: /abudynek {building.UID} właściciel [{Utils.GetOwnerTypes()}] [identyfikator własciciela].");
-            return;
         }
 
     }

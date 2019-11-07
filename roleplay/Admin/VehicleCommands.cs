@@ -204,7 +204,6 @@ namespace roleplay.Admin
             return;
         ModelUsage:
             player.SendUsageNotification($"Użycie komendy: /apojazd {vehicleID} model [hash modelu]");
-            return;
         }
     }
 }

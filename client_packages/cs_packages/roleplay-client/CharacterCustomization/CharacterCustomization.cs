@@ -150,7 +150,7 @@ namespace roleplay_client.CharacterCustomization
         private void SaveCustomization(object[] args)
         {
             window?.Destroy();
-            RAGE.Ui.Cursor.Visible = false;
+            Cursor.Visible = false;
 
             var faceOptionInfos = JsonConvert.DeserializeObject<List<FaceOptionInfo>>((string)args[1]);
             var clothOptionInfos = JsonConvert.DeserializeObject<List<ClothOptionInfo>>((string)args[2]);
@@ -179,7 +179,7 @@ namespace roleplay_client.CharacterCustomization
                 propOptionsPacket.Add(new PropCustomizationPacket { index = propOption.index, value = propOption.value });
             }
 
-            RAGE.Events.CallRemote("SaveCustomization", gender, JsonConvert.SerializeObject(faceOptionsPacket), 
+            Events.CallRemote("SaveCustomization", gender, JsonConvert.SerializeObject(faceOptionsPacket), 
                 JsonConvert.SerializeObject(clothOptionsPacket), 
                 JsonConvert.SerializeObject(propOptionsPacket));
 

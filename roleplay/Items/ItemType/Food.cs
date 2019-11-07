@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using roleplay.Entities;
+﻿using roleplay.Entities;
 
 namespace roleplay.Items.ItemType
 {

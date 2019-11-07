@@ -1,7 +1,4 @@
 ﻿using MongoDB.Bson;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace roleplay.Admin
 {
@@ -46,7 +43,7 @@ namespace roleplay.Admin
             {
                 if (entityType == EntityType.Character)
                 {
-                    return player.character.UID;
+                    if (player != null) return player.character.UID;
                 }
             }
 

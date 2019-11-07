@@ -63,8 +63,7 @@ namespace roleplay.Auth
             }
 
             // Make sure we have all fields in database. :)
-            BsonValue tempValue;
-            if(!document.TryGetValue("gamescore", out tempValue))
+            if(!document.Contains(("gamescore")))
             {
                 document.Set("gamescore", 0);
                 document.Set("gameadminlevel", 0);

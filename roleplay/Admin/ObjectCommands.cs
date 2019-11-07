@@ -114,7 +114,6 @@ namespace roleplay.Admin
             return;
         ModelUsage:
             player.SendUsageNotification($"Użycie komendy: /aobiekt {objectID} model [hash modelu]");
-            return;
         }
     }
 }

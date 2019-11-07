@@ -79,7 +79,7 @@ namespace roleplay.Items.ItemType
                     return false;
                 }
 
-                if (flaggedGroupId != null && flaggedGroupId != ObjectId.Empty)
+                if (flaggedGroupId != ObjectId.Empty)
                 {
                     if (!player.IsOnDutyOfGroupID(flaggedGroupId))
                     {

@@ -1,5 +1,4 @@
 ﻿using GTANetworkAPI;
-using System.Collections.Generic;
 
 namespace roleplay.Items
 {
@@ -10,7 +9,7 @@ namespace roleplay.Items
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
-            var weapon = player.GetWeapons()?.Find(x => x.isUsed == true && x.weaponHash == weaponHash);
+            var weapon = player.GetWeapons()?.Find(x => x.isUsed && x.weaponHash == weaponHash);
 
             if (!player.IsReady())
                 return;

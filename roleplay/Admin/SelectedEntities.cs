@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace roleplay.Admin
+﻿namespace roleplay.Admin
 {
     public class SelectedEntities
     {

@@ -66,7 +66,7 @@ namespace roleplay.Auth
 
             var collection = Database.Instance().GetCharactersCollection();
             var builder = new MongoDB.Driver.FilterDefinitionBuilder<Entities.Character>();
-            var filter = builder.Where(x => x.UID == MongoDB.Bson.ObjectId.Parse(UID) && x.GID == player.globalInfo.UID);
+            var filter = builder.Where(x => x.UID == ObjectId.Parse(UID) && x.GID == player.globalInfo.UID);
             var cursor = collection.FindSync<Entities.Character>(filter);
 
             cursor.MoveNext();
@@ -104,7 +104,7 @@ namespace roleplay.Auth
             Vector3 spawnPosition = new Vector3(1398.96, 3591.61, 35);
             uint spawnDimension = 0;
 
-            if (character.jailBuildingID != MongoDB.Bson.ObjectId.Empty)
+            if (character.jailBuildingID != ObjectId.Empty)
             {
                 var building = Managers.BuildingManager.Instance().GetByID(character.jailBuildingID);
                 if (building != null)
@@ -119,7 +119,6 @@ namespace roleplay.Auth
             player.SetDimension(spawnDimension);
             player.LoadLook();
             player.SendNotification("~g~Witaj na serwerze Our Role Play! Życzymy miłej gry!");
-            return;
         }
 
         [RemoteEvent("CreateCharacter")]

@@ -49,10 +49,6 @@ namespace roleplay.Entities
         [BsonIgnore]
         public ColShape exitColShape;
 
-        public Building()
-        {
-        }
-
         public void Spawn()
         {
             Unspawn();
@@ -90,7 +86,7 @@ namespace roleplay.Entities
             collection.FindOneAndReplace<Building>(filter, this);
         }
 
-        public bool CanBeAccessedBy(Entities.Player player)
+        public bool CanBeAccessedBy(Player player)
         {
             switch (ownerType)
             {
@@ -104,7 +100,7 @@ namespace roleplay.Entities
 
         private void OnEntityEnterColShape(ColShape colShape, Client client)
         {
-            client.SendNotification($"{(isLocked == true ? "~r~" : "~g~")}Drzwi: {name}{(isLocked == false ? ", użyj ~b~/drzwi ~g~ aby wejść do środka." : "")}");
+            client.SendNotification($"{(isLocked ? "~r~" : "~g~")}Drzwi: {name}{(isLocked == false ? ", użyj ~b~/drzwi ~g~ aby wejść do środka." : "")}");
         }
 
         private void OnEntityExitColShape(ColShape colShape, Client client)
