@@ -47,7 +47,8 @@ namespace roleplay.Vehicles
 
             if (arg == "silnik")
             {
-                if (player.GetVehicleSeat() != -1)
+#warning RENAME IT TO VEHICLESEAT
+                if (player.GetVehicleSeat() != 0)
                 {
                     player.SendNotADriverNotification();
                     return;
@@ -79,7 +80,8 @@ namespace roleplay.Vehicles
 
             if (arg == "parkuj")
             {
-                if (player.GetVehicleSeat() != -1)
+#warning RENAME IT TO VEHICLESEAT
+                if (player.GetVehicleSeat() != 0)
                 {
                     player.SendNotADriverNotification();
                     return;
