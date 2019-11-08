@@ -69,13 +69,14 @@ namespace roleplay
                         return;
 
                     player.groupDuty = new GroupDuty {member = member};
+                    player.groupDuty.StartDuty();
                     player.SendNotification($"~g~Rozpocząłeś pracę w grupie {selectedGroup.name}.");
                 }
                 else
                 {
                     if (player.groupDuty.member.group == selectedGroup)
                     {
-                        player.groupDuty.member.PayForDuty();
+                        player.groupDuty.EndDuty();
                         player.groupDuty = null;
                         player.SendNotification($"~g~Skończyłeś pracę w grupie {selectedGroup.name}");
                     }

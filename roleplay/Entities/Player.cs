@@ -43,8 +43,8 @@ namespace roleplay.Entities
 				return character.money;
 			}
 			set
-			{
-				character.money = value;
+            {
+                character.money = value;
 				NAPI.ClientEvent.TriggerClientEvent(handle, "SetMoney", value);
 			}
 		}

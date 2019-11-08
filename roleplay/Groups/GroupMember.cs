@@ -13,7 +13,6 @@ namespace roleplay
         [BsonElement("characterid")]
         public ObjectId charID;
 
-#warning TODO: Duty time counting.
         [BsonElement("dutytime")]
         public int dutyTime;
 
