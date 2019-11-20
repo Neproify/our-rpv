@@ -99,8 +99,7 @@ namespace roleplay.Entities
             if (handle != null)
                 return;
 
-#warning Use vector for rotation in future. Crashes in current(0.3.7.2) release
-            var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, vehicleData.spawnPosition, 0f, vehicleData.primaryColor, vehicleData.secondaryColor, "SA " + vehicleData.UID, 255, true, false);
+            var vehicle = NAPI.Vehicle.CreateVehicle((VehicleHash)vehicleData.model, vehicleData.spawnPosition, vehicleData.spawnRotation, vehicleData.primaryColor, vehicleData.secondaryColor, "SA " + vehicleData.UID, 255, true, false);
             handle = vehicle;
             Managers.VehicleManager.Instance().LinkWithHandle(this);
             engineStatus = false;

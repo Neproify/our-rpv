@@ -73,8 +73,7 @@ namespace roleplay.Entities
         }
 
         public bool isInAnyVehicle => handle.IsInVehicle;
-#warning RENAME IT TO VEHICLESEAT
-        public bool isDriver => handle.VehicleSeat == 0;
+        public bool isDriver => handle.VehicleSeat == (int)VehicleSeat.Driver;
 
         public Building building;
 		public Items.ItemType.Phone activePhone = null;

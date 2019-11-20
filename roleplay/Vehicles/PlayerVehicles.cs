@@ -47,8 +47,7 @@ namespace roleplay.Vehicles
 
             if (arg == "silnik")
             {
-#warning RENAME IT TO VEHICLESEAT
-                if (player.GetVehicleSeat() != 0)
+                if (player.GetVehicleSeat() != (int)VehicleSeat.Driver)
                 {
                     player.SendNotADriverNotification();
                     return;
@@ -80,8 +79,7 @@ namespace roleplay.Vehicles
 
             if (arg == "parkuj")
             {
-#warning RENAME IT TO VEHICLESEAT
-                if (player.GetVehicleSeat() != 0)
+                if (player.GetVehicleSeat() != (int)VehicleSeat.Driver)
                 {
                     player.SendNotADriverNotification();
                     return;
@@ -104,7 +102,6 @@ namespace roleplay.Vehicles
             }
 
             player.SendUsageNotification("Użycie komendy: /v [z(amek), silnik, parkuj]");
-            return;
         }
     }
 }
