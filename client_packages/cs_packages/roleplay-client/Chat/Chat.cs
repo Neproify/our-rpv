@@ -22,6 +22,7 @@ namespace roleplay_client
 
             window = new RAGE.Ui.HtmlWindow("package://static/chat/chat.html") {Active = true};
             window.MarkAsChat();
+
         }
 
         private static void SetActive(bool active)

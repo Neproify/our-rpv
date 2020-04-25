@@ -8,7 +8,7 @@ namespace roleplay
     public class PlayerGroups : Script
     {
         [Command("g", GreedyArg = true)]
-        public void GroupCommand(Client client, string arg)
+        public void GroupCommand(Player client, string arg)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

@@ -40,14 +40,6 @@ namespace roleplay.Entities
             members = new List<GroupMember>();
         }
 
-        public void LoadRanks()
-        {
-        }
-
-        public void LoadMembers()
-        {
-        }
-
         public GroupMember GetMember(Player player)
         {
             var member = members.Find(x => x.charID == player.character.UID);

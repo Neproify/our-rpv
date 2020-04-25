@@ -6,7 +6,7 @@ namespace roleplay.Admin
     public class PlayerCommands : Script
     {
         [Command("agracz", GreedyArg = true)]
-        public void AdminPlayerCommand(Client client, string parameters)
+        public void AdminPlayerCommand(Player client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -128,7 +128,7 @@ namespace roleplay.Admin
         }
 
         [Command("ado", GreedyArg = true)]
-        public void AdminDoCommand(Client client, string action)
+        public void AdminDoCommand(Player client, string action)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -145,7 +145,7 @@ namespace roleplay.Admin
         }
 
         [Command("ban", GreedyArg = true)]
-        public void BanCommand(Client client, int playerID, string reason)
+        public void BanCommand(Player client, int playerID, string reason)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -171,7 +171,7 @@ namespace roleplay.Admin
 
 
         [Command("kick", GreedyArg = true)]
-        public void KickCommand(Client client, int playerID, string reason)
+        public void KickCommand(Player client, int playerID, string reason)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -195,7 +195,7 @@ namespace roleplay.Admin
         }
 
         [Command("gooc", GreedyArg = true)]
-        public void AdminOOCCommand(Client client, string message)
+        public void AdminOOCCommand(Player client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -212,7 +212,7 @@ namespace roleplay.Admin
         }
 
         [Command("warn", GreedyArg = true)]
-        public void WarnCommand(Client client, int playerID, string reason)
+        public void WarnCommand(Player client, int playerID, string reason)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -236,7 +236,7 @@ namespace roleplay.Admin
         }
 
         [Command("reward", GreedyArg = true)]
-        public void RewardCommand(Client client, int playerID, string reason)
+        public void RewardCommand(Player client, int playerID, string reason)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

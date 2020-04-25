@@ -6,7 +6,7 @@ namespace roleplay.Auth
     public class Login : Script
     {
         [ServerEvent(Event.PlayerConnected)]
-        public void OnPlayerConnect(Client client)
+        public void OnPlayerConnect(Player client)
         {
             NAPI.Util.ConsoleOutput("Player " + client.Name + " joined.");
 #warning FREEZE AND INVICIBLE NOT IMPLEMENTED
@@ -16,7 +16,7 @@ namespace roleplay.Auth
         }
 
         [RemoteEvent("OnLoginRequest")]
-        public void OnLoginRequest(Client client, string login, string password)
+        public void OnLoginRequest(Player client, string login, string password)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

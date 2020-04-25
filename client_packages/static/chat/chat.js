@@ -67,3 +67,9 @@ var chatAPI =
 document.addEventListener("DOMContentLoaded", function () {
     enableChatInput(false);
 }, false);
+
+var api = { "chat:push": chatAPI.push, "chat:clear": chatAPI.clear, "chat:activate": chatAPI.activate, "chat:show": chatAPI.show };
+
+for (var fn in api) {
+    mp.events.add(fn, api[fn]);
+}

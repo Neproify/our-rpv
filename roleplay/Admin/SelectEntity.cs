@@ -5,7 +5,7 @@ namespace roleplay.Admin
     public class SelectEntity : Script
     {
         [Command("awybierz")]
-        public void SelectCommand(Client client, string type, string name)
+        public void SelectCommand(Player client, string type, string name)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

@@ -17,7 +17,7 @@ namespace roleplay.Entities
         public int secondsToEndOfBrutallyWounded;
 		public bool isGagged = false;
 
-        private Client handle;
+        private GTANetworkAPI.Player handle;
 		public GlobalInfo globalInfo;
 		public Character character;
 		public GroupDuty groupDuty;
@@ -28,7 +28,7 @@ namespace roleplay.Entities
 
         public Admin.SelectedEntities selectedEntities = new Admin.SelectedEntities();
 
-        public Player(Client handle)
+        public Player(GTANetworkAPI.Player handle)
         {
             this.handle = handle;
         }

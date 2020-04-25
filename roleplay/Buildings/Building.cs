@@ -57,7 +57,7 @@ namespace roleplay.Entities
             enterColShape = NAPI.ColShape.CreateCylinderColShape(enterPosition, 2f, 3f, enterDimension);
             exitMarker = NAPI.Marker.CreateMarker((uint)MarkerType.UpsideDownCone, exitPosition, new Vector3(), new Vector3(), 1f, new Color(0, 0, 0, 120), true, exitDimension);
             exitColShape = NAPI.ColShape.CreateCylinderColShape(exitPosition, 2f, 3f, exitDimension);
-
+            
             enterColShape.OnEntityEnterColShape += OnEntityEnterColShape;
             enterColShape.OnEntityExitColShape += OnEntityExitColShape;
             exitColShape.OnEntityEnterColShape += OnEntityEnterColShape;
@@ -98,12 +98,12 @@ namespace roleplay.Entities
             }
         }
 
-        private void OnEntityEnterColShape(ColShape colShape, Client client)
+        private void OnEntityEnterColShape(ColShape colShape, GTANetworkAPI.Player client)
         {
             client.SendNotification($"{(isLocked ? "~r~" : "~g~")}Drzwi: {name}{(isLocked == false ? ", użyj ~b~/drzwi ~g~ aby wejść do środka." : "")}");
         }
 
-        private void OnEntityExitColShape(ColShape colShape, Client client)
+        private void OnEntityExitColShape(ColShape colShape, GTANetworkAPI.Player client)
         {
         }
 

@@ -6,7 +6,7 @@ namespace roleplay.Scripts
     public class Phones : Script
     {
         [Command("tel", GreedyArg = true)]
-        public void PhoneCommand(Client client, string parameters)
+        public void PhoneCommand(Player client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

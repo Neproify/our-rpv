@@ -8,7 +8,7 @@ namespace roleplay.Scripts
     public class AdminContact : Script
     {
         [Command("report", GreedyArg = true)]
-        public void ReportCommand(Client client, string message)
+        public void ReportCommand(Player client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

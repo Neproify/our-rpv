@@ -24,10 +24,6 @@ namespace roleplay
         [BsonIgnore]
         public GroupRank rank;
 
-        public void Save()
-        {
-        }
-
         public void PayForDuty()
         {
             var player = Managers.PlayerManager.Instance().GetByCharacterID(charID);

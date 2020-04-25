@@ -16,7 +16,7 @@ namespace roleplay.Auth
         }
 
         [RemoteEvent("LoadPlayerCharacters")]
-        public void LoadPlayerCharacters(Client client)
+        public void LoadPlayerCharacters(Player client)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -48,7 +48,7 @@ namespace roleplay.Auth
         }
 
         [RemoteEvent("SelectCharacter")]
-        public void SelectCharacter(Client client, string UID)
+        public void SelectCharacter(Player client, string UID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -122,7 +122,7 @@ namespace roleplay.Auth
         }
 
         [RemoteEvent("CreateCharacter")]
-        public void CreateCharacter(Client client, string name, string surname)
+        public void CreateCharacter(Player client, string name, string surname)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

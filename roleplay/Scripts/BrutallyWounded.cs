@@ -26,7 +26,7 @@ namespace roleplay.Scripts
         }
 
         [ServerEvent(Event.PlayerDeath)]
-        public void OnPlayerDeath(Client client, Client killer, uint reason)
+        public void OnPlayerDeath(Player client, Player killer, uint reason)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -37,7 +37,7 @@ namespace roleplay.Scripts
         }
 
         [Command("akceptujsmierc", GreedyArg = true)]
-        public void CharacterKillCommand(Client client, string reason)
+        public void CharacterKillCommand(Player client, string reason)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

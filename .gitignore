@@ -5,7 +5,7 @@ roleplay/bin
 roleplay/obj
 client_packages/cs_packages/roleplay-client/bin
 client_packages/cs_packages/roleplay-client/obj
-/bin/roleplay/netcoreapp3.0
+/bin/roleplay/netcoreapp3.1
 /client-runtime
 /server-files
 /server-runtime

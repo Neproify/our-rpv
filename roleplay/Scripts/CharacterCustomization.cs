@@ -9,7 +9,7 @@ namespace roleplay.Scripts
     public class CharacterCustomization : Script
     {
         [Command("customization")]
-        public void CustomizationCommand(Client client)
+        public void CustomizationCommand(Player client)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -20,7 +20,7 @@ namespace roleplay.Scripts
         }
 
         [RemoteEvent("SaveCustomization")]
-        public void SaveCustomization(Client client, object[] args)
+        public void SaveCustomization(Player client, object[] args)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

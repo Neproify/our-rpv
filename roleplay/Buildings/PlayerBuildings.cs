@@ -6,7 +6,7 @@ namespace roleplay.Buildings
     public class PlayerBuildings : Script
     {
         [Command("drzwi")]
-        public void DoorCommand(Client client, string option = "przejdz")
+        public void DoorCommand(Player client, string option = "przejdz")
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

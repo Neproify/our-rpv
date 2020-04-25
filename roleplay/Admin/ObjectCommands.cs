@@ -7,7 +7,7 @@ namespace roleplay.Admin
     public class ObjectCommands : Script
     {
         [Command("aobiekt", GreedyArg = true)]
-        public void AdminObjectsCommand(Client client, string parameters)
+        public void AdminObjectsCommand(Player client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

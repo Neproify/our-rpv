@@ -7,7 +7,7 @@ namespace roleplay.Admin
     public class VehicleCommands : Script
     {
         [Command("apojazd", GreedyArg = true)]
-        public void AdminVehiclesCommand(Client client, string parameters)
+        public void AdminVehiclesCommand(Player client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

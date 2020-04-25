@@ -5,7 +5,7 @@ namespace roleplay.Scripts
     public class Jail : Script
     {
         [Command("przetrzymaj")]
-        public void JailCommand(Client client, int playerID)
+        public void JailCommand(Player client, int playerID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

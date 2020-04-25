@@ -8,7 +8,7 @@ namespace roleplay.Scripts
     public class Radio : Script
     {
         [Command("news", GreedyArg = true)]
-        public void NewsCommand(Client client, string text)
+        public void NewsCommand(Player client, string text)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

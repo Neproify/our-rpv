@@ -7,7 +7,7 @@ namespace roleplay
     public class PlayerOffers : Script
     {
         [Command("o", GreedyArg = true)]
-        public void OfferCommand(Client client, string parameters)
+        public void OfferCommand(Player client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

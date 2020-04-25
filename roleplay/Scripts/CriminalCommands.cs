@@ -5,7 +5,7 @@ namespace roleplay.Scripts
     public class CriminalCommands : Script
     {
         [Command("knebel")]
-        public void GagPlayer(Client client, int playerID)
+        public void GagPlayer(Player client, int playerID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

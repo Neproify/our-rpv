@@ -6,7 +6,7 @@ namespace roleplay.Admin
     public class BuildingCommands : Script
     {
         [Command("abudynek", GreedyArg = true)]
-        public void AdminBuildingsCommand(Client client, string parameters)
+        public void AdminBuildingsCommand(Player client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

@@ -16,6 +16,7 @@ namespace roleplay_client.Auth
             RAGE.Ui.Cursor.Visible = true;
         }
 
+
         private void OnLoginRequest(object[] args)
         {
             Events.CallRemote("OnLoginRequest", args);

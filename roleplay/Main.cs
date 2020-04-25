@@ -1,4 +1,6 @@
 using GTANetworkAPI;
+using MongoDB.Bson.Serialization;
+using roleplay.Serializers;
 
 namespace roleplay
 {
@@ -9,12 +11,14 @@ namespace roleplay
         {
             NAPI.Util.ConsoleOutput("Trwa nawi¹zywanie po³¹czenia z baz¹ danych...");
 
+            BsonSerializer.RegisterSerializer(typeof(Vector3), new Vector3Serializer());
+
             Database database2 = Database.Instance();
 
             if(!database2.Connect())
             {
                 NAPI.Util.ConsoleOutput("B³¹d podczas ³¹czenia z baz¹ danych.");
-                NAPI.Server.SetServerPassword("niewiadomoco");
+#warning Set password to server.
                 return;
             }
             else
@@ -49,14 +53,14 @@ namespace roleplay
         }
 
         [ServerEvent(Event.PlayerConnected)]
-        public void OnClientConnect(Client client)
+        public void OnClientConnect(Player client)
         {
             Managers.PlayerManager manager = Managers.PlayerManager.Instance();
             manager.CreateFromHandle(client);
         }
 
         [ServerEvent(Event.PlayerDisconnected)]
-        public void OnClientDisconnect(Client client, DisconnectionType type, string reason)
+        public void OnClientDisconnect(Player client, DisconnectionType type, string reason)
         {
             Managers.PlayerManager manager = Managers.PlayerManager.Instance();
             manager.DeleteFromHandle(client);

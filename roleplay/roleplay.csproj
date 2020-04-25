@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
-<TargetFramework>netcoreapp3.0</TargetFramework>
+<TargetFramework>netcoreapp3.1</TargetFramework>
 </PropertyGroup>
 <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
   <NoWarn>1701;1702</NoWarn>
   <OutputPath>..\bin\roleplay\</OutputPath>
   <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  <WarningLevel>2</WarningLevel>
 </PropertyGroup>
 <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
   <OutputPath>..\bin\roleplay\</OutputPath>
@@ -13,7 +14,7 @@
 </PropertyGroup>
 <ItemGroup>
   <PackageReference Include="BCrypt-Core" Version="2.0.0" />
-  <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
+  <PackageReference Include="MongoDB.Driver" Version="2.10.3" />
   <PackageReference Include="System.Data.Common" Version="4.3.0" />
 </ItemGroup>
 <ItemGroup>

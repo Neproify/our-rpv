@@ -1,4 +1,4 @@
 <meta>
   <info name="roleplay" type="script" />
-  <script src="netcoreapp3.0\roleplay.dll" />
+  <script src="netcoreapp3.1\roleplay.dll" />
 </meta>

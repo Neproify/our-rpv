@@ -5,7 +5,7 @@ namespace roleplay.Items
     public class AmmoSync : Script
     {
         [RemoteEvent("OnPlayerWeaponShot")]
-        public void OnPlayerWeaponShot(Client client, int weaponHash)
+        public void OnPlayerWeaponShot(Player client, int weaponHash)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

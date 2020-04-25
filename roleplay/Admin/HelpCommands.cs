@@ -5,7 +5,7 @@ namespace roleplay.Admin
     public class HelpCommands : Script
     {
         [Command("apomoc")]
-        public void HelpCommand(Client client)
+        public void HelpCommand(Player client)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

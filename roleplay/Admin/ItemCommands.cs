@@ -6,7 +6,7 @@ namespace roleplay.Admin
     public class ItemCommands : Script
     {
         [Command("aprzedmiot", GreedyArg = true)]
-        public void AdminItemsCommand(Client client, string parameters)
+        public void AdminItemsCommand(Player client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

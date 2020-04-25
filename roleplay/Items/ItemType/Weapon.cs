@@ -60,7 +60,7 @@ namespace roleplay.Items.ItemType
             }
         }
 
-        public override bool Use(Player player)
+        public override bool Use(roleplay.Entities.Player player)
         {
             if (!base.Use(player))
                 return false;

@@ -7,7 +7,7 @@ namespace roleplay.Admin
     public class GroupCommands : Script
     {
         [Command("agrupa", GreedyArg = true)]
-        public void AdminGroupsCommand(Client client, string parameters)
+        public void AdminGroupsCommand(Player client, string parameters)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

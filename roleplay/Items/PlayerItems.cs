@@ -6,7 +6,7 @@ namespace roleplay.Items
     public class PlayerItems : Script
     {
         [Command("podnies")]
-        public void ItemPickupCommand(Client client)
+        public void ItemPickupCommand(Player client)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -28,7 +28,7 @@ namespace roleplay.Items
         }
 
         [RemoteEvent("ShowPlayerItems")]
-        public void ShowPlayerItems(Client client)
+        public void ShowPlayerItems(Player client)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -45,7 +45,7 @@ namespace roleplay.Items
         }
 
         [RemoteEvent("UsePlayerItem")]
-        public void UsePlayerItem(Client client, string itemUID)
+        public void UsePlayerItem(Player client, string itemUID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -58,7 +58,7 @@ namespace roleplay.Items
         }
 
         [RemoteEvent("DropPlayerItem")]
-        public void DropPlayerItem(Client client, string itemUID)
+        public void DropPlayerItem(Player client, string itemUID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -79,7 +79,7 @@ namespace roleplay.Items
         }
 
         [Command("przeszukaj")]
-        public void SearchItemsCommand(Client client, int ID)
+        public void SearchItemsCommand(Player client, int ID)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

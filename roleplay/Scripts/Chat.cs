@@ -7,7 +7,7 @@ namespace roleplay.Scripts
     {
 
         [ServerEvent(Event.ChatMessage)]
-        public void OnPlayerChat(Client client, string message)
+        public void OnPlayerChat(Player client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -55,7 +55,7 @@ namespace roleplay.Scripts
         }
 
         [Command("me", GreedyArg = true)]
-        public void MeCommand(Client client, string action)
+        public void MeCommand(Player client, string action)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -66,7 +66,7 @@ namespace roleplay.Scripts
         }
 
         [Command("do", GreedyArg = true)]
-        public void DoCommand(Client client, string action)
+        public void DoCommand(Player client, string action)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -77,7 +77,7 @@ namespace roleplay.Scripts
         }
 
         [Command("b", GreedyArg = true)]
-        public void OOCCommand(Client client, string message)
+        public void OOCCommand(Player client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -93,7 +93,7 @@ namespace roleplay.Scripts
         }
 
         [Command("sprobuj", GreedyArg = true)]
-        public void TryCommand(Client client, string action)
+        public void TryCommand(Player client, string action)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -119,7 +119,7 @@ namespace roleplay.Scripts
         }
 
         [Command("k", GreedyArg = true)]
-        public void ShoutCommand(Client client, string message)
+        public void ShoutCommand(Player client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -154,7 +154,7 @@ namespace roleplay.Scripts
         }
 
         [Command("s", GreedyArg = true)]
-        public void SilentCommand(Client client, string message)
+        public void SilentCommand(Player client, string message)
         {
 
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
@@ -190,7 +190,7 @@ namespace roleplay.Scripts
         }
 
         [Command("r", GreedyArg = true)]
-        public void RadioCommand(Client client, string message)
+        public void RadioCommand(Player client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -231,7 +231,7 @@ namespace roleplay.Scripts
         }
 
         [Command("m", GreedyArg = true)]
-        public void MegaphoneCommand(Client client, string message)
+        public void MegaphoneCommand(Player client, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 
@@ -265,7 +265,7 @@ namespace roleplay.Scripts
         }
 
         [Command("w", GreedyArg = true)]
-        public void PrivateMessageCommand(Client client, int playerID, string message)
+        public void PrivateMessageCommand(Player client, int playerID, string message)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
 

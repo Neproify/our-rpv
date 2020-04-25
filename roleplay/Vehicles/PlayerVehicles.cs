@@ -6,7 +6,7 @@ namespace roleplay.Vehicles
     {
 
         [Command("v", GreedyArg = true)]
-        public void VehicleCommand(Client client, string arg)
+        public void VehicleCommand(Player client, string arg)
         {
             var player = Managers.PlayerManager.Instance().GetByHandle(client);
             if (arg == "z" || arg == "zamek")
