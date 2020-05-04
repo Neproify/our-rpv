@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using System;
+using System.Linq.Expressions;
+using MongoDB.Driver;
 
 namespace roleplay
 {
@@ -8,7 +10,15 @@ namespace roleplay
 
         public bool Connect()
         {
-            client = new MongoClient("mongodb://127.0.0.1:27017");
+            try
+            {
+                client = new MongoClient("mongodb://127.0.0.1:27017");
+            }
+            catch (Exception e)
+            {
+#warning Add some feedback about connection problems.
+                return false;
+            }
 
             return true;
         }

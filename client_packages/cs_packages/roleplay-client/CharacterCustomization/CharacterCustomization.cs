@@ -241,9 +241,7 @@ namespace roleplay_client.CharacterCustomization
             clothOptionInfos.Add(new ClothOptionInfo(6, "Buty", 0, 90, 0, 94));
             clothOptionInfos.Add(new ClothOptionInfo(7, "Akcesoria", 0, 131, 0, 101));
             clothOptionInfos.Add(new ClothOptionInfo(8, "Podkoszulek", 0, 143, 0, 184));
-#warning Change it after update. Or make workaround.
-            //clothOptionInfos.Add(new ClothOptionInfo(11, "Góra", 0, 289, 0, 302));
-            clothOptionInfos.Add(new ClothOptionInfo(11, "Góra", 0, 255, 0, 255));
+            clothOptionInfos.Add(new ClothOptionInfo(11, "Góra", 0, 289, 0, 302));
 
             var currentClothOptions = JsonConvert.DeserializeObject<List<ClothCustomizationPacket>>((string)args[1]);
 
