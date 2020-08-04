@@ -1,0 +1,14 @@
+@import 'uikit/src/scss/variables-theme.scss';
+@import 'uikit/src/scss/mixins-theme.scss';
+@import 'uikit/src/scss/uikit-theme.scss';
+
+html {
+	background-image: url('background.jpg') !important;
+	background-size: cover;
+}
+
+.uk-background-secondary {
+	background-color: #0b1f35e0;
+	max-height: 100vh;
+	overflow-y: auto;
+}
