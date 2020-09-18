@@ -11,6 +11,12 @@ html {
 	display: none;
 }
 
+.uk-table-striped>tr:nth-of-type(odd),
+.uk-table-striped tbody tr:nth-of-type(odd) {
+	background-color: #0b2f58e0;
+	border-top: 1px solid #0b2f58e0;
+	border-bottom: 1px solid #0b2f58e0;
+}
 
 .uk-background-secondary {
 	background-color: #0b1f35e0;
