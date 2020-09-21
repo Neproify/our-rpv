@@ -1,4 +1,5 @@
 ﻿using RAGE.Ui;
+using roleplay_client.Auth;
 
 namespace roleplay_client
 {
@@ -18,7 +19,12 @@ namespace roleplay_client
 
         public static void CallEvent(string eventName)
         {
-            ExecuteJs($"window.emitter.emit('{eventName}');");
+            ExecuteJs($"{ GetEventCaller() }('{ eventName }');");
+        }
+
+        public static string GetEventCaller()
+        {
+            return "window.emitter.emit";
         }
     }
 }

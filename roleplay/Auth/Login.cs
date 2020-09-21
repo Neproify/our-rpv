@@ -13,6 +13,7 @@ namespace roleplay.Auth
             //client.Freeze(true);
             //client.Invincible = true;
             client.Transparency = 0;
+            client.TriggerEvent("ShowLoginWindow");
         }
 
         [RemoteEvent("OnLoginRequest")]

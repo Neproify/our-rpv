@@ -6,7 +6,7 @@
   >
     <div :class="currentAnimation">
       <legend class="uk-legend uk-text-center">Wybierz postać</legend>
-      <table class="uk-table uk-table-large uk-table-divider">
+      <table class="uk-table uk-table-large uk-table-divider" v-if="characters.length > 0">
         <thead>
           <tr>
             <th>Nazwa</th>
@@ -16,7 +16,7 @@
         </thead>
         <tbody>
           <tr v-for="character in characters">
-            <td>{{ character.name }}</td>
+            <td @click="selectCharacter(character.UID);">{{ character.name }}</td>
             <td>
               <span class="uk-text-danger">{{ character.health }}%</span>
             </td>
@@ -26,7 +26,10 @@
           </tr>
         </tbody>
       </table>
-      <button class="uk-button uk-button-primary">Utwórz nową postać</button>
+      <div v-else>
+        <h5>Nie masz żadnych postaci. Stwórz pierwszą poniżej.</h5>
+      </div>
+      <button class="uk-button uk-button-primary uk-width-1-1">Utwórz nową postać</button>
     </div>
   </div>
 </template>
@@ -34,60 +37,29 @@
 <script>
 export default {
   name: "CharacterSelectionComponent",
+  mounted: function () {
+    window.emitter.on("showCharacterSelectionWindow", () => {
+      this.showWindow = true;
+    });
+    window.emitter.on("hideCharacterSelectionWindow", () => {
+      this.showWindow = false;
+    });
+    window.emitter.on("characterSelectionLoaded", (characters) => {
+      this.characters = characters;
+    });
+  },
   data: function () {
     return {
       isShown: false,
       currentAnimation: "",
-      characters: [
-        {
-          name: "Test_Testowy",
-          health: 100,
-          money: 500,
-        },
-        {
-          name: "Test_Testowy",
-          health: 90,
-          money: 500,
-        },
-        {
-          name: "Test_Testowy",
-          health: 100,
-          money: 500,
-        },
-        {
-          name: "Test_Testowy",
-          health: 100,
-          money: 7000,
-        },
-        {
-          name: "Test_Testowy",
-          health: 100,
-          money: 500,
-        },
-        {
-          name: "Test_Testowy",
-          health: 100,
-          money: 500,
-        },
-        {
-          name: "Test_Testowy",
-          health: 100,
-          money: 500,
-        },
-        {
-          name: "Test_Testowy",
-          health: 100,
-          money: 500,
-        },
-        {
-          name: "Test_Testowy",
-          health: 100,
-          money: 500,
-        },
-      ],
+      characters: [],
     };
   },
-  methods: {},
+  methods: {
+    selectCharacter: function (UID) {
+      mp.trigger("SelectCharacter", UID);
+    },
+  },
   props: {
     showWindow: false,
   },

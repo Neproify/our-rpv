@@ -4,7 +4,6 @@ namespace roleplay_client.Auth
 {
     public class CharacterSelection : Events.Script
     {
-        RAGE.Ui.HtmlWindow window;
 
         public CharacterSelection()
         {
@@ -22,32 +21,29 @@ namespace roleplay_client.Auth
 
         private void OnPlayerCharactersLoaded(object[] args)
         {
-            if (window != null)
-                window.Destroy();
-
             string characters = args[0].ToString();
-            window = new RAGE.Ui.HtmlWindow("package://static/auth/characterSelection.html") {Active = true};
             RAGE.Ui.Cursor.Visible = true;
-            window.ExecuteJs($"LoadCharacters({characters});");
+            UI.ExecuteJs($"{ UI.GetEventCaller() }('characterSelectionLoaded', { characters });");
+            UI.CallEvent("showCharacterSelectionWindow");
         }
 
         private void OnCharacterSelectionSuccessful(object[] args)
         {
-            window.Destroy();
             RAGE.Ui.Cursor.Visible = false;
             Chat.PreventShowing = false;
             Chat.Show(true);
             Discord.Update("Gra na Our Role Play Developer", "W grze.");
+            UI.CallEvent("hideCharacterSelectionWindow");
         }
 
         private void ShowCharacterCreator(object[] args)
         {
-            window.Url = "package://static/auth/characterCreation.html";
+            //window.Url = "package://static/auth/characterCreation.html";
         }
 
         private void CreateNewCharacter(object[] args)
         {
-            Events.CallRemote("CreateCharacter", args);
+            //Events.CallRemote("CreateCharacter", args);
         }
     }
 }

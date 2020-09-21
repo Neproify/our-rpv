@@ -13,6 +13,8 @@ namespace roleplay.Auth
         {
             public ObjectId UID;
             public string name;
+            public int money;
+            public int health;
         }
 
         [RemoteEvent("LoadPlayerCharacters")]
@@ -37,7 +39,9 @@ namespace roleplay.Auth
                 var characterInfo = new CharacterInfo
                 {
                     UID = character.UID,
-                    name = character.name
+                    name = character.name,
+                    money = character.money,
+                    health = character.health
                 };
                 characters.Add(characterInfo);
             }

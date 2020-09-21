@@ -16,7 +16,3 @@ UIkit.use(Icons);
 new Vue({
     render: h => h(App)
 }).$mount("#app");
-
-window.emitter.on('tick', () => {
-    console.log('test');
-});
