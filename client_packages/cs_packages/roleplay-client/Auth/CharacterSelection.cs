@@ -10,7 +10,6 @@ namespace roleplay_client.Auth
             Events.Add("OnPlayerCharactersLoaded", OnPlayerCharactersLoaded);
             Events.Add("SelectCharacter", SelectCharacter);
             Events.Add("OnCharacterSelectionSuccessful", OnCharacterSelectionSuccessful);
-            Events.Add("ShowCharacterCreator", ShowCharacterCreator);
             Events.Add("CreateNewCharacter", CreateNewCharacter);
         }
 
@@ -36,14 +35,10 @@ namespace roleplay_client.Auth
             UI.CallEvent("hideCharacterSelectionWindow");
         }
 
-        private void ShowCharacterCreator(object[] args)
-        {
-            //window.Url = "package://static/auth/characterCreation.html";
-        }
-
         private void CreateNewCharacter(object[] args)
         {
-            //Events.CallRemote("CreateCharacter", args);
+            Events.CallRemote("CreateCharacter", args);
+            UI.CallEvent("hideCharacterCreatorWindow");
         }
     }
 }

@@ -29,7 +29,10 @@
       <div v-else>
         <h5>Nie masz żadnych postaci. Stwórz pierwszą poniżej.</h5>
       </div>
-      <button class="uk-button uk-button-primary uk-width-1-1">Utwórz nową postać</button>
+      <button
+        @click="openCreationWindow();"
+        class="uk-button uk-button-primary uk-width-1-1"
+      >Utwórz nową postać</button>
     </div>
   </div>
 </template>
@@ -58,6 +61,10 @@ export default {
   methods: {
     selectCharacter: function (UID) {
       mp.trigger("SelectCharacter", UID);
+    },
+    openCreationWindow: function () {
+      this.showWindow = false;
+      window.emitter.emit("showCharacterCreatorWindow");
     },
   },
   props: {

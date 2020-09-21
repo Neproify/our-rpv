@@ -36,17 +36,25 @@
 <script>
 export default {
   name: "CharacterCreatorComponent",
+  mounted: function () {
+    window.emitter.on("showCharacterCreatorWindow", () => {
+      this.showWindow = true;
+    });
+    window.emitter.on("hideCharacterCreatorWindow", () => {
+      this.showWindow = false;
+    });
+  },
   data: function () {
     return {
       isShown: false,
       currentAnimation: "",
-      login: "",
-      password: "",
+      name: "",
+      surname: "",
     };
   },
   methods: {
     sendRequest: function () {
-      //TODO
+      mp.trigger("CreateNewCharacter", this.name, this.surname);
     },
   },
   props: {
