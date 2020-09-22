@@ -16,7 +16,7 @@
         <tbody>
           <tr v-for="(item, index) in items">
             <td>{{ index }}</td>
-            <td>{{ item.name }}</td>
+            <td @click="useItem(item.UID)">{{ item.name }}</td>
           </tr>
         </tbody>
       </table>
@@ -27,71 +27,34 @@
 <script>
 export default {
   name: "EquipmentComponent",
+  mounted: function () {
+    window.emitter.on("showItemsWindow", () => {
+      this.showWindow = true;
+    });
+
+    window.emitter.on("hideItemsWindow", () => {
+      this.showWindow = false;
+    });
+
+    window.emitter.on("onItemsLoaded", (items) => {
+      this.items = items;
+    });
+  },
   data: function () {
     return {
       isShown: false,
       currentAnimation: "",
-      items: [
-        {
-          ID: "12453",
-          name: "Desert Eagle",
-        },
-        {
-          ID: "12453",
-          name: "Glock",
-        },
-        {
-          ID: "12453",
-          name: "Prawo jazdy",
-        },
-        {
-          ID: "12453",
-          name: "Dowód osobisty",
-        },
-        {
-          ID: "12453",
-          name: "AK-47",
-        },
-        {
-          ID: "12453",
-          name: "Kebab",
-        },
-        {
-          ID: "12453",
-          name: "Cola",
-        },
-        {
-          ID: "12453",
-          name: "Desert Eagle",
-        },
-        {
-          ID: "12453",
-          name: "Uzi",
-        },
-        {
-          ID: "12453",
-          name: "Kluczyki do samochodu",
-        },
-        {
-          ID: "12453",
-          name: "Desert Eagle",
-        },
-        {
-          ID: "12453",
-          name: "Desert Eagle",
-        },
-        {
-          ID: "12453",
-          name: "Desert Eagle",
-        },
-        {
-          ID: "12453",
-          name: "Desert Eagle",
-        },
-      ],
+      items: [],
     };
   },
-  methods: {},
+  methods: {
+    useItem: function (UID) {
+      mp.trigger("UseItem", UID);
+    },
+    dropItem: function (UID) {
+      mp.trigger("DropItem", UID);
+    },
+  },
   props: {
     showWindow: false,
   },

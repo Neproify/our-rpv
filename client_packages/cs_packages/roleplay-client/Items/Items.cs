@@ -5,7 +5,6 @@ namespace roleplay_client.Items
 {
     public class Items : Events.Script
     {
-        private RAGE.Ui.HtmlWindow window;
         public bool isVisible;
         public int framesWhenIsUp;
 
@@ -25,8 +24,7 @@ namespace roleplay_client.Items
             {
                 if(isVisible)
                 {
-                    window.Active = false;
-                    window.Destroy();
+                    UI.CallEvent("hideItemsWindow");
                     RAGE.Ui.Cursor.Visible = false;
                     isVisible = false;
                 }
@@ -57,32 +55,22 @@ namespace roleplay_client.Items
         {
             var items = args[0].ToString();
 
-            window?.Destroy();
-
-            window = new RAGE.Ui.HtmlWindow("package://static/items/items.html");
-            window.ExecuteJs($"loadItems('{items}');");
-            window.Active = true;
+            UI.ExecuteJs($"{ UI.GetEventCaller() }('onItemsLoaded', { items });");
+            UI.CallEvent("showItemsWindow");
             RAGE.Ui.Cursor.Visible = true;
             isVisible = true;
         }
 
         private void HidePlayerItems(object[] args)
         {
-            if(window != null)
-            {
-                window.Active = false;
-                window.Destroy();
-                RAGE.Ui.Cursor.Visible = false;
-                isVisible = false;
-            }
+            UI.CallEvent("hideItemsWindow");
         }
 
         private void ReloadPlayerItems(object[] args)
         {
-            if (!isVisible)
-                return;
+            var items = args[0].ToString();
+            UI.ExecuteJs($"{ UI.GetEventCaller() }('onItemsLoaded', { items });");
 
-            window.ExecuteJs($"loadItems('{args[0].ToString()}');");
         }
     }
 }
