@@ -105,7 +105,7 @@ namespace roleplay.Auth
             player.SetModel(player.character.model);
             player.TriggerEvent("OnCharacterSelectionSuccessful");
 
-            Vector3 spawnPosition = new Vector3(1398.96, 3591.61, 35);
+            Vector3 spawnPosition = new Vector3(215, -818, 31);
             uint spawnDimension = 0;
 
             if (character.jailBuildingID != ObjectId.Empty)
