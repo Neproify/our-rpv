@@ -110,6 +110,7 @@ namespace roleplay_client.CharacterCustomization
     public class CharacterCustomization : Events.Script
     {
         private HtmlWindow window;
+        private bool isActive;
 
         public CharacterCustomization()
         {
@@ -119,6 +120,9 @@ namespace roleplay_client.CharacterCustomization
             Events.Add("UpdateClothOption", UpdateClothOption);
             Events.Add("UpdatePropOption", UpdatePropOption);
             Events.Add("SaveCustomization", SaveCustomization);
+
+            isActive = false;
+            Events.Tick += Tick;
         }
 
         private void UpdateGender(object[] args)
@@ -151,6 +155,7 @@ namespace roleplay_client.CharacterCustomization
         {
             window?.Destroy();
             Cursor.Visible = false;
+            isActive = false;
 
             var faceOptionInfos = JsonConvert.DeserializeObject<List<FaceOptionInfo>>((string)args[1]);
             var clothOptionInfos = JsonConvert.DeserializeObject<List<ClothOptionInfo>>((string)args[2]);
@@ -184,7 +189,6 @@ namespace roleplay_client.CharacterCustomization
                 JsonConvert.SerializeObject(propOptionsPacket));
 
             RAGE.Elements.Player.LocalPlayer.ClearTasksImmediately();
-            Events.Tick -= Tick;
         }
 
         private void ShowCharacterCustomization(object[] args)
@@ -289,12 +293,15 @@ namespace roleplay_client.CharacterCustomization
             window.ExecuteJs($"vm.propOptions = {propOptions};");
 
             Cursor.Visible = true;
-            Events.Tick += Tick;
+            isActive = true;
         }
 
         private void Tick(List<Events.TickNametagData> nametags)
         {
-            RAGE.Elements.Player.LocalPlayer.SetHeading(RAGE.Elements.Player.LocalPlayer.GetHeading() + 0.5f);
+            if (isActive)
+            {
+                RAGE.Elements.Player.LocalPlayer.SetHeading(RAGE.Elements.Player.LocalPlayer.GetHeading() + 0.5f);
+            }
         }
     }
 }
