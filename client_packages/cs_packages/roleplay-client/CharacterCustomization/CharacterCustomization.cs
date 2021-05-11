@@ -109,7 +109,6 @@ namespace roleplay_client.CharacterCustomization
 
     public class CharacterCustomization : Events.Script
     {
-        private HtmlWindow window;
         private bool isActive;
 
         public CharacterCustomization()
@@ -153,7 +152,7 @@ namespace roleplay_client.CharacterCustomization
 
         private void SaveCustomization(object[] args)
         {
-            window?.Destroy();
+            UI.CallEvent("hideCharacterCustomizationWindow");
             Cursor.Visible = false;
             isActive = false;
 
@@ -193,10 +192,6 @@ namespace roleplay_client.CharacterCustomization
 
         private void ShowCharacterCustomization(object[] args)
         {
-            window?.Destroy();
-
-            window = new HtmlWindow("package://static/charactercustomization/charactercustomization.html") { Active = true };
-
             List<FaceOptionInfo> faceOptionInfos = new List<FaceOptionInfo>();
             faceOptionInfos.Add(new FaceOptionInfo(0, "Szerokość nosa", -1, 1));
             faceOptionInfos.Add(new FaceOptionInfo(1, "Wysokość nosa", -1, 1));
@@ -236,8 +231,6 @@ namespace roleplay_client.CharacterCustomization
 
             string faceOptions = JsonConvert.SerializeObject(faceOptionInfos);
 
-            window.ExecuteJs($"vm.faceOptions = {faceOptions};");
-
             List<ClothOptionInfo> clothOptionInfos = new List<ClothOptionInfo>();
             clothOptionInfos.Add(new ClothOptionInfo(2, "Włosy", 0, 73, 0, 77));
             clothOptionInfos.Add(new ClothOptionInfo(3, "Tors", 0, 167, 0, 208));
@@ -264,8 +257,6 @@ namespace roleplay_client.CharacterCustomization
 
             string clothOptions = JsonConvert.SerializeObject(clothOptionInfos);
 
-            window.ExecuteJs($"vm.clothOptions = {clothOptions}");
-
             List<PropOptionInfo> propOptionInfos = new List<PropOptionInfo>();
             propOptionInfos.Add(new PropOptionInfo(0, "Czapka", -1, 134, -1, 133));
             propOptionInfos.Add(new PropOptionInfo(1, "Okulary", -1, 27, -1, 29));
@@ -290,8 +281,8 @@ namespace roleplay_client.CharacterCustomization
 
             string propOptions = JsonConvert.SerializeObject(propOptionInfos);
 
-            window.ExecuteJs($"vm.propOptions = {propOptions};");
-
+            UI.ExecuteJs($"{ UI.GetEventCaller() }('characterCustomizationLoaded', 0, {faceOptions}, {clothOptions}, {propOptions});");
+            UI.CallEvent("showCharacterCustomizationWindow");
             Cursor.Visible = true;
             isActive = true;
         }
