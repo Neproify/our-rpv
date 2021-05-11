@@ -64,6 +64,8 @@ namespace roleplay_client.Items
         private void HidePlayerItems(object[] args)
         {
             UI.CallEvent("hideItemsWindow");
+            RAGE.Ui.Cursor.Visible = false;
+            isVisible = false;
         }
 
         private void ReloadPlayerItems(object[] args)
