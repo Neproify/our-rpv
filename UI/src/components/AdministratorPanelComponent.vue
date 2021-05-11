@@ -1,60 +1,45 @@
 <template>
   <div
     v-if="isShown"
-    id="equipmentWindow"
+    id="login"
     class="uk-background-secondary uk-light uk-position-center uk-padding"
   >
     <div :class="currentAnimation">
-      <legend class="uk-legend uk-text-center">Przedmioty</legend>
-      <table class="uk-table uk-table-small uk-table-striped">
-        <thead>
-          <tr>
-            <th>Numer</th>
-            <th>Nazwa</th>
-            <th>Akcje</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in items">
-            <td>{{ index }}</td>
-            <td @click="useItem(item.UID)">{{ item.name }}</td>
-            <td @click="dropItem(item.UID)">Wyrzuć</td>
-          </tr>
-        </tbody>
-      </table>
+      <ul uk-tab>
+        <li class="uk-active">
+          <a href="#" @click="setTab('summary')">Ogólne</a>
+        </li>
+        <li><a href="#" @click="setTab('players')">Gracze</a></li>
+      </ul>
+      <SummaryComponent v-if="this.currentTab == 'summary'" />
     </div>
   </div>
 </template>
 
 <script>
+import SummaryComponent from "./administrator/SummaryAdministratorPanelComponent.vue";
+
 export default {
-  name: "EquipmentComponent",
+  name: "AdministratorPanelComponent",
+  components: { SummaryComponent },
   mounted: function () {
-    window.emitter.on("showItemsWindow", () => {
+    window.emitter.on("showAdminWindow", () => {
       this.showWindow = true;
     });
-
-    window.emitter.on("hideItemsWindow", () => {
+    window.emitter.on("hideAdminWindow", () => {
       this.showWindow = false;
-    });
-
-    window.emitter.on("onItemsLoaded", (items) => {
-      this.items = items;
     });
   },
   data: function () {
     return {
       isShown: false,
       currentAnimation: "",
-      items: [],
+      currentTab: "summary",
     };
   },
   methods: {
-    useItem: function (UID) {
-      mp.trigger("UseItem", UID);
-    },
-    dropItem: function (UID) {
-      mp.trigger("DropItem", UID);
+    setTab: function (name) {
+      this.currentTab = name;
     },
   },
   props: {

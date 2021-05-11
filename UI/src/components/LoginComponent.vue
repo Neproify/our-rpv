@@ -12,20 +12,32 @@
           <div class="uk-margin">
             <div class="uk-inline">
               <span class="uk-form-icon" uk-icon="icon: user"></span>
-              <input v-model="login" class="uk-input" type="text" placeholder="Login" />
+              <input
+                v-model="login"
+                class="uk-input"
+                type="text"
+                placeholder="Login"
+              />
             </div>
           </div>
 
           <div class="uk-margin uk-inline">
             <span class="uk-form-icon" uk-icon="icon: lock"></span>
-            <input v-model="password" class="uk-input" type="password" placeholder="Hasło" />
+            <input
+              v-model="password"
+              class="uk-input"
+              type="password"
+              placeholder="Hasło"
+            />
           </div>
 
           <div class="uk-margin">
             <button
               @click.prevent="sendRequest"
               class="uk-button uk-button-default uk-width-1-1"
-            >Zaloguj się</button>
+            >
+              Zaloguj się
+            </button>
           </div>
         </fieldset>
       </form>

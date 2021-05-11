@@ -12,20 +12,32 @@
           <div class="uk-margin">
             <div class="uk-inline">
               <span class="uk-form-icon" uk-icon="icon: user"></span>
-              <input v-model="name" class="uk-input" type="text" placeholder="Imię" />
+              <input
+                v-model="name"
+                class="uk-input"
+                type="text"
+                placeholder="Imię"
+              />
             </div>
           </div>
 
           <div class="uk-margin uk-inline">
             <span class="uk-form-icon" uk-icon="icon: user"></span>
-            <input v-model="surname" class="uk-input" type="text" placeholder="Nazwisko" />
+            <input
+              v-model="surname"
+              class="uk-input"
+              type="text"
+              placeholder="Nazwisko"
+            />
           </div>
 
           <div class="uk-margin">
             <button
               @click.prevent="sendRequest"
               class="uk-button uk-button-default uk-width-1-1"
-            >Stwórz postać</button>
+            >
+              Stwórz postać
+            </button>
           </div>
         </fieldset>
       </form>

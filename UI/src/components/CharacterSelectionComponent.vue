@@ -6,7 +6,10 @@
   >
     <div :class="currentAnimation">
       <legend class="uk-legend uk-text-center">Wybierz postać</legend>
-      <table class="uk-table uk-table-large uk-table-divider" v-if="characters.length > 0">
+      <table
+        class="uk-table uk-table-large uk-table-divider"
+        v-if="characters.length > 0"
+      >
         <thead>
           <tr>
             <th>Nazwa</th>
@@ -16,7 +19,9 @@
         </thead>
         <tbody>
           <tr v-for="character in characters">
-            <td @click="selectCharacter(character.UID);">{{ character.name }}</td>
+            <td @click="selectCharacter(character.UID)">
+              {{ character.name }}
+            </td>
             <td>
               <span class="uk-text-danger">{{ character.health }}%</span>
             </td>
@@ -30,9 +35,11 @@
         <h5>Nie masz żadnych postaci. Stwórz pierwszą poniżej.</h5>
       </div>
       <button
-        @click="openCreationWindow();"
+        @click="openCreationWindow()"
         class="uk-button uk-button-primary uk-width-1-1"
-      >Utwórz nową postać</button>
+      >
+        Utwórz nową postać
+      </button>
     </div>
   </div>
 </template>

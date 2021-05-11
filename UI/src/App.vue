@@ -4,6 +4,7 @@
     <CharacterSelectionComponent />
     <EquipmentComponent />
     <CharacterCreatorComponent />
+    <AdministratorPanelComponent />
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import LoginComponent from "./components/LoginComponent.vue";
 import CharacterSelectionComponent from "./components/CharacterSelectionComponent.vue";
 import EquipmentComponent from "./components/EquipmentComponent.vue";
 import CharacterCreatorComponent from "./components/CharacterCreatorComponent.vue";
+import AdministratorPanelComponent from "./components/AdministratorPanelComponent.vue";
 
 export default {
   name: "App",
@@ -20,10 +22,11 @@ export default {
     CharacterSelectionComponent,
     EquipmentComponent,
     CharacterCreatorComponent,
+    AdministratorPanelComponent,
   },
   data() {
     return {
-      debug: false,
+      debug: true
     };
   },
 };
